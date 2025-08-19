@@ -1,0 +1,51 @@
+<div class="cadastro-container">
+  <mat-card class="cadastro-card">
+    <mat-card-header>
+      <mat-card-title>Cadastro</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form #cadastroForm="ngForm" (ngSubmit)="cadastrar()">
+        <!-- Mensagem de sucesso -->
+        <div *ngIf="cadastroSucesso" class="mensagem-sucesso">
+          Cadastro realizado com sucesso! Redirecionando para o login...
+        </div>
+
+        <!-- Formulário (escondido após o sucesso) -->
+        <div *ngIf="!cadastroSucesso">
+          <mat-form-field class="full-width-input" appearance="fill">
+            <mat-label>Nome</mat-label>
+            <input matInput [(ngModel)]="user.nome" name="nome" type="text" required>
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field class="full-width-input" appearance="fill">
+            <mat-label>E-mail</mat-label>
+            <input matInput [(ngModel)]="user.email" name="email" type="email" required>
+            <mat-icon matSuffix>email</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field class="full-width-input" appearance="fill">
+            <mat-label>Senha</mat-label>
+            <input matInput [(ngModel)]="user.password" name="password" type="password" required>
+            <mat-icon matSuffix>lock</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field class="full-width-input" appearance="fill">
+            <mat-label>Confirmar Senha</mat-label>
+            <input matInput [(ngModel)]="user.confirmPassword" name="confirmPassword" type="password" required>
+            <mat-icon matSuffix>lock</mat-icon>
+          </mat-form-field>
+
+          <mat-error *ngIf="senhasNaoCoincidem">As senhas não coincidem.</mat-error>
+
+          <button mat-flat-button class="cadastro-button" [disabled]="!cadastroForm.valid">Cadastrar</button>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions *ngIf="!cadastroSucesso">
+      <div>
+        <h6>Já tem conta?&nbsp;<a class="redirecionamento" routerLink="/login">Faça o login</a></h6>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>
