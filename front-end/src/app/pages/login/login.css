@@ -1,0 +1,30 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Roboto, sans-serif;
+}
+
+
+.login-container {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+mat-card {
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+mat-form-field {
+    display: block;
+}
+
+.centralizar {
+    display: flex;
+    justify-content: center;
+}
