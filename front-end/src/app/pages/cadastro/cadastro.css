@@ -1,0 +1,112 @@
+/* Estilos Globais */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: #f5f5f5; /* Um fundo cinza claro para destacar o card */
+}
+
+/* Container principal para centralizar o card */
+.cadastro-container {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Estilo do Card de Cadastro */
+.cadastro-card {
+    max-width: 400px;
+    width: 100%;
+    padding: 30px;
+    box-sizing: border-box;
+    background-color: #fdf6f9; /* Tom de rosa bem claro, similar à imagem */
+    border-radius: 15px; /* Bordas mais arredondadas */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra suave */
+    text-align: center;
+}
+
+/* Cabeçalho do Card */
+.mat-card-header {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+
+.mat-card-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: #333;
+}
+
+/* Campos de Formulário */
+.full-width-input {
+    width: 100%;
+}
+
+/* Personalização dos campos do Angular Material para parecer com a imagem */
+::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: transparent !important;
+    padding: .75em .75em 0 .75em;
+}
+
+::ng-deep .mat-form-field-underline {
+    background-color: rgba(0, 0, 0, 0.42) !important;
+}
+
+/* Botão de Cadastro */
+.cadastro-button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px 0;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 8px;
+    background-color: #e0e0e0 !important; /* Cinza claro como na imagem */
+    color: #333 !important; /* Texto escuro */
+    box-shadow: none !important;
+}
+
+.cadastro-button:disabled {
+    background-color: #f0f0f0 !important;
+    color: #aaa !important;
+}
+
+/* Ações do Card (link para login) */
+.mat-card-actions {
+    display: flex;
+    justify-content: center;
+    padding-top: 15px;
+}
+
+h6 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    color: #555;
+}
+
+.redirecionamento {
+    text-decoration: none;
+    color: #007bff; /* Azul para o link, como na imagem */
+    font-weight: 500;
+}
+
+.redirecionamento:hover {
+    text-decoration: underline;
+}
+
+/* Mensagens de erro e sucesso */
+mat-error {
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.mensagem-sucesso {
+    color: #28a745; /* Verde para sucesso */
+    font-weight: 500;
+    padding: 20px 0;
+    text-align: center;
+}
