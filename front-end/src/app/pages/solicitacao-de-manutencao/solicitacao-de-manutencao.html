@@ -1,31 +1,68 @@
-<h1>Solicitação De Manutenção de Equipamento</h1>
-<div id="divFormularioManutencao">
-    <form action="solicitacaoDeManutencao.php" method="POST">
-        <fieldset>
-            <div id="divDescricaoEquip">
-                <label for="descricaoEquip">Descrição do equipamento:</label>
-                <textarea name="descricaoEquip" id="descricaoEquip" placeholder="Digite aqui a descrição do seu equipamento" required></textarea>
-            </div>
-            <div id="divCategoria">
-                <div>
-                    <label for="catNotebook">Notebook </label>
-                    <input type="radio" name="categoria" id="catNotebook" checked>
-                </div>
-                <div>
-                    <label for="catPC">PC </label>
-                    <input type="radio" name="categoria" id="catPC">
-                </div>
-                <div>
-                    <label for="catSmartphone">Smartphone </label>
-                    <input type="radio" name="categoria" id="catSmartphone">
-                </div>
-            </div>
-            <div id="divDefeitoEquip">
-                <label for="defeitoEquip">Descrição do defeito do equipamento </label>
-                <textarea name="defeitoEquip" id="descricaoEquip" placeholder="Digite aqui o defeito do seu equipamento" required></textarea>
-            </div>
-        </fieldset>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Solicitação de Manutenção</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
 
-        <input type="submit" value="Enviar solicitação" id="enviar">
-    </form>
-</div>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+
+        <div class="card shadow">
+          <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Solicitação de Manutenção de Equipamento</h3>
+          </div>
+          <div class="card-body">
+            <form action="solicitacaoDeManutencao.php" method="POST">
+
+
+              <div class="mb-3">
+                <label for="descricaoEquip" class="form-label">Descrição do equipamento</label>
+                <textarea class="form-control" name="descricaoEquip" id="descricaoEquip" 
+                          placeholder="Ex: Notebook Dell Inspiron 15 com problema na tela" rows="3" required></textarea>
+              </div>
+
+
+              <div class="mb-3">
+                <label class="form-label">Categoria do equipamento</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="categoria" id="catNotebook" value="Notebook" checked>
+                  <label class="form-check-label" for="catNotebook">Notebook</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="categoria" id="catPC" value="PC">
+                  <label class="form-check-label" for="catPC">PC</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="categoria" id="catSmartphone" value="Smartphone">
+                  <label class="form-check-label" for="catSmartphone">Smartphone</label>
+                </div>
+              </div>
+
+             
+              <div class="mb-3">
+                <label for="defeitoEquip" class="form-label">Descrição do defeito</label>
+                <textarea class="form-control" name="defeitoEquip" id="defeitoEquip" 
+                          placeholder="Ex: Tela apagada, não liga, teclado com falha..." rows="3" required></textarea>
+              </div>
+
+             
+              <div class="d-grid">
+                <button type="submit" class="btn btn-success btn-lg">
+                  Enviar Solicitação
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
