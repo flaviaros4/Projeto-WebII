@@ -32,26 +32,40 @@ export class Login {
   };
 
   
-  storedUser = {
+  userCliente = {
     email: 'teste@gmail.com',
-    password: 'usuarioteste321'
+    password: 'teste321'
+  };
+
+  userFuncionario = {
+    email: 'teste2@gmail.com',
+    password: 'teste321'
   };
 
   loginValido:boolean=true;
 
   router = inject(Router);
 
-  validarLogin(email: string, password: string): boolean {
-    return email === this.storedUser.email && password === this.storedUser.password;
+  validarLoginCliente(email: string, password: string): boolean {
+    return email === this.userCliente.email && password === this.userCliente.password;
+  }
+
+  validarLoginFunc(email: string, password: string): boolean {
+    return email === this.userFuncionario.email && password === this.userFuncionario.password;
   }
 
   login() {
-    if (this.validarLogin(this.user.email, this.user.password)) {
+    if (this.validarLoginCliente(this.user.email, this.user.password)) {
       this.loginValido = true;
       localStorage.setItem('usuarioLogado', JSON.stringify(this.user.email));
-      this.router.navigate(['']); 
+      this.router.navigate(['cliente']); 
       alert('Login realizado com sucesso!')
-    } else {
+    } else if (this.validarLoginFunc(this.user.email, this.user.password)){
+      this.loginValido = true;
+      localStorage.setItem('usuarioLogado', JSON.stringify(this.user.email));
+      this.router.navigate(['funcionario']);
+      alert('Login realizado com sucesso!')
+    } else{
       this.loginValido = false;
     }
   }
