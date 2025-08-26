@@ -13,7 +13,7 @@ import { PaginaFuncionario } from './pages/pagina-funcionario/pagina-funcionario
 export const routes: Routes = [
   { path: 'cadastro', component: Cadastro },
   { path: 'login', component: Login},
-  {path: 'orcamento', component:EfetuarOrcamento}
+  { path: 'orcamento', component:EfetuarOrcamento},
   { path: 'solicitacao', component: SolicitacaoDeManutencao},
   { path: 'cliente', component: PaginaCliente},
   { path: 'funcionario', component: PaginaFuncionario}
