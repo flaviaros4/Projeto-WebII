@@ -5,18 +5,28 @@
     </mat-card-header>
     <mat-card-content>
       <form #cadastroForm="ngForm" (ngSubmit)="cadastrar()">
-        <!-- Mensagem de sucesso -->
+
         <div *ngIf="cadastroSucesso" class="mensagem-sucesso">
           Cadastro realizado com sucesso! Redirecionando para o login...
         </div>
 
-        <!-- Formulário (escondido após o sucesso) -->
+
         <div *ngIf="!cadastroSucesso">
-          <mat-form-field class="full-width-input" appearance="fill">
-            <mat-label>Nome</mat-label>
-            <input matInput [(ngModel)]="user.nome" name="nome" type="text" required>
-            <mat-icon matSuffix>person</mat-icon>
-          </mat-form-field>
+         
+           <div style="display:flex; gap:10px;">
+            <mat-form-field class="full-width-input" appearance="fill" style="flex:1">
+              <mat-label>CPF</mat-label>
+              <input matInput [(ngModel)]="user.cpf" name="cpf" type="text" required maxlength="11" pattern="^[0-9]{11}$">
+              <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field class="full-width-input" appearance="fill" style="flex:2">
+              <mat-label>Nome</mat-label>
+              <input matInput [(ngModel)]="user.nome" name="nome" type="text" required>
+              <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+          </div>
+
 
           <mat-form-field class="full-width-input" appearance="fill">
             <mat-label>E-mail</mat-label>
@@ -24,28 +34,45 @@
             <mat-icon matSuffix>email</mat-icon>
           </mat-form-field>
 
-          <mat-form-field class="full-width-input" appearance="fill">
-            <mat-label>Senha</mat-label>
-            <input matInput [(ngModel)]="user.password" name="password" type="password" required>
-            <mat-icon matSuffix>lock</mat-icon>
-          </mat-form-field>
+         <div style="display:flex; gap:10px;">
+            <mat-form-field class="full-width-input" appearance="fill" style="flex:2">
+              <mat-label>CEP</mat-label>
+              <input matInput [(ngModel)]="user.cep" name="cep" type="text" required maxlength="8" pattern="^[0-9]{8}$">
+              <mat-icon matSuffix>my_location</mat-icon>
+            </mat-form-field>
 
-          <mat-form-field class="full-width-input" appearance="fill">
-            <mat-label>Confirmar Senha</mat-label>
-            <input matInput [(ngModel)]="user.confirmPassword" name="confirmPassword" type="password" required>
-            <mat-icon matSuffix>lock</mat-icon>
-          </mat-form-field>
+            <button mat-flat-button color="primary" type="button" style="flex:1; height:56px;" (click)="buscarCep(user.cep)">
+              Buscar CEP
+            </button>
+          </div>
 
-          <mat-error *ngIf="senhasNaoCoincidem">As senhas não coincidem.</mat-error>
+          <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 16px;">
+          <mat-label>Endereço</mat-label>
+          <input matInput type="text" [(ngModel)]="user.logradouro" name="logradouro" [readonly]="true">
+       </mat-form-field>
+
+  <div style="display: flex; gap: 16px;">
+    <mat-form-field appearance="outline" style="flex: 1;">
+      <mat-label>Bairro</mat-label>
+      <input matInput type="text" [(ngModel)]="user.bairro" name="bairro" [readonly]="true">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="flex: 1;">
+      <mat-label>Cidade</mat-label>
+      <input matInput type="text" [(ngModel)]="user.cidade" name="localidade" [readonly]="true">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="flex: 0.5;">
+      <mat-label>UF</mat-label>
+      <input matInput type="text" [(ngModel)]="user.uf" name="uf" [readonly]="true">
+    </mat-form-field>
+  </div>
 
           <button mat-flat-button class="cadastro-button" [disabled]="!cadastroForm.valid">Cadastrar</button>
         </div>
       </form>
     </mat-card-content>
     <mat-card-actions *ngIf="!cadastroSucesso">
-      <div>
-        <h6>Já tem conta?&nbsp;<a class="redirecionamento" routerLink="/login">Faça o login</a></h6>
-      </div>
     </mat-card-actions>
   </mat-card>
 </div>
