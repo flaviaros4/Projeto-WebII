@@ -7,57 +7,86 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router, RouterLink } from '@angular/router';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-cadastro',
   standalone: true,
   imports: [
-    // Módulos essenciais
     CommonModule,
-    RouterLink,
-    FormsModule, // Necessário para o [(ngModel)]
-
-    // Módulos do Angular Material que estão a ser usados no HTML
+    FormsModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    HttpClientModule
   ],
   templateUrl: './cadastro.html',
   styleUrl: './cadastro.css'
 })
 export class Cadastro {
-  // Definição das propriedades que o HTML usa
   user = {
+    cpf: '',
     nome: '',
     email: '',
-    password: '',
-    confirmPassword: ''
+    cep: '',
+    logradouro: '',
+    bairro: '',
+    cidade: '', 
+    uf: '',
+    telefone: ''
   };
 
-  senhasNaoCoincidem: boolean = false;
+  senhaGerada: string | null = null;
+
+constructor(private http: HttpClient) {}
+
+   buscarCep(cep: string) {
+    if (cep && cep.length === 8) {
+      this.http.get(`https://viacep.com.br/ws/${cep}/json/`)
+        .subscribe((dados: any) => {
+          if (dados.erro) {
+            alert("CEP não encontrado!");
+          } else {
+            this.user.logradouro = dados.logradouro;
+            this.user.bairro = dados.bairro;
+            this.user.cidade = dados.localidade;
+            this.user.uf = dados.uf;
+          }
+        });
+    }
+  }
+
+  private gerarSenha(): string {
+    return Math.floor(1000 + Math.random() * 9000).toString();
+  }
+
   cadastroSucesso: boolean = false;
 
   router = inject(Router);
 
   cadastrar() {
-    // Reseta as flags de validação
-    this.senhasNaoCoincidem = false;
+
     this.cadastroSucesso = false;
 
-    // Verifica se as senhas são iguais
-    if (this.user.password !== this.user.confirmPassword) {
-      this.senhasNaoCoincidem = true;
-      return; // Interrompe a execução se as senhas forem diferentes
-    }
+    this.senhaGerada = this.gerarSenha();
 
-    // Lógica para salvar o usuário (usando localStorage como no exemplo de login)
+
     const novoUsuario = {
+      cpf: this.user.cpf,
       nome: this.user.nome,
       email: this.user.email,
-      password: this.user.password
+      telefone: this.user.telefone,
+      cep: this.user.cep,
+      logradouro: this.user.logradouro,
+      bairro: this.user.bairro,
+      cidade: this.user.cidade,
+      uf: this.user.uf,
+      senha: this.senhaGerada
     };
+
+    
 
     let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
     usuarios.push(novoUsuario);
@@ -65,7 +94,6 @@ export class Cadastro {
 
     this.cadastroSucesso = true;
 
-    // Redireciona para a página de login após 2 segundos
     setTimeout(() => {
       this.router.navigate(['/login']);
     }, 2000);
