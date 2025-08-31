@@ -27,10 +27,10 @@ export class PaginaCliente implements OnInit {
   ngOnInit(): void {
     // Exemplo de massa de dados fictícios
     this.solicitacoes = [
-      { id: 1, dataHora: '2025-08-31 14:20', equipamento: 'Notebook Dell Inspiron', estado: 'ORÇADA' },
-      { id: 2, dataHora: '2025-08-30 10:10', equipamento: 'Impressora HP LaserJet', estado: 'APROVADA' },
-      { id: 3, dataHora: '2025-08-29 09:00', equipamento: 'Desktop Gamer', estado: 'REJEITADA' },
-      { id: 4, dataHora: '2025-08-28 11:30', equipamento: 'Mouse Logitech', estado: 'ARRUMADA' }
+      { id: 1, dataHora: '2025-08-31 14:20', equipamento: 'Notebook Dell', estado: 'ORÇADA' },
+      { id: 2, dataHora: '2025-08-30 10:10', equipamento: 'Impressora HP', estado: 'APROVADA' },
+      { id: 3, dataHora: '2025-08-29 09:00', equipamento: 'Desktop', estado: 'REJEITADA' },
+      { id: 4, dataHora: '2025-08-28 11:30', equipamento: 'Mouse Daten', estado: 'ARRUMADA' }
     ];
   }
 
