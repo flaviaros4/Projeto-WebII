@@ -1,2 +1,48 @@
 <!--TODO: RF003-->
-<h1>Página inicial do Cliente</h1>
+<div class="container mt-4">
+  <h2 class="titulo">Minhas Solicitações</h2>
+
+  <table mat-table [dataSource]="solicitacoes" class="mat-elevation-z3 tabela">
+ 
+    <ng-container matColumnDef="dataHora">
+      <th mat-header-cell *matHeaderCellDef> Data/Hora </th>
+      <td mat-cell *matCellDef="let s"> {{ s.dataHora }} </td>
+    </ng-container>
+
+ 
+    <ng-container matColumnDef="equipamento">
+      <th mat-header-cell *matHeaderCellDef> Equipamento </th>
+      <td mat-cell *matCellDef="let s">
+        {{ s.equipamento | slice:0:30 }}{{ s.equipamento.length > 30 ? '...' : '' }}
+      </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="estado">
+      <th mat-header-cell *matHeaderCellDef> Estado </th>
+      <td mat-cell *matCellDef="let s"> {{ s.estado }} </td>
+    </ng-container>
+
+    
+    <ng-container matColumnDef="acoes">
+      <th mat-header-cell *matHeaderCellDef> Ações </th>
+      <td mat-cell *matCellDef="let s">
+        <button *ngIf="getAcao(s.estado) === 'aprovar-rejeitar'" mat-raised-button color="primary">
+          Aprovar/Rejeitar
+        </button>
+        <button *ngIf="getAcao(s.estado) === 'resgatar'" mat-raised-button color="accent">
+          Resgatar
+        </button>
+        <button *ngIf="getAcao(s.estado) === 'pagar'" mat-raised-button color="warn">
+          Pagar
+        </button>
+        <button *ngIf="getAcao(s.estado) === 'visualizar'" mat-stroked-button>
+          Visualizar
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
