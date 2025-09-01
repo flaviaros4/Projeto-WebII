@@ -1,68 +1,32 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <title>Solicitação de Manutenção</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+<div class="container mt-4 formulario">
+  <h2 class="titulo">Solicitação de Manutenção de Equipamento</h2>
 
-  <div class="container py-5">
-    <div class="row justify-content-center">
-      <div class="col-lg-8">
+  
+  <mat-form-field appearance="outline" class="campo">
+    <mat-label>Descrição do equipamento</mat-label>
+    <textarea matInput [(ngModel)]="descricaoEquipamento"
+      placeholder="Ex: Notebook Dell com problema na tela"></textarea>
+  </mat-form-field>
 
-        <div class="card shadow">
-          <div class="card-header bg-primary text-white">
-            <h3 class="mb-0">Solicitação de Manutenção de Equipamento</h3>
-          </div>
-          <div class="card-body">
-            <form action="solicitacaoDeManutencao.php" method="POST">
-
-
-              <div class="mb-3">
-                <label for="descricaoEquip" class="form-label">Descrição do equipamento</label>
-                <textarea class="form-control" name="descricaoEquip" id="descricaoEquip" 
-                          placeholder="Ex: Notebook Dell Inspiron 15 com problema na tela" rows="3" required></textarea>
-              </div>
-
-
-              <div class="mb-3">
-                <label class="form-label">Categoria do equipamento</label>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="categoria" id="catNotebook" value="Notebook" checked>
-                  <label class="form-check-label" for="catNotebook">Notebook</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="categoria" id="catPC" value="PC">
-                  <label class="form-check-label" for="catPC">PC</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="categoria" id="catSmartphone" value="Smartphone">
-                  <label class="form-check-label" for="catSmartphone">Smartphone</label>
-                </div>
-              </div>
-
-             
-              <div class="mb-3">
-                <label for="defeitoEquip" class="form-label">Descrição do defeito</label>
-                <textarea class="form-control" name="defeitoEquip" id="defeitoEquip" 
-                          placeholder="Ex: Tela apagada, não liga, teclado com falha..." rows="3" required></textarea>
-              </div>
-
-             
-              <div class="d-grid">
-                <button type="submit" class="btn btn-success btn-lg">
-                  Enviar Solicitação
-                </button>
-              </div>
-
-            </form>
-          </div>
-        </div>
-
-      </div>
-    </div>
+  
+  <div class="categoria">
+    <label class="subtitulo">Categoria do equipamento</label>
+    <mat-radio-group [(ngModel)]="categoria">
+      <mat-radio-button value="Notebook">Notebook</mat-radio-button>
+      <mat-radio-button value="PC">PC</mat-radio-button>
+      <mat-radio-button value="Smartphone">Smartphone</mat-radio-button>
+    </mat-radio-group>
   </div>
 
-</body>
-</html>
+  
+  <mat-form-field appearance="outline" class="campo">
+    <mat-label>Descrição do defeito</mat-label>
+    <textarea matInput [(ngModel)]="descricaoDefeito"
+      placeholder="Ex: Tela apagada, não liga, teclado com falha..."></textarea>
+  </mat-form-field>
+
+  
+  <button mat-raised-button color="primary" class="botao" (click)="enviarSolicitacao()">
+    Enviar Solicitação
+  </button>
+</div>

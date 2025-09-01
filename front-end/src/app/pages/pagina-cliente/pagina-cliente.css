@@ -1,0 +1,31 @@
+.container {
+  background: #fff5f7;
+  padding: 20px;
+  border-radius: 12px;
+}
+*{
+  background: #fff5f7;
+}
+
+.titulo {
+  color: #8a0a8a;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.tabela {
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+}
+
+.mat-header-cell {
+  background: #f3d1f7;
+  color: #4a004a;
+  font-weight: bold;
+}
+
+button {
+  margin-right: 6px;
+  border-radius: 20px;
+}
