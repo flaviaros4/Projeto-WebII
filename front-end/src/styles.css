@@ -1,4 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body { 
+    height: 100%;
+ }
+ 
+body { 
+    margin: 0; 
+    font-family: Roboto, "Helvetica Neue", sans-serif; 
+    background-color:#1976d2 
+}
+
+:root {
+    --mat-form-field-filled-container-color: #ffffff;
+    --mat-form-field-focused-fill-color: #ffffff; 
+    --mat-color-primary: #1976d2; 
+    --mat-color-on-primary: #ffffff; 
+}
