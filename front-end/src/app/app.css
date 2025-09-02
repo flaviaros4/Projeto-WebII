@@ -1,3 +1,18 @@
 b {
     font-size: 2vw;
 }
+
+li{
+    padding-left: 20px;
+    padding-right: 10px;
+}
+
+.link-site:hover {
+  background-color: green;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.link-site:hover > a {
+  color: white;
+}
