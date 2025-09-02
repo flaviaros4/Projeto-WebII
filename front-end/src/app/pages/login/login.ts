@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router, RouterLink } from '@angular/router';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ import { Router, RouterLink } from '@angular/router';
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
-    RouterLink
+    RouterLink,
+    MatCheckbox
   ],
   templateUrl: './login.html',
   styleUrl: './login.css'
@@ -31,6 +33,7 @@ export class Login {
     password: ''
   };
 
+  hidePassword = true;
   
   userCliente = {
     email: 'teste@gmail.com',

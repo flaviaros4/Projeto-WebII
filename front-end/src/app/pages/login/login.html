@@ -1,30 +1,38 @@
-<div class="login-container">
-  <mat-card class="login-card">
-    <mat-card-header class="centralizar">
-      <mat-card-title >Login</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form #loginForm="ngForm" (ngSubmit)="login()">
-        <mat-error *ngIf="!loginValido">E-mail ou senha inválidos.</mat-error>
-        <mat-form-field class="full-width-input" appearance="fill">
-          <mat-label>E-mail</mat-label>
-          <input matInput [(ngModel)]="user.email" name="email" type="email" placeholder="Digite seu e-mail" required>
-          <mat-icon matSuffix>email</mat-icon>
-        </mat-form-field>
+<div class="main-container">
+    <div class="image-container">
+        <img src="/assets/mt2.png" alt=" ">
+    </div>
+    <div class="login-container">
+        <mat-card class="login-card">
+            <mat-card-header>
+                <mat-card-title>Login</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <form #loginForm="ngForm" (ngSubmit)="login()">
+                    <mat-error *ngIf="!loginValido">E-mail ou senha inválidos.</mat-error>
+                    <mat-form-field class="full-width-input" appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput [(ngModel)]="user.email" name="email" type="email" required>
+                    </mat-form-field>
 
-        <mat-form-field class="full-width-input" appearance="fill">
-          <mat-label>Senha</mat-label>
-          <input matInput [(ngModel)]="user.password" name="password" type="password" placeholder="Digite sua senha" required>
-          <mat-icon matSuffix>lock</mat-icon>
-        </mat-form-field>
+                    <mat-form-field class="full-width-input" appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input matInput [(ngModel)]="user.password" name="password" [type]="hidePassword ? 'password' : 'text'" required>
+                        <mat-icon matSuffix (click)="hidePassword = !hidePassword">
+                            {{hidePassword ? 'visibility_off' : 'visibility'}}
+                        </mat-icon>
+                    </mat-form-field>
+                    
+                    <div class="options-container">
+                        <mat-checkbox>Lembrar de mim</mat-checkbox>
+                        </div>
 
-        <button mat-raised-button color="primary" [disabled]="!loginForm.valid">Login</button>
-      </form>
-    </mat-card-content>
-    <mat-card-actions class="centralizar">
-      <div>
-        <h6>Não tem conta?&nbsp;<a class="redirecionamento" routerLink="/cadastro">Cadastre-se</a></h6>
-      </div>
-    </mat-card-actions>
-  </mat-card>
+                    <button mat-raised-button color="primary" [disabled]="!loginForm.valid">Login</button>
+                </form>
+            </mat-card-content>
+            <mat-card-actions class="register-link">
+                Não tem uma conta?  <a routerLink="/cadastro">Cadastre-se</a>
+            </mat-card-actions>
+        </mat-card>
+    </div>
 </div>
