@@ -1,37 +1,48 @@
 <div id="div-orcamento">
-    <section>
+    <h1>Solicitação</h1>
+    <section id="section-solicitacao">
         <p>
-            <strong>Descrição:</strong> <span id="descricao"></span>
+            <strong>Descrição:</strong> 
+            <span id="descricao"></span>
         </p>
         <p>
-            <strong>Categoria:</strong> <span id="categoria"></span>
+            <strong>Categoria:</strong> 
+            <span id="categoria"></span>
         </p>
         <p>
-            <strong>Defeito:</strong> <span id="defeito"></span>
-        </p>
-    </section>
-    
-    <section>
-        <p>
-            <strong>CPF:</strong> <span id="cpf"></span>
-        </p>
-        <p>
-            <strong>Nome:</strong> <span id="nome"></span>
-        </p>
-        <p>
-            <strong>Email:</strong> <span id="email"></span>
-        </p>
-        <p>
-            <strong>Endereço:</strong> <span id="endereco"></span>
-        </p>
-        <p>
-            <strong>Telefone:</strong> <span id="telefone"></span>
+            <strong>Defeito:</strong> 
+            <span id="defeito"></span>
         </p>
     </section>
     
-    <form action="orcamento.php">
+    <h1>Cliente</h1>
+    <section id="section-cliente">
+        <p>
+            <strong>CPF:</strong> 
+            <span id="cpf"></span>
+        </p>
+        <p>
+            <strong>Nome:</strong> 
+            <span id="nome"></span>
+        </p>
+        <p>
+            <strong>Email:</strong> 
+            <span id="email"></span>
+        </p>
+        <p>
+            <strong>Endereço:</strong> 
+            <span id="endereco"></span>
+        </p>
+        <p>
+            <strong>Telefone:</strong> 
+            <span id="telefone"></span>
+        </p>
+    </section>
+    
+    <form action="orcamento.php" id="form-orcamento">
         <label for="orcamento"></label>
         <input type="text" id="orcamento" name="orcamento" placeholder="0.00">
-        <input type="submit" value="Fazer Orçamento">
+        <input type="submit" id="botao" value="Fazer Orçamento">
     </form>
 </div>
+<div id="preenchimento"></div>
