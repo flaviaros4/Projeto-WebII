@@ -26,12 +26,13 @@
                     <div class="options-container">
                         <mat-checkbox>Lembrar de mim</mat-checkbox>
                         </div>
-
                     <button mat-raised-button color="primary" [disabled]="!loginForm.valid">Login</button>
                 </form>
             </mat-card-content>
             <mat-card-actions class="register-link">
                 Não tem uma conta?  <a routerLink="/cadastro">Cadastre-se</a>
+                <span style="margin: 0 8px;">|</span>
+                <a (click)="abrirRecuperarSenha()" style="cursor:pointer; color:#1976d2;">Esqueci minha senha</a>
             </mat-card-actions>
         </mat-card>
     </div>

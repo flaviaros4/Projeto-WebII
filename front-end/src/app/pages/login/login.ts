@@ -8,6 +8,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router, RouterLink } from '@angular/router';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { RecuperarSenha } from './modals/recuperar-senha/recuperar-senha';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login',
@@ -21,13 +24,21 @@ import { MatCheckbox } from '@angular/material/checkbox';
     MatIconModule,
     MatFormFieldModule,
     RouterLink,
-    MatCheckbox
+    MatCheckbox,
+    RecuperarSenha,
+    MatDialogModule
   ],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
 
 export class Login {
+  constructor(private dialog: MatDialog) {}
+
+  abrirRecuperarSenha() {
+    this.dialog.open(RecuperarSenha);
+  }
+
   user = {
     email: '',
     password: ''
