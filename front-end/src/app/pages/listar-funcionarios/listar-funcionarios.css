@@ -1,9 +1,21 @@
-div{
-    background-color: white;
-    margin: 50px;
-    border-radius: 10px;
-    text-align: center;
+.container {
+  max-width: 900px;
+  margin: 0 auto;
 }
-h1{
-    padding: 10px;
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.card-header {
+  background-color: #f8f9fa;
+}
+
+.btn {
+  min-width: 90px;
+}
+
+body {
+  background-color: #007bff; /* fundo azul */
 }
