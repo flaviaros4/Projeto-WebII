@@ -1,0 +1,67 @@
+.campo, strong, p{
+    display: inline-block;
+}
+
+#div-pagar{
+    background-color: white;
+    width: 70%;
+    color: black;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 40px;
+    padding-top: 30px;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 20px;
+}
+
+@media(max-width: 600px){
+    #div-pagar{
+        width: 100%;
+    }
+}
+
+h1{
+    background-color: rgba(0, 255, 255, 0);
+    text-align: center;
+    margin-bottom: 30px;
+
+}
+
+.campo > strong{
+    margin-right: 15px;
+}
+
+#data{
+    margin-right: 70px;
+}
+
+p{
+    border: 1px solid rgba(102, 86, 86, 0.76);
+    border-radius: 4px;
+    padding: 5px;
+    hyphens: auto;
+}
+
+.campo-texto > strong{
+    margin-bottom: 10px;
+}
+
+#preco-botao{
+    text-align: center;
+}
+
+input{
+    margin-left: 30px;
+    background-color: blue;
+    color: white;
+    border-radius: 10px;
+}
+
+#valor{
+    background-color: rgba(0, 0, 255, 0.541);
+    color: white;
+}
+#preenchimento{
+    height: 30px;
+}
