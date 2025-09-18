@@ -6,8 +6,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Router, RouterLink } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+
+import { ViaCepService } from '../../shared/services/via-cep';
+import { CadastroService } from './services/cadastro-service';
+import { Usuario } from '../../shared/models/cliente.model';
+import { CadastroSucessoDialog } from './modals/cadastro-sucesso/cadastro-sucesso';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-cadastro',
@@ -26,7 +32,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   styleUrl: './cadastro.css'
 })
 export class Cadastro {
-  user = {
+  user: Usuario = {
     cpf: '',
     nome: '',
     email: '',
@@ -34,70 +40,44 @@ export class Cadastro {
     logradouro: '',
     numero: '',
     bairro: '',
-    cidade: '', 
+    cidade: '',
     uf: '',
     telefone: ''
   };
 
   senhaGerada: string | null = null;
 
-constructor(private http: HttpClient) {}
+  private viaCepService = inject(ViaCepService);
+  private cadastroService = inject(CadastroService);
+  private router = inject(Router);
+  private dialog = inject(MatDialog);
 
-   buscarCep(cep: string) {
-    if (cep && cep.length === 8) {
-      this.http.get(`https://viacep.com.br/ws/${cep}/json/`)
-        .subscribe((dados: any) => {
-          if (dados.erro) {
-            alert("CEP não encontrado!");
-          } else {
-            this.user.logradouro = dados.logradouro;
-            this.user.bairro = dados.bairro;
-            this.user.cidade = dados.localidade;
-            this.user.uf = dados.uf;
-          }
-        });
-    }
+  buscarCep(cep: string) {
+    this.viaCepService.buscarCep(cep).subscribe(dados => {
+      if (dados.erro) {
+        alert('CEP não encontrado!');
+      } else {
+        this.user.logradouro = dados.logradouro;
+        this.user.bairro = dados.bairro;
+        this.user.cidade = dados.localidade;
+        this.user.uf = dados.uf;
+      }
+    });
   }
 
   private gerarSenha(): string {
     return Math.floor(1000 + Math.random() * 9000).toString();
   }
-
-  cadastroSucesso: boolean = false;
-
-  router = inject(Router);
-
-  cadastrar() {
-
-    this.cadastroSucesso = false;
-
+ cadastrar() {
     this.senhaGerada = this.gerarSenha();
-
-
-    const novoUsuario = {
-      cpf: this.user.cpf,
-      nome: this.user.nome,
-      email: this.user.email,
-      telefone: this.user.telefone,
-      cep: this.user.cep,
-      logradouro: this.user.logradouro,
-      numero: this.user.numero,
-      bairro: this.user.bairro,
-      cidade: this.user.cidade,
-      uf: this.user.uf,
-      senha: this.senhaGerada
-    };
-
-    
-
-    let usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-    usuarios.push(novoUsuario);
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
-
-    this.cadastroSucesso = true;
-
-    setTimeout(() => {
+    this.user.senha = this.senhaGerada;
+    this.cadastroService.registrar(this.user);
+    const dialogRef = this.dialog.open(CadastroSucessoDialog, {
+      data: { email: this.user.email }
+    });
+    dialogRef.afterClosed().subscribe(() => {
       this.router.navigate(['/login']);
-    }, 2000);
+    }
+    );
   }
 }

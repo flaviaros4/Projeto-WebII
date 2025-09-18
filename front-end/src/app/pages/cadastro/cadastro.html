@@ -5,10 +5,7 @@
     </mat-card-header>
     <mat-card-content>
       <form #cadastroForm="ngForm" (ngSubmit)="cadastrar()">
-        <div *ngIf="cadastroSucesso" class="mensagem-sucesso">
-          Cadastro realizado com sucesso! Redirecionando para o login...
-        </div>
-        <div *ngIf="!cadastroSucesso">
+        <div>
           <div class="cadastro-fill">
             <mat-form-field class="flex-1" appearance="outline">
               <mat-label>CPF</mat-label>
