@@ -18,7 +18,14 @@ html, body {
   transform: translate(-50%, -50%);
 }
 
-.titulo {
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+h1 {
   text-align: center;
   color: #333;
   font-weight: bold;
@@ -46,11 +53,11 @@ html, body {
   font-weight: bold;
 }
 
+
 button {
   background-color: #1976d2 !important;
   color: white !important;
   border-radius: 20px;
-  padding: 8px 16px;
   border: none;
   cursor: pointer;
   transition: background 0.3s ease;
@@ -59,3 +66,4 @@ button {
 button:hover {
   background-color: #125a9c !important;
 }
+

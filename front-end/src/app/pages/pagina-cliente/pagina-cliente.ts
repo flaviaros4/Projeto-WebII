@@ -1,45 +1,93 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
-interface Solicitacao {
-  id: number;
-  dataHora: string;
-  equipamento: string;
-  estado: string;
-}
+import { ClienteService } from './services/pagina-cliente';
+import { SolicitacaoManutencao } from './modals/solicitacao-de-manutencao/solicitacao-de-manutencao';
+import { Solicitacao } from '../../shared/models/solicitacao.model';
+import { VisualizarSolicitacao } from './modals/visualizar-solicitacao/visualizar-solicitacao';
 
 @Component({
   selector: 'app-pagina-cliente',
-  imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule],
+  standalone: true,
+  imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule, MatDialogModule],
   templateUrl: './pagina-cliente.html',
-  styleUrl: './pagina-cliente.css'
-
-
-
+  styleUrls: ['./pagina-cliente.css']
 })
-export class PaginaCliente implements OnInit {
-  displayedColumns: string[] = ['dataHora', 'equipamento', 'estado', 'acoes'];
-  solicitacoes: Solicitacao[] = [];
+export class PaginaCliente {
+  displayedColumns: string[] = ['dataHora', 'categoria', 'estado', 'acoes'];
+  dataSource = new MatTableDataSource<Solicitacao>([]);
+
+  constructor(private clienteService: ClienteService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    // Exemplo de massa de dados fictícios
-    this.solicitacoes = [
-      { id: 1, dataHora: '2025-08-31 14:20', equipamento: 'Notebook Dell', estado: 'ORÇADA' },
-      { id: 2, dataHora: '2025-08-30 10:10', equipamento: 'Impressora HP', estado: 'APROVADA' },
-      { id: 3, dataHora: '2025-08-29 09:00', equipamento: 'Desktop', estado: 'REJEITADA' },
-      { id: 4, dataHora: '2025-08-28 11:30', equipamento: 'Mouse Daten', estado: 'ARRUMADA' }
-    ];
+    this.carregarSolicitacoes();
   }
 
-  getAcao(estado: string): string {
-    switch (estado) {
-      case 'ORÇADA': return 'aprovar-rejeitar';
-      case 'REJEITADA': return 'resgatar';
-      case 'ARRUMADA': return 'pagar';
-      default: return 'visualizar';
-    }
+  carregarSolicitacoes() {
+    const solicitacoes = this.clienteService.listarSolicitacoes();
+    solicitacoes.sort((a, b) => new Date(a.dataHora).getTime() - new Date(b.dataHora).getTime());
+    this.dataSource.data = solicitacoes;
+  }
+
+  novaSolicitacao() {
+    const dialogRef = this.dialog.open(SolicitacaoManutencao, {
+      width: '800px',
+      height: '500px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const nova: Solicitacao = {
+          id: 0,
+          dataHora: new Date().toISOString(),
+          descricao: result.descricao,
+          categoria: result.categoria,
+          descricaoDefeito: result.descricaoDefeito || '',
+          estado: 'ABERTA'
+        };
+        this.clienteService.cadastrarSolicitacao(nova);
+        this.carregarSolicitacoes();
+      }
+    });
+  }
+
+  removerSolicitacao(solicitacao: Solicitacao) {
+    this.clienteService.removerSolicitacao(solicitacao.id);
+    this.carregarSolicitacoes();
+  }
+
+  aprovarSolicitacao(solicitacao: Solicitacao) {
+    solicitacao.estado = 'APROVADA';
+    this.clienteService.atualizarSolicitacao(solicitacao);
+    this.carregarSolicitacoes();
+  }
+
+  rejeitarSolicitacao(solicitacao: Solicitacao) {
+    solicitacao.estado = 'REJEITADA';
+    this.clienteService.atualizarSolicitacao(solicitacao);
+    this.carregarSolicitacoes();
+  }
+
+  resgatarSolicitacao(solicitacao: Solicitacao) {
+    solicitacao.estado = 'ABERTA';
+    this.clienteService.atualizarSolicitacao(solicitacao);
+    this.carregarSolicitacoes();
+  }
+
+  pagarSolicitacao(solicitacao: Solicitacao) {
+    solicitacao.estado = 'PAGA'; 
+    this.clienteService.atualizarSolicitacao(solicitacao);
+    this.carregarSolicitacoes();
+  }
+
+  visualizarSolicitacao(solicitacao: Solicitacao) {
+    this.dialog.open(VisualizarSolicitacao, {
+      width: '800px',
+      data: solicitacao
+    });
   }
 }

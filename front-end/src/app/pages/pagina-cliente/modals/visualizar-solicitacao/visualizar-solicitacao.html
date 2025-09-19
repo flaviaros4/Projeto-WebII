@@ -1,0 +1,14 @@
+<div class="container">
+<h2>Detalhes da Solicitação</h2>
+<div class="detalhes">
+<p><b>Descrição:</b> {{solicitacao.descricao}}</p>
+<p><b>Categoria:</b> {{solicitacao.categoria}}</p>
+<p><b>Descrição do defeito:</b> {{solicitacao.descricaoDefeito}}</p>
+<p><b>Estado:</b> {{solicitacao.estado}}</p>
+<p><b>Data/Hora:</b> {{solicitacao.dataHora | date:'short'}}</p>
+</div>
+
+
+<button mat-button (click)="fechar()">Fechar</button>
+
+</div>

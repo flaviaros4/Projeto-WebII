@@ -1,0 +1,38 @@
+<div class="container mt-4 formulario">
+  <h2 class="titulo">Solicitação de Manutenção de Equipamento</h2>
+
+  
+  <mat-form-field appearance="outline" class="campo">
+    <mat-label>Descrição do equipamento</mat-label>
+    <textarea matInput [(ngModel)]="solicitacao.descricao"
+      placeholder="Ex: Notebook Dell com problema na tela"></textarea>
+  </mat-form-field>
+
+  
+   <mat-form-field appearance="outline" class="categoria">
+  <mat-label>Categoria do equipamento</mat-label>
+  <mat-select [(ngModel)]="solicitacao.categoria" name="categoria" required>
+  <mat-option [value]="'Notebook'">Notebook</mat-option>
+  <mat-option [value]="'Desktop'">Desktop</mat-option>
+  <mat-option [value]="'Tablet'">Tablet</mat-option>
+</mat-select>
+</mat-form-field>
+
+  
+  <mat-form-field appearance="outline" class="campo">
+    <mat-label>Descrição do defeito</mat-label>
+    <textarea matInput [(ngModel)]="solicitacao.descricaoDefeito"
+      placeholder="Ex: Tela apagada, não liga, teclado com falha..."></textarea>
+  </mat-form-field>
+
+  <div class="botoes">
+   <button mat-raised-button color="primary" class="botao" (click)="cadastrarSolicitacao()">
+    Enviar Solicitação
+  </button>
+  <button mat-raised-button color="primary" class="botao" (click)="fechar()">
+   Fechar
+  </button>
+
+  </div>
+  
+</div>

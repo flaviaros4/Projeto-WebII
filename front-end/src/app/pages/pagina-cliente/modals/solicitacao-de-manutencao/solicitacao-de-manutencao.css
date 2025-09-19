@@ -1,0 +1,51 @@
+.container {
+  background: #fff5f7;
+  padding: 20px;
+  border-radius: 12px;
+  position: relative;
+
+}
+
+.titulo {
+  text-align: center;
+  color: #333;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.subtitulo {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.campo {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.categoria {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.mat-radio-button {
+  margin-right: 20px;
+}
+
+.botao {
+  background-color: #1976d2 !important;
+  color: white !important;
+  border-radius: 20px;
+  width: 100%;
+  padding: 12px;
+  font-weight: bold;
+}
+
+.botoes{
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}

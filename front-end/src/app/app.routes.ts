@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 import { Cadastro } from './pages/cadastro/cadastro';
 import { Login } from './pages/login/login';
 
-import { SolicitacaoManutencao } from './pages/solicitacao-de-manutencao/solicitacao-de-manutencao';
+import { SolicitacaoManutencao } from './pages/pagina-cliente/modals/solicitacao-de-manutencao/solicitacao-de-manutencao';
 import { EfetuarOrcamento } from './pages/efetuar-orcamento/efetuar-orcamento';
 
 import { PaginaCliente } from './pages/pagina-cliente/pagina-cliente';
@@ -16,7 +16,6 @@ export const routes: Routes = [
   { path: 'cadastro', component: Cadastro },
   { path: 'login', component: Login},
   { path: 'orcamento', component: EfetuarOrcamento},
-  { path: 'solicitacao', component: SolicitacaoManutencao},
   { path: 'cliente', component: PaginaCliente},
   { path: 'funcionario', component: PaginaFuncionario},
   {path: 'funcionarios', component: ListarFuncionarios},
