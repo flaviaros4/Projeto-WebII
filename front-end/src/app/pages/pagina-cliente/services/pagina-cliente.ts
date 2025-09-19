@@ -23,7 +23,7 @@ export class ClienteService {
       descricao: 'Tablet Samsung',
       categoria: 'Tablet',
       descricaoDefeito: 'Carregador conectado, mas não liga',
-      estado: 'ARRUMADA'
+      estado: 'ARRUMADO'
     },
     {
       id: 3,
@@ -31,7 +31,7 @@ export class ClienteService {
       descricao: 'Notebook Acer',
       categoria: 'Notebook',
       descricaoDefeito: 'Teclas não respondem',
-      estado: 'REJEITADA'
+      estado: 'REJEITADO'
     }
   ];
 

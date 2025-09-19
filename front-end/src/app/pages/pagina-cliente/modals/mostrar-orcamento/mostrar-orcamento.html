@@ -1,1 +1,14 @@
-<p>mostrar-orcamento works!</p>
+<div class="container">
+<h2>Orçamento:</h2>
+<div class="detalhes">
+<p><b>Descrição:</b> {{data.descricao}}</p>
+<p><b>Categoria:</b> {{data.categoria}}</p>
+<p><b>Descrição do defeito:</b> {{data.descricaoDefeito}}</p>
+<p><b>Preço Orçado:</b> {{data.precoOrcamento}}</p>
+</div>
+
+<button mat-button (click)="aprovar()">Aprovar</button>
+<button mat-button (click)="rejeitar()">Rejeitar</button>
+<button mat-button (click)="fechar()">Fechar</button>
+
+</div>

@@ -2,10 +2,17 @@
 export type EstadoSolicitacao = 
   | 'ABERTA'
   | 'ORÇADA'
-  | 'APROVADA'
-  | 'REJEITADA'
-  | 'ARRUMADA'
-  | 'PAGA';
+  | 'APROVADO'
+  | 'REJEITADO'
+  | 'ARRUMADO'
+  | 'PAGO';
+
+ 
+export interface Historico {
+  dataHora: string; 
+  estado: string; 
+}
+
 
 export interface Solicitacao {
   id: number; 
@@ -14,5 +21,8 @@ export interface Solicitacao {
   descricaoDefeito: string;
   dataHora: string; 
   estado: EstadoSolicitacao;
-
+  precoOrcamento?: number;
+  motivoRejeicao?: string;
+  historico?: Historico[];
+  dataPagamento?: string;
 }
