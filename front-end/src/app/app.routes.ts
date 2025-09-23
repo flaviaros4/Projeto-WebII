@@ -11,6 +11,8 @@ import { PaginaCliente } from './pages/pagina-cliente/pagina-cliente';
 import { PaginaFuncionario } from './pages/pagina-funcionario/pagina-funcionario';
 import { ListarFuncionarios } from './pages/listar-funcionarios/listar-funcionarios';
 import { Pagar } from './pages/pagar/pagar';
+import { EfetuarManutencao } from './pages/efetuar-manutencao/efetuar-manutencao';
+
 
 export const routes: Routes = [
   { path: 'cadastro', component: Cadastro },
@@ -18,6 +20,7 @@ export const routes: Routes = [
   { path: 'orcamento', component: EfetuarOrcamento},
   { path: 'cliente', component: PaginaCliente},
   { path: 'funcionario', component: PaginaFuncionario},
-  {path: 'funcionarios', component: ListarFuncionarios},
-  {path: 'pagar', component: Pagar}
+  { path: 'funcionarios', component: ListarFuncionarios},
+  { path: 'pagar', component: Pagar},
+  { path: 'manutencao', component: EfetuarManutencao}
 ];
