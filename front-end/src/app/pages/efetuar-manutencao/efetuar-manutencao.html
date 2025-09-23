@@ -1,0 +1,60 @@
+<div id="div-orcamento">
+    <h1>Efetuar Manutenção</h1>
+    <section id="section-solicitacao">
+        <p>
+            <strong>Descrição:</strong> 
+            <span id="descricao"></span>
+        </p>
+        <p>
+            <strong>Categoria:</strong> 
+            <span id="categoria"></span>
+        </p>
+        <p>
+            <strong>Defeito:</strong> 
+            <span id="defeito"></span>
+        </p>
+    </section>
+    
+    <h1>Cliente</h1>
+    <section id="section-cliente">
+        <p>
+            <strong>CPF:</strong> 
+            <span id="cpf"></span>
+        </p>
+        <p>
+            <strong>Nome:</strong> 
+            <span id="nome"></span>
+        </p>
+        <p>
+            <strong>Email:</strong> 
+            <span id="email"></span>
+        </p>
+        <p>
+            <strong>Endereço:</strong> 
+            <span id="endereco"></span>
+        </p>
+        <p>
+            <strong>Telefone:</strong> 
+            <span id="telefone"></span>
+        </p>
+    </section>
+    
+    <form action="manutencao.php" id="form-manutencao">
+        <div id="campos">
+            <div class="campo">
+                <label for="descri-manut">Descrição da Manutenção</label>
+                <textarea name="descri-manut" id="descri-manut"></textarea>
+            </div>
+            <div class="campo">
+                <label for="orientacao">Orientações para o Cliente</label>
+                <textarea name="orientacao" id="orientacao"></textarea>
+            </div>
+        </div>
+        <br>
+        <br>
+        <input type="submit" id="botao" value="Efetuar Manutenção">
+    </form>
+
+    <input type="button" value="Redirecionar" id="redirecionar">
+</div>
+<div id="preenchimento"></div>

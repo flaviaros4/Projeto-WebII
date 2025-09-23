@@ -5,6 +5,9 @@ html, body {
   background: #f0f2f5;
 }
 
+.geral{
+  margin-top: 60px;
+}
 .container {
   background: #fff5f7;
   padding: 24px;
