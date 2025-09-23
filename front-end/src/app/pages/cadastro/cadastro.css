@@ -1,85 +1,104 @@
-
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1200;
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: #0d1b2a;
 }
 
-.modal-card {
-  width: 480px;
-  max-width: calc(100% - 40px);
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 6px 22px rgba(0,0,0,0.35);
-  overflow: hidden;
+.cadastro-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
 
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 18px;
-  border-bottom: 1px solid #eee;
-  background: #f8f9fa;
+.cadastro-card {
+    width: 100%;
+    max-width: 900px;
+    padding: 30px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
-.close-btn {
-  border: none;
-  background: transparent;
-  font-size: 18px;
-  cursor: pointer;
+.mat-card-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #0d1b2a;
+    text-align: center;
 }
 
-.modal-body {
-  padding: 16px 18px;
+.cadastro-fill {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+.flex-1 { flex: 1; }
+.flex-2 { flex: 2; }
+.flex-05 { flex: 0.5; }
+
+.centralizar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
-.form-row {
-  margin-bottom: 12px;
-  display: flex;
-  flex-direction: column;
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: #ffffff ;
+    border-radius: 4px;
+    padding: 0.5em 0.75em;
 }
 
-.form-row label {
-  font-weight: 600;
-  margin-bottom: 6px;
+.mat-form-field-appearance-fill.mat-focused .mat-form-field-flex {
+    background-color: #ffffff;
 }
 
-.form-row input {
-  padding: 8px 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
+.mat-form-field-appearance-fill .mat-form-field-ripple {
+    background-color: #1976d2 ;
 }
 
-.error small {
-  color: #c0392b;
+.mat-form-field-label,
+.mat-input-element {
+    color: #0d1b2a;
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 12px 18px;
-  border-top: 1px solid #eee;
+.cadastro-button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px 0;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 8px;
+    background-color: #1976d2 ;
+    color: #ffffff;
 }
 
-.btn {
-  padding: 8px 14px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
+.cadastro-button:hover {
+    background-color: #1565c0 ;
 }
 
-.btn.primary {
-  background: #0d6efd;
-  color: #fff;
+.cadastro-button:disabled {
+    background-color: #90caf9 ;
+    color: #ffffff ;
 }
 
-.btn.cancel {
-  background: #f0f0f0;
+.mensagem-sucesso {
+    color: #2e7d32;
+    font-weight: 500;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.buscar-cep {
+    background-color: #64b5f6 !important;
+    color: #ffffff !important;
+    width: 20%;
+    top: 9px;
+}
+
+.buscar-cep:hover {
+    background-color: #42a5f5 !important;
 }
