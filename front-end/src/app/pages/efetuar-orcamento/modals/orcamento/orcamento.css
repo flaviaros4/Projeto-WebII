@@ -1,23 +1,29 @@
-.recuperar-senha-container {
+.orcamento-modal-container {
   padding: 32px 24px;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.18);
   min-width: 320px;
-  max-width: 400px;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.recuperar-senha-container h1 {
+.orcamento-card {
+  width: 100%;
+  box-shadow: none;
+  background: transparent;
+}
+
+.orcamento-modal-container h1 {
   font-size: 1.5em;
   margin-bottom: 16px;
   color: #1976d2;
 }
 
-.recuperar-senha-container p {
-  margin-bottom: 16px;
+.orcamento-modal-container p {
+  margin-bottom: 8px;
   color: #333;
 }
 
@@ -26,17 +32,11 @@
   margin-bottom: 20px;
 }
 
-.recuperar-senha-container button,
-.recuperar-senha-container button.mat-raised-button {
+.orcamento-modal-container button,
+.orcamento-modal-container button.mat-raised-button {
   background-color: #1976d2 !important;
   color: #fff !important;
   border-radius: 6px;
-
   box-shadow: none;
   transition: background 0.2s;
-}
-
-.recuperar-senha-container button:hover,
-.recuperar-senha-container button.mat-raised-button:hover {
-  background-color: #145ea8 !important;
 }

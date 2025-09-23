@@ -71,13 +71,20 @@ export class Cadastro {
  cadastrar() {
     this.senhaGerada = this.gerarSenha();
     this.user.senha = this.senhaGerada;
-    this.cadastroService.registrar(this.user);
+
+    console.log(`Senha enviada para o e-mail ${this.user.email}: ${this.senhaGerada}`);
+
+    const cadastroSucesso = this.cadastroService.registrar(this.user);
+
+    if(cadastroSucesso){
     const dialogRef = this.dialog.open(CadastroSucessoDialog, {
       data: { email: this.user.email }
     });
     dialogRef.afterClosed().subscribe(() => {
       this.router.navigate(['/login']);
-    }
-    );
+    });
+  }else {
+  alert('E-mail já cadastrado. Por favor, utilize outro e-mail.');
+  } 
   }
-}
+};

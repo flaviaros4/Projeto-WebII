@@ -8,8 +8,15 @@ import { Usuario } from '../../../shared/models/cliente.model';
 })
 
 export class CadastroService {
-  registrar(usuario: Usuario): void {
-    localStorage.setItem('usuario', JSON.stringify(usuario));
+  registrar(usuario: Usuario): boolean {
+    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+    const usarioExistente = usuarios.find((u: Usuario) => u.email === usuario.email);
+    if (usarioExistente) {
+      return false;
+    }
+    usuarios.push(usuario);
+    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    return true;
   }
 
 }

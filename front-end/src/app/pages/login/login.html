@@ -17,7 +17,7 @@
 
                     <mat-form-field class="full-width-input" appearance="outline">
                         <mat-label>Password</mat-label>
-                        <input matInput [(ngModel)]="user.password" name="password" [type]="hidePassword ? 'password' : 'text'" required>
+                        <input matInput [(ngModel)]="user.senha" name="password" [type]="hidePassword ? 'password' : 'text'" required>
                         <mat-icon matSuffix (click)="hidePassword = !hidePassword">
                             {{hidePassword ? 'visibility_off' : 'visibility'}}
                         </mat-icon>

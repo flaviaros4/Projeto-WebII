@@ -1,3 +1,4 @@
+// login.ts
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -11,6 +12,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { RecuperarSenha } from './modals/recuperar-senha/recuperar-senha';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
+import { Usuario } from '../../shared/models/cliente.model';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +27,6 @@ import { MatDialog } from '@angular/material/dialog';
     MatFormFieldModule,
     RouterLink,
     MatCheckbox,
-    RecuperarSenha,
     MatDialogModule
   ],
   templateUrl: './login.html',
@@ -41,46 +42,42 @@ export class Login {
 
   user = {
     email: '',
-    password: ''
+    senha: '' 
   };
+
+  userAdmin = {
+    email: 'admin@gmail.com',
+    senha: 'admin321',
+    nome: 'Administrador' 
+  }
+
+  validarLoginAdmin(email:string, senha:string): boolean {
+    return email === this.userAdmin.email && senha === this.userAdmin.senha;
+  } 
 
   hidePassword = true;
-  
-  userCliente = {
-    email: 'teste@gmail.com',
-    password: 'teste321'
-  };
-
-  userFuncionario = {
-    email: 'teste2@gmail.com',
-    password: 'teste321'
-  };
-
-  loginValido:boolean=true;
-
+  loginValido: boolean = true;
   router = inject(Router);
-
-  validarLoginCliente(email: string, password: string): boolean {
-    return email === this.userCliente.email && password === this.userCliente.password;
-  }
-
-  validarLoginFunc(email: string, password: string): boolean {
-    return email === this.userFuncionario.email && password === this.userFuncionario.password;
-  }
-
+  
   login() {
-    if (this.validarLoginCliente(this.user.email, this.user.password)) {
+    const usuariosCadastrados = JSON.parse(localStorage.getItem('usuarios') || '[]');
+    const usuarioEncontrado = usuariosCadastrados.find(
+      (u: Usuario) => u.email === this.user.email && u.senha === this.user.senha
+    );
+
+    if (usuarioEncontrado) {
       this.loginValido = true;
-      localStorage.setItem('usuarioLogado', JSON.stringify(this.user.email));
-      this.router.navigate(['cliente']); 
-      alert('Login realizado com sucesso!')
-    } else if (this.validarLoginFunc(this.user.email, this.user.password)){
+      localStorage.setItem('usuarioLogado', JSON.stringify(usuarioEncontrado));
+      this.router.navigate(['/cliente']);
+      alert('Login realizado com sucesso!');
+    } else if (this.validarLoginAdmin(this.user.email, this.user.senha)) {
       this.loginValido = true;
-      localStorage.setItem('usuarioLogado', JSON.stringify(this.user.email));
-      this.router.navigate(['funcionario']);
-      alert('Login realizado com sucesso!')
-    } else{
+      localStorage.setItem('usuarioLogado', JSON.stringify(this.userAdmin)); 
+      this.router.navigate(['/funcionario']);
+      alert('Login realizado com sucesso!');
+    } else {
       this.loginValido = false;
+      alert('E-mail ou senha inválidos.');
     }
   }
 }
