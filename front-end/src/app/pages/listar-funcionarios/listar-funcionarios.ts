@@ -1,4 +1,4 @@
-// src/app/pages/listar-funcionarios/listar-funcionarios.ts
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FuncionarioService, FuncionarioModel } from '../cadastro/services/funcionario.service';
@@ -13,7 +13,7 @@ import { FuncionarioService, FuncionarioModel } from '../cadastro/services/funci
 export class ListarFuncionarios {
   funcionarios: Array<{ id: number; nome: string; idade: number; email: string; dataNascimento: string }> = [];
 
-  // Simula o funcionário logado (muda para o id real do usuário logado depois)
+ 
   currentUserId = 1;
 
   constructor(private service: FuncionarioService) {
