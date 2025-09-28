@@ -1,0 +1,50 @@
+<div class="modal-overlay" (click)="dismiss()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ editingId ? 'Editar funcionário' : 'Novo funcionário' }}</h3>
+      <button class="close-btn" (click)="dismiss()">✕</button>
+    </div>
+
+    <form (ngSubmit)="submit()" [formGroup]="form" class="modal-body">
+      <div class="form-row">
+        <label>E-mail</label>
+        <input type="email" formControlName="email" />
+        <div class="error" *ngIf="f['email'].touched && f['email'].invalid">
+          <small *ngIf="f['email'].errors && f['email'].errors['required']">E-mail é obrigatório</small>
+          <small *ngIf="f['email'].errors && f['email'].errors['email']">E-mail inválido</small>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>Nome</label>
+        <input type="text" formControlName="nome" />
+        <div class="error" *ngIf="f['nome'].touched && f['nome'].invalid">
+          <small *ngIf="f['nome'].errors && f['nome'].errors['required']">Nome é obrigatório</small>
+          <small *ngIf="f['nome'].errors && f['nome'].errors['minlength']">Nome muito curto</small>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>Data de Nascimento</label>
+        <input type="date" formControlName="dataNascimento" />
+        <div class="error" *ngIf="f['dataNascimento'].touched && f['dataNascimento'].invalid">
+          <small>Formato: AAAA-MM-DD</small>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>Senha</label>
+        <input type="password" formControlName="senha" [placeholder]="editingId ? 'Deixe em branco para manter' : ''" />
+        <div class="error" *ngIf="f['senha'].touched && f['senha'].invalid">
+          <small *ngIf="f['senha'].errors && f['senha'].errors['required']">Senha é obrigatória</small>
+          <small *ngIf="f['senha'].errors && f['senha'].errors['minlength']">Senha muito curta</small>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn cancel" (click)="dismiss()">Cancelar</button>
+        <button type="submit" class="btn primary">{{ editingId ? 'Salvar' : 'Criar' }}</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+.modal-overlay {
+  position: fixed; inset:0; background: rgba(0,0,0,0.36);
+  display:flex; align-items:center; justify-content:center; z-index:1250;
+}
+
+.confirm-card {
+  width: 360px; background:#fff; padding:18px; border-radius:10px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  text-align:left;
+}
+
+.confirm-card h4 { margin:0 0 8px 0; }
+.confirm-card p { margin:0 0 14px 0; color:#444; }
+
+.actions { display:flex; justify-content:flex-end; gap:10px; }
+.btn { padding:8px 12px; border-radius:6px; border:none; cursor:pointer; }
+.btn.primary { background:#dc3545; color:#fff; } /* vermelho pra remoção */
+.btn.cancel { background:#f0f0f0; color:#222; }

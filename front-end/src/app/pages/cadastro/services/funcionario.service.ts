@@ -5,26 +5,22 @@ export interface FuncionarioModel {
   id: number;
   email: string;
   nome: string;
-  dataNascimento: string; // formato 'YYYY-MM-DD'
+  dataNascimento: string; // 'YYYY-MM-DD'
   senha: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class FuncionarioService {
   private storageKey = 'app_funcionarios_v1';
 
-  constructor() {
-    this.ensureSeedData();
-  }
+  constructor() { this.ensureSeedData(); }
 
   private ensureSeedData() {
     const arr = this.getAllRaw();
     if (!arr || arr.length === 0) {
       const seed: FuncionarioModel[] = [
-        { id: 1, email: 'maria@empresa.com', nome: 'Maria Silva', dataNascimento: '1994-01-10', senha: '1234' },
-        { id: 2, email: 'joao@empresa.com', nome: 'João Souza', dataNascimento: '1984-05-20', senha: '1234' }
+        { id: 1, email: 'maria@empresa.com', nome: 'Maria Silva', dataNascimento: '1992-04-12', senha: '1234' },
+        { id: 2, email: 'joao@empresa.com', nome: 'João Souza', dataNascimento: '1983-08-07', senha: '1234' }
       ];
       this.saveAll(seed);
     }
@@ -39,9 +35,7 @@ export class FuncionarioService {
     localStorage.setItem(this.storageKey, JSON.stringify(arr));
   }
 
-  list(): FuncionarioModel[] {
-    return this.getAllRaw();
-  }
+  list(): FuncionarioModel[] { return this.getAllRaw(); }
 
   getById(id: number): FuncionarioModel | undefined {
     return this.list().find(f => f.id === id);
@@ -78,7 +72,6 @@ export class FuncionarioService {
     return arr.some(f => f.email.toLowerCase() === email.toLowerCase() && f.id !== exceptId);
   }
 
-  count(): number {
-    return this.list().length;
-  }
+  count(): number { return this.list().length; }
 }
+

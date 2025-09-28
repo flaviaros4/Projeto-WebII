@@ -1,0 +1,10 @@
+<div class="modal-overlay" (click)="cancel()">
+  <div class="confirm-card" (click)="$event.stopPropagation()">
+    <h4>{{ title }}</h4>
+    <p>{{ message }}</p>
+    <div class="actions">
+      <button class="btn cancel" (click)="cancel()">Cancelar</button>
+      <button class="btn primary" (click)="confirm()">Confirmar</button>
+    </div>
+  </div>
+</div>

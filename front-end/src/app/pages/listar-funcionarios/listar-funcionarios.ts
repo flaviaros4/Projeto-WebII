@@ -7,7 +7,7 @@ import { FuncionarioService, FuncionarioModel } from '../cadastro/services/funci
   selector: 'app-listar-funcionarios',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './listar-funcionarios.html',
+  templateUrl:'./listar-funcionarios.html',
   styleUrls: ['./listar-funcionarios.css']
 })
 export class ListarFuncionarios {
