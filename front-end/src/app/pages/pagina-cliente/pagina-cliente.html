@@ -10,7 +10,7 @@
 
     <ng-container matColumnDef="dataHora">
       <th mat-header-cell *matHeaderCellDef> Data/Hora </th>
-      <td mat-cell *matCellDef="let element"> {{element.dataHora | date:'short'}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.dataHora | date : 'short' : '' : 'pt-BR'}}  </td>
     </ng-container>
 
     <ng-container matColumnDef="categoria">

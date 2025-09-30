@@ -1,5 +1,9 @@
 import { Component, signal } from '@angular/core';
 import {RouterLink, RouterOutlet } from '@angular/router';
+import { registerLocaleData } from '@angular/common';
+import localePT from '@angular/common/locales/pt';
+
+registerLocaleData(localePT);
 
 
 @Component({

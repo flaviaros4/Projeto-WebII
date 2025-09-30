@@ -14,6 +14,7 @@ import { CadastroService } from './services/cadastro-service';
 import { Usuario } from '../../shared/models/cliente.model';
 import { CadastroSucessoDialog } from './modals/cadastro-sucesso/cadastro-sucesso';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-cadastro',
@@ -26,7 +27,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxMaskDirective
   ],
   templateUrl: './cadastro.html',
   styleUrl: './cadastro.css'

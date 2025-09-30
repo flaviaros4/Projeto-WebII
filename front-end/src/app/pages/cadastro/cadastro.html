@@ -9,7 +9,7 @@
           <div class="cadastro-fill">
             <mat-form-field class="flex-1" appearance="outline">
               <mat-label>CPF</mat-label>
-              <input matInput [(ngModel)]="user.cpf" name="cpf" type="text" required maxlength="11" pattern="^[0-9]{11}$">
+              <input matInput [(ngModel)]="user.cpf" name="cpf" type="text" mask="000.000.000-00" required>
               <mat-icon matSuffix>person</mat-icon>
             </mat-form-field>
             <mat-form-field class="flex-2" appearance="outline">
@@ -29,7 +29,7 @@
 
             <mat-form-field class="flex-2" appearance="outline">
               <mat-label>CEP</mat-label>
-              <input matInput [(ngModel)]="user.cep" name="cep" type="text" required maxlength="8" pattern="^[0-9]{8}$">
+              <input matInput [(ngModel)]="user.cep" name="cep" type="text" mask="00000-000" required>
               <mat-icon matSuffix>my_location</mat-icon>
             </mat-form-field>
               <button mat-flat-button type="button" class="buscar-cep" (click)="buscarCep(user.cep)">
