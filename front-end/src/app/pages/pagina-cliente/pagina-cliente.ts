@@ -10,11 +10,12 @@ import { SolicitacaoManutencao } from './modals/solicitacao-de-manutencao/solici
 import { Solicitacao } from '../../shared/models/solicitacao.model';
 import { VisualizarSolicitacao } from './modals/visualizar-solicitacao/visualizar-solicitacao';
 import { MostrarOrcamento } from './modals/mostrar-orcamento/mostrar-orcamento';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-pagina-cliente',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule, MatDialogModule],
+  imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule, MatDialogModule, RouterLink],
   templateUrl: './pagina-cliente.html',
   styleUrls: ['./pagina-cliente.css']
 })

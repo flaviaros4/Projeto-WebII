@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FuncionarioService } from '../cadastro/services/funcionario.service';
-import { CadastroFuncionarioComponent } from '../cadastro/cadastro-funcionario.component';
-import { ConfirmDialogComponent } from '../cadastro/confirm-dialog.component';
+import { FuncionarioService } from './services/funcionario.service';
+import { CadastroFuncionarioComponent } from './cadastro-funcionario.component'; 
+import { ConfirmDialogComponent } from './confirm-dialog.component';
 
 type ViewFuncionario = { id: number; nome: string; email: string; dataNascimento: string; idade: number };
 

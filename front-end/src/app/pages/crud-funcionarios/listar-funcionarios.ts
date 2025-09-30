@@ -1,7 +1,7 @@
 
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FuncionarioService, FuncionarioModel } from '../cadastro/services/funcionario.service';
+import { FuncionarioService, FuncionarioModel } from './services/funcionario.service';
 
 @Component({
   selector: 'app-listar-funcionarios',
