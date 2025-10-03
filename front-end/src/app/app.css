@@ -2,34 +2,23 @@ nav{
   padding-top: 20px;
 }
 
-
-.logo{
-  width: 150px;
-  height: auto;
-  margin-left: 20px;
-}
-
 b {
     font-size: 2vw;
 }
 
-
 li{
-
+    padding-left: 20px;
+    padding-right: 10px;
     display: inline !important;
-    width: auto;
-    padding:15px;
+    width: 150px;
     font-weight: 600;
- 
-    font-size: 1vw;
+    margin-bottom: 20px;
 }
 
 .link-site:hover {
   background-color:#1976d2;
   text-align: center;
   border-radius: 10px;
-
-
 }
 
 .link-site:hover > a {
@@ -39,12 +28,10 @@ li{
 .barra{
   width: 100%;
   background-color: white;
-  display:flex;
 }
 
 ul{
   display: flex;
-  text-align: center;
-  justify-content: center;
+  flex-wrap: wrap;
 }
 
