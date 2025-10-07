@@ -75,11 +75,11 @@ input:hover{
 
 .octr{
     display:none;
-    width 500px;
-    height 300px;
+    width: 500px;
+    height: 300px;
     background-color: blue;
     color: white;
-    margin-left 50px;
+    margin-left: 50px;
     margin-bottom: 20px;
     margin-right: 70px;
     margin-top: 30px;
