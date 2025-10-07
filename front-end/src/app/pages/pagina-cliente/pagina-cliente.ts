@@ -12,11 +12,13 @@ import { VisualizarSolicitacao } from './modals/visualizar-solicitacao/visualiza
 import { MostrarOrcamento } from './modals/mostrar-orcamento/mostrar-orcamento';
 import { RouterLink } from '@angular/router';
 import { NgxMaskPipe } from 'ngx-mask';
+import { PagarServico } from './modals/pagar-servico/pagar-servico';
+import { P } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-pagina-cliente',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule, MatDialogModule, RouterLink, NgxMaskPipe],
+  imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule, MatDialogModule, RouterLink, NgxMaskPipe, PagarServico],
   templateUrl: './pagina-cliente.html',
   styleUrls: ['./pagina-cliente.css']
 })
@@ -100,12 +102,39 @@ export class PaginaCliente {
   this.carregarSolicitacoes();
 }
 
+  abrirModalPagamento(solicitacao: Solicitacao) {
+    const dialogRef = this.dialog.open(PagarServico, {
+        width: '450px',
+        data: { solicitacao } 
+    });
 
-  pagarSolicitacao(solicitacao: Solicitacao) {
+    dialogRef.afterClosed().subscribe(result => {
+        if (result && result.status === 'PAGO') {
+           
+            this.pagarSolicitacao(solicitacao, result.dataHoraPagamento);
+        }
+    });
+}
+
+
+  pagarSolicitacao(solicitacao: Solicitacao, dataHoraPagamento: string) {
+ 
     solicitacao.estado = 'PAGO'; 
+    
+   
+    solicitacao.dataPagamento = dataHoraPagamento; 
+    
+    
+    if (!solicitacao.historico) solicitacao.historico = [];
+    solicitacao.historico.push({
+        dataHora: dataHoraPagamento,
+        estado: 'PAGA'
+    });
+
     this.clienteService.atualizarSolicitacao(solicitacao);
+    alert('Pagamento confirmado com sucesso! A solicitação está PAGA.');
     this.carregarSolicitacoes();
-  }
+}
 
   visualizarSolicitacao(solicitacao: Solicitacao) {
     this.dialog.open(VisualizarSolicitacao, {

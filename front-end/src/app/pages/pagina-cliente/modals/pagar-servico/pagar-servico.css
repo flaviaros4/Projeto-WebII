@@ -1,0 +1,44 @@
+.pagamento-container {
+    padding: 20px;
+    min-width: 350px;
+    max-width: 450px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pagamento-container h2 {
+    color: black;
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.detalhes-solicitacao p {
+    margin: 8px 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+button,
+button.mat-raised-button {
+    background-color: #1976d2 !important;
+    color: #fff !important;
+    border-radius: 20px;
+    padding: 12px 24px;
+    margin: 16px 0 0 0;
+    box-shadow: none;
+    transition: background 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover,
+button.mat-raised-button:hover {
+    background-color: #145ea8 !important;
+}
