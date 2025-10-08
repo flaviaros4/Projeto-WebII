@@ -28,68 +28,34 @@ public abstract class Usuario {
     @Column(name = "data_criacao")
     private LocalDateTime dataCriacao;
 
-    private Boolean ativo = true;
+    @Column(nullable = false)
+    private Boolean status = true;
 
     public Usuario() {
     }
 
-    // Getters e Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public Perfil getPerfil() {
-        return perfil;
-    }
-
-    public void setPerfil(Perfil perfil) {
-        this.perfil = perfil;
-    }
-
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public void setDataCriacao(LocalDateTime dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
-
-    public Boolean getAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
-    }
-
+   // Getters e Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    
+    public String getSenha() { return senha; }
+    public void setSenha(String senha) { this.senha = senha; }
+    
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    
+    public Perfil getPerfil() { return perfil; }
+    public void setPerfil(Perfil perfil) { this.perfil = perfil; }
+    
+    public LocalDateTime getDataCriacao() { return dataCriacao; }
+    public void setDataCriacao(LocalDateTime dataCriacao) { this.dataCriacao = dataCriacao; }
+    
+    public Boolean getStatus() { return status; }
+    public void setStatus(Boolean status) { this.status = status; }
+    
     @PrePersist
     public void prePersist() {
         this.dataCriacao = LocalDateTime.now();

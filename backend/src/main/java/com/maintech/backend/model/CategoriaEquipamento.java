@@ -13,7 +13,8 @@ public class CategoriaEquipamento {
     @Column(unique = true, nullable = false)
     private String nome;
 
-    private Boolean ativo = true;
+    @Column(nullable = false)
+    private Boolean status = true;
 
     public CategoriaEquipamento() {
     }
@@ -35,11 +36,11 @@ public class CategoriaEquipamento {
         this.nome = nome;
     }
 
-    public Boolean getAtivo() {
-        return ativo;
+    public Boolean getStatus() {
+        return status;
     }
 
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 }
