@@ -14,6 +14,7 @@ import { Pagar } from './pages/pagar/pagar';
 import { EfetuarManutencao } from './pages/efetuar-manutencao/efetuar-manutencao';
 import { Cadastro } from './pages/cadastro/cadastro';
 import { Categorias } from './pages/crud-categorias/categorias';
+import { Solicitacoes } from './pages/solicitacoes/solicitacoes';
 
 export const routes: Routes = [
   { path: 'cadastro', component: Cadastro},
@@ -25,5 +26,6 @@ export const routes: Routes = [
   { path: 'pagar', component: Pagar },
   { path: 'manutencao', component: EfetuarManutencao },
   {path: 'categorias', component: Categorias},
+  {path: 'solicitacoes', component: Solicitacoes},
 
 ];
