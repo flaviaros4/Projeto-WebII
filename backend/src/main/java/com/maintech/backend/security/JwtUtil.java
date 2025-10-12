@@ -1,4 +1,4 @@
-package com.maintech.backend.security; // ← DEVE estar no pacote security
+package com.maintech.backend.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

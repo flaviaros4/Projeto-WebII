@@ -1,6 +1,6 @@
 package com.maintech.backend.config;
 
-import com.maintech.backend.security.JwtAuthenticationFilter; // ← CORRETO
+import com.maintech.backend.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -54,9 +54,9 @@ public class DataLoader implements CommandLineRunner {
                 categoriaRepository.save(categoria);
             }
             
-            System.out.println("✅ " + categorias.length + " categorias criadas!");
+            System.out.println(" " + categorias.length + " categorias criadas!");
         } else {
-            System.out.println("ℹ️  Categorias já existem no banco");
+            System.out.println("ℹ  Categorias já existem no banco");
         }
     }
 
@@ -84,9 +84,9 @@ public class DataLoader implements CommandLineRunner {
             mario.setDataNascimento(java.time.LocalDate.of(1985, 8, 20));
             funcionarioRepository.save(mario);
             
-            System.out.println("✅ 2 funcionários criados!");
+            System.out.println(" 2 funcionários criados!");
         } else {
-            System.out.println("ℹ️  Funcionários já existem no banco");
+            System.out.println("ℹ  Funcionários já existem no banco");
         }
     }
 
