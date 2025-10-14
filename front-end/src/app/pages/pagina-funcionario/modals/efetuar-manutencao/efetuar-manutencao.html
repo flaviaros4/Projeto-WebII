@@ -1,0 +1,35 @@
+<div class="manutencao-modal-container">
+  <h2 mat-dialog-title>Efetuar Manutenção</h2>
+  <mat-dialog-content class="conteudo-modal">
+    <div class="detalhes detalhes-solicitacao">
+      <p><strong>Cliente:</strong> {{ data.cliente?.nome || data.cliente }}</p>
+      
+      <p><strong>Equipamento:</strong> {{ data.equipamento?.nome || data.equipamento }}</p>
+      
+      <p><strong>Data/Hora Solicitação:</strong> 
+        {{ data.dataHora | date:'dd/MM/yyyy HH:mm':'pt-BR' }}
+      </p>
+      <p><strong>Funcionário:</strong> {{ data.funcionario?.nome }}</p>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Descrição da Manutenção</mat-label>
+      <textarea matInput [(ngModel)]="descricaoManutencao"></textarea>
+    </mat-form-field>
+    
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Orientações para o Cliente</mat-label>
+      <textarea matInput [(ngModel)]="orientacoesCliente"></textarea>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="center" class="botoes-acao">
+    <button mat-raised-button color="primary" (click)="efetuarManutencao()">
+      Arrumar
+    </button>
+    <button mat-raised-button color="accent" (click)="fechar()">
+      Redirecionar
+    </button>
+    <button mat-button (click)="fechar()">Fechar</button>
+  </mat-dialog-actions>
+</div>

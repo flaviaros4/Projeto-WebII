@@ -1,0 +1,49 @@
+.manutencao-modal-container {
+  padding: 32px 24px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  min-width: 320px;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.manutencao-modal-container h2 {
+  font-size: 1.5em;
+  margin-bottom: 16px;
+  color: #333;
+  font-weight: bold;
+}
+
+.manutencao-modal-container p {
+  margin-bottom: 8px;
+  color: #333;
+}
+
+button,
+button.mat-raised-button {
+  background-color: #1976d2 !important;
+  color: #fff !important;
+  border-radius: 20px !important;
+  font-weight: bold;
+  box-shadow: none;
+  transition: background 0.2s;
+  margin-right: 8px;
+  border: none;
+}
+
+button.mat-raised-button[color="accent"] {
+  background-color: #ff9800 !important;
+}
+
+button:hover,
+button.mat-raised-button:hover {
+  background-color: #145ea8 !important;
+}

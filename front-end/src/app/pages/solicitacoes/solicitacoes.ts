@@ -6,7 +6,7 @@ import { Solicitacao } from '../../shared/models/solicitacao.model';
 import { OrcamentoModule } from '../efetuar-orcamento/modals/orcamento/orcamento-module';
 import { Usuario } from '../../shared/models/cliente.model';
 import { MatDialog } from '@angular/material/dialog';
-import { EfetuarManutencao } from '../efetuar-manutencao/efetuar-manutencao';
+import { EfetuarManutencao } from '../pagina-funcionario/modals/efetuar-manutencao/efetuar-manutencao';
 
 interface SolicitacaoFuncionario {
   id: number;
