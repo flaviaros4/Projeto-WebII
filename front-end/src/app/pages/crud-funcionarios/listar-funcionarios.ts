@@ -1,11 +1,11 @@
 
-// src/app/pages/crud-funcionarios/listar-funcionarios.ts
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-// Ajuste o caminho se o service estiver em outro local
-// Em muitos projetos ele fica em: src/app/pages/cadastro/services/funcionario.service.ts
+
+
 import { FuncionarioService } from './services/funcionario.service';
 import { ToastService } from '../../shared/toast/toast.service';
 
@@ -28,7 +28,7 @@ interface FuncionarioView {
 export class ListarFuncionarios {
   funcionarios: FuncionarioView[] = [];
 
-  // modal / edição
+
   showModal = false;
   editingId: number | null = null;
   form: { email: string; nome: string; dataNascimento: string; senha: string } = {
@@ -38,11 +38,11 @@ export class ListarFuncionarios {
     senha: ''
   };
 
-  // confirm dialog
+
   showConfirm = false;
   candidateToRemove: number | null = null;
 
-  // id do usuário atual (mock). Ajuste conforme seu auth
+
   currentUserId = 1;
 
   constructor(private service: FuncionarioService, private toast: ToastService) {
@@ -50,7 +50,7 @@ export class ListarFuncionarios {
   }
 
   load() {
-    // espera que service.list() retorne lista com {id, email, nome, dataNascimento}
+   
     const list = this.service.list();
     this.funcionarios = list.map((f: any) => ({
       id: f.id,
@@ -71,14 +71,14 @@ export class ListarFuncionarios {
     return age;
   }
 
-  // abrir modal para novo
+
   novo() {
     this.editingId = null;
     this.form = { email: '', nome: '', dataNascimento: '', senha: '' };
     this.showModal = true;
   }
 
-  // abrir modal para editar
+
   editar(id: number) {
     const f = this.service.getById(id);
     if (!f) {
@@ -95,7 +95,7 @@ export class ListarFuncionarios {
     this.editingId = null;
   }
 
-  // salvar — cria ou atualiza
+
   save() {
     const raw = this.form;
     // validações básicas
@@ -104,7 +104,7 @@ export class ListarFuncionarios {
       return;
     }
 
-    // e-mail único
+    
     const all = this.service.list();
     const emailExists = all.some((x: any) => x.email === raw.email && x.id !== this.editingId);
     if (emailExists) {
@@ -113,7 +113,7 @@ export class ListarFuncionarios {
     }
 
     if (this.editingId == null) {
-      // inserir
+ 
       const created = this.service.insert({ email: raw.email, nome: raw.nome, dataNascimento: raw.dataNascimento, senha: raw.senha });
       if (created) {
         this.toast.show('Funcionário criado', 'success');
@@ -123,7 +123,7 @@ export class ListarFuncionarios {
         this.toast.show('Falha ao criar funcionário', 'error');
       }
     } else {
-      // atualizar
+ 
       const ok = this.service.update(this.editingId, { email: raw.email, nome: raw.nome, dataNascimento: raw.dataNascimento, senha: raw.senha });
       if (ok) {
         this.toast.show('Alterações salvas', 'success');
@@ -135,7 +135,7 @@ export class ListarFuncionarios {
     }
   }
 
-  // inicia o processo de remoção (abre diálogo)
+
   confirmRemove(id: number) {
     // não pode remover a si mesmo
     if (id === this.currentUserId) {
@@ -143,7 +143,7 @@ export class ListarFuncionarios {
       return;
     }
 
-    // se só houver 1 funcionário, não permite
+  
     if (this.service.count() <= 1) {
       this.toast.show('Não é possível remover. Deve haver ao menos 1 funcionário.', 'warning');
       return;
@@ -153,7 +153,7 @@ export class ListarFuncionarios {
     this.showConfirm = true;
   }
 
-  // trata confirmação
+
   onConfirmClose(ok: boolean) {
     this.showConfirm = false;
     if (!ok || this.candidateToRemove == null) {

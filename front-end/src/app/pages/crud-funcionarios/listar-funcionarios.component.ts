@@ -22,7 +22,7 @@ export class ListarFuncionariosComponent {
   showConfirm = false;
   candidateToRemove: number | null = null;
 
-  // simula id do usuário logado — substitua se tiver Auth real
+
   currentUserId = 1;
 
 constructor(private service: FuncionarioService, private toast: ToastService) {

@@ -3,7 +3,8 @@
   <div class="page-card container-fluid">
     <div class="page-card-header">
       <h1>Funcionários</h1>
-      <!-- Botão Novo -->
+
+
       <button class="btn-new" (click)="novo()">+ Novo</button>
     </div>
 
@@ -24,7 +25,8 @@
               <td>{{ f.email }}</td>
               <td class="text-center">{{ f.idade }}</td>
               <td class="actions-cell">
-                <!-- BOTÕES -->
+
+
                 <button class="btn-action btn-edit" (click)="editar(f.id)">Editar</button>
                 <button class="btn-action btn-remove" (click)="confirmRemove(f.id)">Remover</button>
               </td>
@@ -38,7 +40,8 @@
     </div>
   </div>
 
-  <!-- Modal de cadastro / edição -->
+
+
   <div class="modal-backdrop" *ngIf="showModal">
     <div class="modal-card">
       <h2>{{ editingId ? 'Editar Funcionário' : 'Novo Funcionário' }}</h2>
@@ -64,7 +67,8 @@
     </div>
   </div>
 
-  <!-- Confirm dialog -->
+
+  
   <div class="confirm-backdrop" *ngIf="showConfirm">
     <div class="confirm-card">
       <h3>Remover funcionário</h3>
