@@ -48,9 +48,10 @@
 
 
           <ng-container *ngSwitchCase="'ARRUMADO'">
-            <button mat-button color="primary" title="Pagar Serviço" routerLink="/pagar">
-              Pagar
-            </button>
+             <button mat-button color="primary" title="Pagar Serviço" 
+            (click)="abrirModalPagamento(element)" class="pagar-btn">
+            Pagar
+          </button>
           </ng-container>
 
       
