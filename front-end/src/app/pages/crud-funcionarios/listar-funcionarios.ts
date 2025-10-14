@@ -1,38 +1,58 @@
 
+// src/app/pages/crud-funcionarios/listar-funcionarios.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FuncionarioService, FuncionarioModel } from './services/funcionario.service';
+import { FormsModule } from '@angular/forms';
+
+// Ajuste o caminho se o service estiver em outro local
+// Em muitos projetos ele fica em: src/app/pages/cadastro/services/funcionario.service.ts
+import { FuncionarioService } from './services/funcionario.service';
+import { ToastService } from '../../shared/toast/toast.service';
+
+
+interface FuncionarioView {
+  id: number;
+  nome: string;
+  email: string;
+  dataNascimento: string;
+  idade: number;
+}
 
 @Component({
   selector: 'app-listar-funcionarios',
   standalone: true,
-  imports: [CommonModule],
-  templateUrl:'./listar-funcionarios.html',
+  imports: [CommonModule, FormsModule],
+  templateUrl: './listar-funcionarios.html',
   styleUrls: ['./listar-funcionarios.css']
 })
 export class ListarFuncionarios {
-  funcionarios: Array<{ id: number; nome: string; idade: number; email: string; dataNascimento: string }> = [];
+  funcionarios: FuncionarioView[] = [];
 
- 
+  // modal / edição
+  showModal = false;
+  editingId: number | null = null;
+  form: { email: string; nome: string; dataNascimento: string; senha: string } = {
+    email: '',
+    nome: '',
+    dataNascimento: '',
+    senha: ''
+  };
+
+  // confirm dialog
+  showConfirm = false;
+  candidateToRemove: number | null = null;
+
+  // id do usuário atual (mock). Ajuste conforme seu auth
   currentUserId = 1;
 
-  constructor(private service: FuncionarioService) {
+  constructor(private service: FuncionarioService, private toast: ToastService) {
     this.load();
   }
 
-  private calculateAge(dateIso: string): number {
-    if (!dateIso) return 0;
-    const dob = new Date(dateIso + 'T00:00:00');
-    const today = new Date();
-    let age = today.getFullYear() - dob.getFullYear();
-    const m = today.getMonth() - dob.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
-    return age;
-  }
-
   load() {
+    // espera que service.list() retorne lista com {id, email, nome, dataNascimento}
     const list = this.service.list();
-    this.funcionarios = list.map(f => ({
+    this.funcionarios = list.map((f: any) => ({
       id: f.id,
       nome: f.nome,
       email: f.email,
@@ -41,96 +61,113 @@ export class ListarFuncionarios {
     }));
   }
 
-  novo() {
-    const email = prompt('E-mail (único) do funcionário:');
-    if (email === null) { alert('Operação cancelada'); return; }
-    const emailStr = email.trim();
-    if (!emailStr) { alert('E-mail obrigatório'); return; }
-    if (!this.validateEmail(emailStr)) { alert('Email inválido'); return; }
-    if (this.service.emailExists(emailStr)) { alert('E-mail já cadastrado'); return; }
-
-    const nome = prompt('Nome completo:');
-    if (nome === null) { alert('Operação cancelada'); return; }
-    const nomeStr = nome.trim();
-    if (!nomeStr) { alert('Nome obrigatório'); return; }
-
-    const dataNascimento = prompt('Data de nascimento (AAAA-MM-DD):');
-    if (dataNascimento === null) { alert('Operação cancelada'); return; }
-    const dataStr = dataNascimento.trim();
-    if (!this.validateIsoDate(dataStr)) { alert('Data inválida. Formato: AAAA-MM-DD'); return; }
-
-    const senha = prompt('Senha (mínimo 4 caracteres):');
-    if (senha === null) { alert('Operação cancelada'); return; }
-    const senhaStr = senha;
-    if (!senhaStr || senhaStr.length < 4) { alert('Senha inválida'); return; }
-
-    this.service.insert({ email: emailStr, nome: nomeStr, dataNascimento: dataStr, senha: senhaStr });
-    this.load();
-    alert('Funcionário inserido com sucesso');
+  calculateAge(dateIso: string) {
+    if (!dateIso) return 0;
+    const d = new Date(dateIso);
+    const today = new Date();
+    let age = today.getFullYear() - d.getFullYear();
+    const m = today.getMonth() - d.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < d.getDate())) age--;
+    return age;
   }
 
+  // abrir modal para novo
+  novo() {
+    this.editingId = null;
+    this.form = { email: '', nome: '', dataNascimento: '', senha: '' };
+    this.showModal = true;
+  }
+
+  // abrir modal para editar
   editar(id: number) {
     const f = this.service.getById(id);
-    if (!f) { alert('Funcionário não encontrado'); return; }
-
-    const novoEmail = prompt('E-mail:', f.email);
-    if (novoEmail === null) { alert('Operação cancelada'); return; }
-    const novoEmailStr = novoEmail.trim();
-    if (!novoEmailStr) { alert('E-mail obrigatório'); return; }
-    if (!this.validateEmail(novoEmailStr)) { alert('Email inválido'); return; }
-    if (this.service.emailExists(novoEmailStr, id)) { alert('E-mail já usado por outro'); return; }
-
-    const novoNome = prompt('Nome:', f.nome);
-    if (novoNome === null) { alert('Operação cancelada'); return; }
-    const novoNomeStr = novoNome.trim();
-    if (!novoNomeStr) { alert('Nome obrigatório'); return; }
-
-    const novaData = prompt('Data nascimento (AAAA-MM-DD):', f.dataNascimento);
-    if (novaData === null) { alert('Operação cancelada'); return; }
-    const novaDataStr = novaData.trim();
-    if (!this.validateIsoDate(novaDataStr)) { alert('Data inválida'); return; }
-
-    const novaSenha = prompt('Senha (deixe em branco para manter):', '');
-    const patch: Partial<FuncionarioModel> = { email: novoEmailStr, nome: novoNomeStr, dataNascimento: novaDataStr };
-    if (novaSenha && novaSenha.length >= 4) patch.senha = novaSenha;
-
-    this.service.update(id, patch);
-    this.load();
-    alert('Funcionário atualizado');
+    if (!f) {
+      this.toast.show('Funcionário não encontrado', 'error');
+      return;
+    }
+    this.editingId = id;
+    this.form = { email: f.email, nome: f.nome, dataNascimento: f.dataNascimento, senha: '' };
+    this.showModal = true;
   }
 
-  remover(id: number) {
-    if (id === this.currentUserId) {
-      alert('Você não pode remover a si mesmo');
-      return;
-    }
-    const total = this.service.count();
-    if (total <= 1) {
-      alert('Não é possível remover. Deve haver ao menos 1 funcionário.');
-      return;
-    }
-    const confirmar = confirm('Confirma remoção deste funcionário?');
-    if (!confirmar) return;
+  closeModal() {
+    this.showModal = false;
+    this.editingId = null;
+  }
 
-    const ok = this.service.remove(id);
-    if (ok) {
-      this.load();
-      alert('Funcionário removido');
+  // salvar — cria ou atualiza
+  save() {
+    const raw = this.form;
+    // validações básicas
+    if (!raw.email || !raw.nome || !raw.dataNascimento || !raw.senha) {
+      this.toast.show('Preencha todos os campos', 'warning');
+      return;
+    }
+
+    // e-mail único
+    const all = this.service.list();
+    const emailExists = all.some((x: any) => x.email === raw.email && x.id !== this.editingId);
+    if (emailExists) {
+      this.toast.show('E-mail já cadastrado', 'error');
+      return;
+    }
+
+    if (this.editingId == null) {
+      // inserir
+      const created = this.service.insert({ email: raw.email, nome: raw.nome, dataNascimento: raw.dataNascimento, senha: raw.senha });
+      if (created) {
+        this.toast.show('Funcionário criado', 'success');
+        this.load();
+        this.closeModal();
+      } else {
+        this.toast.show('Falha ao criar funcionário', 'error');
+      }
     } else {
-      alert('Remoção falhou');
+      // atualizar
+      const ok = this.service.update(this.editingId, { email: raw.email, nome: raw.nome, dataNascimento: raw.dataNascimento, senha: raw.senha });
+      if (ok) {
+        this.toast.show('Alterações salvas', 'success');
+        this.load();
+        this.closeModal();
+      } else {
+        this.toast.show('Falha ao salvar alterações', 'error');
+      }
     }
   }
 
-  private validateIsoDate(d?: string | null): boolean {
-    if (!d) return false;
-    const r = /^\d{4}-\d{2}-\d{2}$/;
-    if (!r.test(d)) return false;
-    const dt = new Date(d + 'T00:00:00');
-    return !isNaN(dt.getTime());
+  // inicia o processo de remoção (abre diálogo)
+  confirmRemove(id: number) {
+    // não pode remover a si mesmo
+    if (id === this.currentUserId) {
+      this.toast.show('Você não pode remover a si mesmo.', 'error');
+      return;
+    }
+
+    // se só houver 1 funcionário, não permite
+    if (this.service.count() <= 1) {
+      this.toast.show('Não é possível remover. Deve haver ao menos 1 funcionário.', 'warning');
+      return;
+    }
+
+    this.candidateToRemove = id;
+    this.showConfirm = true;
   }
 
-  private validateEmail(email: string) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
+  // trata confirmação
+  onConfirmClose(ok: boolean) {
+    this.showConfirm = false;
+    if (!ok || this.candidateToRemove == null) {
+      this.candidateToRemove = null;
+      return;
+    }
+
+    const success = this.service.remove(this.candidateToRemove);
+    if (success) {
+      this.toast.show('Funcionário removido', 'success');
+      this.load();
+    } else {
+      this.toast.show('Falha ao remover funcionário', 'error');
+    }
+    this.candidateToRemove = null;
   }
 }
