@@ -1,8 +1,10 @@
 package com.maintech.backend.controller;
 
+import com.maintech.backend.dto.SolicitacaoRequest;
 import com.maintech.backend.model.Solicitacao;
-import com.maintech.backend.repository.SolicitacaoRepository;
+import com.maintech.backend.service.SolicitacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,15 +14,35 @@ import java.util.List;
 public class SolicitacaoController {
 
     @Autowired
-    private SolicitacaoRepository solicitacaoRepository;
-
-    @GetMapping
-    public List<Solicitacao> getAllSolicitacoes() {
-        return solicitacaoRepository.findAll();
-    }
+    private SolicitacaoService solicitacaoService;
 
     @PostMapping
-    public Solicitacao createSolicitacao(@RequestBody Solicitacao solicitacao) {
-        return solicitacaoRepository.save(solicitacao);
+    public ResponseEntity<?> criarSolicitacao(@RequestBody SolicitacaoRequest request) {
+        try {
+            Solicitacao solicitacao = solicitacaoService.criarSolicitacao(request);
+            return ResponseEntity.ok(solicitacao);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/minhas")
+    public ResponseEntity<?> getMinhasSolicitacoes() {
+        try {
+            List<Solicitacao> solicitacoes = solicitacaoService.getSolicitacoesCliente();
+            return ResponseEntity.ok(solicitacoes);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/abertas")
+    public ResponseEntity<?> getSolicitacoesAbertas() {
+        try {
+            List<Solicitacao> solicitacoes = solicitacaoService.getSolicitacoesAbertas();
+            return ResponseEntity.ok(solicitacoes);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
