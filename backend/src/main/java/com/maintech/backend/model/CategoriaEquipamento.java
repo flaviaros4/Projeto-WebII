@@ -13,7 +13,8 @@ public class CategoriaEquipamento {
     @Column(unique = true, nullable = false)
     private String nome;
 
-    private Boolean ativo = true;
+    @Column(nullable = false)
+    private Boolean status = true;
 
     public CategoriaEquipamento() {
     }
@@ -22,7 +23,6 @@ public class CategoriaEquipamento {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -30,16 +30,14 @@ public class CategoriaEquipamento {
     public String getNome() {
         return nome;
     }
-
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    public Boolean getAtivo() {
-        return ativo;
+    public Boolean getStatus() {
+        return status;
     }
-
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 }

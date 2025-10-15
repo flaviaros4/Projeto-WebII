@@ -21,6 +21,9 @@ public class CategoriaController {
 
     @PostMapping
     public CategoriaEquipamento createCategoria(@RequestBody CategoriaEquipamento categoria) {
+        if (categoria.getStatus() == null) {
+            categoria.setStatus(true);
+        }
         return categoriaRepository.save(categoria);
     }
 }
