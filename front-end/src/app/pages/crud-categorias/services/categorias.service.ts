@@ -16,7 +16,7 @@ export class CategoriasService {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) this.list = JSON.parse(raw) as CategoriaModel[];
       else {
-        // dados iniciais (opcional)
+
         this.list = [
           { id: 1, nome: 'Notebook' },
           { id: 2, nome: 'Desktop' },

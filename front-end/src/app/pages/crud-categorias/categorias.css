@@ -1,4 +1,4 @@
-/* page background similar to client page */
+
 .page-bg {
   min-height: calc(100vh - 80px);
   background: #1573c9;
@@ -8,7 +8,7 @@
   justify-content: center;
 }
 
-/* card */
+
 .page-card {
   width: 80%;
   max-width: 1100px;
@@ -18,7 +18,7 @@
   overflow: hidden;
 }
 
-/* header */
+
 .page-card-header {
   display: flex;
   align-items: center;
@@ -35,7 +35,7 @@
   color: #2d2d2d;
 }
 
-/* new button */
+
 .btn-new {
   background: #1976d2;
   color: #fff;
@@ -47,7 +47,7 @@
   cursor: pointer;
 }
 
-/* body */
+
 .page-card-body { padding: 22px 32px 36px; }
 
 .table-wrap { background: transparent; }
@@ -64,10 +64,10 @@
   vertical-align: middle; color: #222;
 }
 
-/* empty state */
+
 .empty { padding: 24px; color: #666; font-style: italic; }
 
-/* action buttons */
+
 .btn-action {
   display: inline-block; margin-left: 8px;
   padding: 8px 18px; border-radius: 24px; border: none; cursor: pointer; font-weight: 600;
@@ -75,21 +75,21 @@
   box-shadow: 0 8px 18px rgba(0,0,0,0.08);
 }
 
-/* blue edit */
+
 .btn-edit {
   background: linear-gradient(180deg,#0b79d8,#0869bf);
   color: #fff;
   box-shadow: 0 8px 18px rgba(10,105,185,0.18);
 }
 
-/* red remove */
+
 .btn-remove {
   background: linear-gradient(180deg,#e53935,#d32f2f);
   color: #fff;
   box-shadow: 0 8px 18px rgba(213,58,56,0.18);
 }
 
-/* modal confirm styles (simple, same look & feel) */
+
 .modal-backdrop, .confirm-backdrop {
   position: fixed; inset: 0; display:flex; align-items:center; justify-content:center;
   background: rgba(0,0,0,0.4); z-index: 2000;

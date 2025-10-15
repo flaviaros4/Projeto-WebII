@@ -14,12 +14,12 @@ import { CategoriaModel } from './categorias.model';
 export class Categorias {
   categorias: CategoriaModel[] = [];
 
-  // modal / edição
+
   showModal = false;
   editingId: number | null = null;
   form: { nome: string } = { nome: '' };
 
-  // confirm dialog
+
   showConfirm = false;
   candidateToRemove: number | null = null;
 
@@ -76,9 +76,7 @@ export class Categorias {
     if (ok && this.candidateToRemove != null) {
       const success = this.service.remover(this.candidateToRemove);
       if (success) {
-        // mensagem simples mas estilizada poderia usar serviço de toast (se tiver)
-        // por enquanto usamos alert — se quiser troco por toast.
-        // alert('Categoria removida.');
+
       } else {
         alert('Falha ao remover categoria.');
       }
