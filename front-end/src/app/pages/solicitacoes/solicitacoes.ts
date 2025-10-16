@@ -7,6 +7,8 @@ import { OrcamentoModule } from '../efetuar-orcamento/modals/orcamento/orcamento
 import { Usuario } from '../../shared/models/cliente.model';
 import { MatDialog } from '@angular/material/dialog';
 import { EfetuarManutencao } from '../pagina-funcionario/modals/efetuar-manutencao/efetuar-manutencao';
+import { FinalizarSolicitacao } from './modals/finalizar-solicitacao/finalizar-solicitacao';
+import { SolicitacaoManutencao } from '../pagina-cliente/modals/solicitacao-de-manutencao/solicitacao-de-manutencao';
 
 interface SolicitacaoFuncionario {
   id: number;
@@ -97,6 +99,15 @@ displayedColumns: string[] = ['dataHora', 'cliente', 'equipamento', 'estado', 'a
   }
 
   finalizarSolicitacao(solicitacao: SolicitacaoFuncionario) {
-    alert(`Solicitação finalizada!`);
+    const dialogRef = this.dialog.open(FinalizarSolicitacao, {
+      width: '400px',
+      data: { solicitacao } 
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        solicitacao.estado = 'FINALIZADA';
+      } 
+});
   }
-}
+  
+  }
