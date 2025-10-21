@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, LOCALE_ID } from '@angular/core';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Solicitacao } from '../../shared/models/solicitacao.model';
@@ -9,6 +9,28 @@ import { MatDialog } from '@angular/material/dialog';
 import { EfetuarManutencao } from '../pagina-funcionario/modals/efetuar-manutencao/efetuar-manutencao';
 import { FinalizarSolicitacao } from './modals/finalizar-solicitacao/finalizar-solicitacao';
 import { SolicitacaoManutencao } from '../pagina-cliente/modals/solicitacao-de-manutencao/solicitacao-de-manutencao';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl } from '@angular/forms';
+import localePt from '@angular/common/locales/pt';
+
+const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+
+registerLocaleData(localePt);
 
 interface SolicitacaoFuncionario {
   id: number;
@@ -22,7 +44,12 @@ interface SolicitacaoFuncionario {
 
 @Component({
   selector: 'app-solicitacoes',
-  imports: [MatIconModule, CommonModule, MatTableModule],
+  imports: [MatIconModule, CommonModule, MatTableModule,MatFormFieldModule,MatInputModule,MatDatepickerModule,MatNativeDateModule,MatButtonModule, ReactiveFormsModule],
+  providers: [ 
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }, 
+  ],
   templateUrl: './solicitacoes.html',
   styleUrl: './solicitacoes.css'
 })
@@ -30,6 +57,11 @@ export class Solicitacoes {
 displayedColumns: string[] = ['dataHora', 'cliente', 'equipamento', 'estado', 'acoes'];
   solicitacoes: SolicitacaoFuncionario[] = [];
   funcionarioLogado: Usuario | null = null;
+
+      range = new FormGroup({
+      start: new FormControl<Date | null>(null),
+      end: new FormControl<Date | null>(null),
+    });
   
   
   constructor(private dialog: MatDialog) {}
