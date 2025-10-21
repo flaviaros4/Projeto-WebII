@@ -33,6 +33,20 @@ td {
   font-size: 1rem;
 }
 
+.mat-mdc-menu-item{
+  text-align: center;
+ 
+}
+
+.filtros{
+text-align: end;
+justify-items: end;
+}
+
+.filtro-periodo {
+  padding: 20px;
+}
+
 button {
   background-color: #1976d2;
   color: white !important;

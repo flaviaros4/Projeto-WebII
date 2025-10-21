@@ -1,36 +1,37 @@
 <div class="container">
   <div class="header">
     <h1>Solicitações</h1>
-    <form [formGroup]="range">
-    <mat-form-field appearance="fill">
-        
-        <mat-date-range-input [rangePicker]="picker">
-            
-            <input 
-                matStartDate 
-                matInput
-                formControlName="start" 
-                placeholder="Data início"
-            >
-            
-            <input 
-                matEndDate 
-                matInput
-                formControlName="end" 
-                placeholder="Data fim"
-            >
-        </mat-date-range-input>
+  
+ <div class="filtros">
+<button mat-raised-button [matMenuTriggerFor]="filtroMenu" style="background-color: #1976d2;">
+  <mat-icon>filter_list</mat-icon> Filtrar por
+</button>
 
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 
-        <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
-</form>
+<mat-menu #filtroMenu="matMenu" class="menu-filtro" >
+  <div class="filtro-data" >
+    <button mat-menu-item value="TODAS" (click)="carregarTodasSolicitacoes() ; mostrarFiltroPeriodo = false"> TODAS </button>
+    <button mat-menu-item value="HOJE" (click)="filtrarDataHoje() ; mostrarFiltroPeriodo = false"> HOJE </button>
+    <button mat-menu-item value="POR_PERIODO" (click)="filtrarPorIntervalo() ; mostrarFiltroPeriodo = true"> POR PERIODO</button>
+  </div>
+</mat-menu>
 
-    <button mat-raised-button color="primary" >
-    <mat-icon>filter_list</mat-icon>
-    </button>
-    
+ <div class="filtro-periodo" *ngIf="mostrarFiltroPeriodo">
+      <mat-form-field appearance="fill" style="padding: 10px;" >
+        <mat-label>Data Inicial</mat-label>
+        <input matInput [matDatepicker]="picker1" [(ngModel)]="dataInicioFiltro">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Data Final</mat-label>
+        <input matInput [matDatepicker]="picker2" [(ngModel)]="dataFimFiltro">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+    </div>
+</div>
   </div>
 
 

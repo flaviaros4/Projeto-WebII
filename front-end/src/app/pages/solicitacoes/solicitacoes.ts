@@ -12,11 +12,13 @@ import { SolicitacaoManutencao } from '../pagina-cliente/modals/solicitacao-de-m
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatNativeDateModule, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatOption } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import localePt from '@angular/common/locales/pt';
+import { MatMenu, MatMenuTrigger, MatMenuItem } from '@angular/material/menu';
+import { MatSelect } from "@angular/material/select";
 
 const MY_DATE_FORMATS = {
   parse: {
@@ -44,7 +46,7 @@ interface SolicitacaoFuncionario {
 
 @Component({
   selector: 'app-solicitacoes',
-  imports: [MatIconModule, CommonModule, MatTableModule,MatFormFieldModule,MatInputModule,MatDatepickerModule,MatNativeDateModule,MatButtonModule, ReactiveFormsModule],
+  imports: [MatIconModule, CommonModule, MatTableModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatButtonModule, ReactiveFormsModule, MatMenu, MatMenuTrigger, MatSelect, MatOption, FormsModule, MatMenuItem],
   providers: [ 
     { provide: LOCALE_ID, useValue: 'pt-BR' },
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
@@ -54,6 +56,10 @@ interface SolicitacaoFuncionario {
   styleUrl: './solicitacoes.css'
 })
 export class Solicitacoes {
+  mostrarFiltroPeriodo: boolean = false;
+  dataInicioFiltro:  Date | null = null;
+  dataFimFiltro: Date | null = null;
+
 displayedColumns: string[] = ['dataHora', 'cliente', 'equipamento', 'estado', 'acoes'];
   solicitacoes: SolicitacaoFuncionario[] = [];
   funcionarioLogado: Usuario | null = null;
@@ -109,8 +115,32 @@ displayedColumns: string[] = ['dataHora', 'cliente', 'equipamento', 'estado', 'a
         return '';
     }
   }
-
   
+   carregarTodasSolicitacoes() {
+    this.ngOnInit();
+    this.dataInicioFiltro = null;
+    this.dataFimFiltro = null;
+  }
+
+  filtrarDataHoje() {
+    this.solicitacoes = this.solicitacoes.filter(solicitacao => {
+      const dataSolicitacao = new Date(solicitacao.dataHora);
+      const hoje = new Date();
+      return dataSolicitacao.toDateString() === hoje.toDateString();
+    });
+    this.dataInicioFiltro = new Date();
+    this.dataFimFiltro = new Date();
+  } 
+
+  filtrarPorIntervalo() {
+    if (this.dataInicioFiltro && this.dataFimFiltro) {
+      this.solicitacoes = this.solicitacoes.filter(solicitacao => {
+        const dataSolicitacao = new Date(solicitacao.dataHora);
+        return dataSolicitacao >= this.dataInicioFiltro! && dataSolicitacao <= this.dataFimFiltro!;
+      }); 
+    }
+  }
+
 
   efetuarOrcamento(solicitacao: SolicitacaoFuncionario) {
     this.dialog.open(OrcamentoModule, {
