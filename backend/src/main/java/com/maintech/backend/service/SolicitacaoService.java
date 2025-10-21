@@ -74,4 +74,38 @@ public class SolicitacaoService {
 
         return solicitacaoRepository.save(solicitacao);
     }
+
+    public Solicitacao aprovarOrcamento(Long solicitacaoId) {
+        Solicitacao solicitacao = solicitacaoRepository.findById(solicitacaoId)
+                .orElseThrow(() -> new RuntimeException("Solicitação não encontrada"));
+
+        Usuario usuario = usuarioService.getUsuarioAtual();
+        if (!(usuario instanceof Cliente) || !solicitacao.getCliente().getId().equals(usuario.getId())) {
+            throw new RuntimeException("Apenas o cliente dono da solicitação pode aprovar o orçamento");
+        }
+
+        if (solicitacao.getEstado() != EstadoSolicitacao.ORÇADA) {
+            throw new RuntimeException("Só é possível aprovar solicitações com orçamento pendente");
+        }
+
+        solicitacao.setEstado(EstadoSolicitacao.APROVADA);
+        return solicitacaoRepository.save(solicitacao);
+    }
+
+    public Solicitacao rejeitarOrcamento(Long solicitacaoId, String motivo) {
+        Solicitacao solicitacao = solicitacaoRepository.findById(solicitacaoId)
+                .orElseThrow(() -> new RuntimeException("Solicitação não encontrada"));
+
+        Usuario usuario = usuarioService.getUsuarioAtual();
+        if (!(usuario instanceof Cliente) || !solicitacao.getCliente().getId().equals(usuario.getId())) {
+            throw new RuntimeException("Apenas o cliente dono da solicitação pode rejeitar o orçamento");
+        }
+
+        if (solicitacao.getEstado() != EstadoSolicitacao.ORÇADA) {
+            throw new RuntimeException("Só é possível rejeitar solicitações com orçamento pendente");
+        }
+
+        solicitacao.setEstado(EstadoSolicitacao.REJEITADA);
+        return solicitacaoRepository.save(solicitacao);
+    }
 }
