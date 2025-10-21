@@ -1,6 +1,32 @@
 <div class="container">
   <div class="header">
     <h1>Solicitações</h1>
+    <form [formGroup]="range">
+    <mat-form-field appearance="fill">
+        
+        <mat-date-range-input [rangePicker]="picker">
+            
+            <input 
+                matStartDate 
+                matInput
+                formControlName="start" 
+                placeholder="Data início"
+            >
+            
+            <input 
+                matEndDate 
+                matInput
+                formControlName="end" 
+                placeholder="Data fim"
+            >
+        </mat-date-range-input>
+
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+
+        <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+</form>
+
     <button mat-raised-button color="primary" >
     <mat-icon>filter_list</mat-icon>
     </button>
