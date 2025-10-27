@@ -60,6 +60,9 @@ export class Solicitacoes {
   dataInicioFiltro:  Date | null = null;
   dataFimFiltro: Date | null = null;
 
+
+  todasSolicitacoes: SolicitacaoFuncionario[] = [];
+
 displayedColumns: string[] = ['dataHora', 'cliente', 'equipamento', 'estado', 'acoes'];
   solicitacoes: SolicitacaoFuncionario[] = [];
   funcionarioLogado: Usuario | null = null;
@@ -74,7 +77,7 @@ displayedColumns: string[] = ['dataHora', 'cliente', 'equipamento', 'estado', 'a
 
   ngOnInit(): void {
     // Dados fictícios (para testes)
-    this.solicitacoes = [
+    const dadosIniciais = [
       { id: 1, dataHora: '2025-08-31 14:20', cliente: 'Flávia Rosa', equipamento: 'Notebook Apple', estado: 'ABERTA' },
       { id: 2, dataHora: '2025-08-30 09:10', cliente: 'Leticia Sanches', equipamento: 'Impressora HP', estado: 'ORÇADA' },
       { id: 3, dataHora: '2025-08-29 11:00', cliente: 'Leon Trindade', equipamento: 'Celular Samsung A31', estado: 'REJEITADA' },
@@ -83,8 +86,12 @@ displayedColumns: string[] = ['dataHora', 'cliente', 'equipamento', 'estado', 'a
       { id: 6, dataHora: '2025-08-18 11:00', cliente: 'João Paulo', equipamento: 'Tablet Samsung', estado: 'ARRUMADA' },
       { id: 7, dataHora: '2025-08-15 11:00', cliente: 'Maria Santos', equipamento: 'Smartwatch Apple', estado: 'PAGA' },
       { id: 8, dataHora: '2025-08-10 11:00', cliente: 'José Silva', equipamento: 'Desktop HP', estado: 'FINALIZADA' },
-
     ];
+
+
+    this.todasSolicitacoes = dadosIniciais; 
+
+    this.solicitacoes = dadosIniciais;
 
    
     const usuarioLogadoString = localStorage.getItem('usuarioLogado');
@@ -118,14 +125,21 @@ displayedColumns: string[] = ['dataHora', 'cliente', 'equipamento', 'estado', 'a
   
    carregarTodasSolicitacoes() {
     this.ngOnInit();
+
+    this.solicitacoes = this.todasSolicitacoes;
+
     this.dataInicioFiltro = null;
+
     this.dataFimFiltro = null;
   }
 
   filtrarDataHoje() {
+    const hoje = new Date();
+
+    hoje.setHours(0, 0, 0, 0);
+
     this.solicitacoes = this.solicitacoes.filter(solicitacao => {
       const dataSolicitacao = new Date(solicitacao.dataHora);
-      const hoje = new Date();
       return dataSolicitacao.toDateString() === hoje.toDateString();
     });
     this.dataInicioFiltro = new Date();
@@ -133,14 +147,26 @@ displayedColumns: string[] = ['dataHora', 'cliente', 'equipamento', 'estado', 'a
   } 
 
   filtrarPorIntervalo() {
-    if (this.dataInicioFiltro && this.dataFimFiltro) {
-      this.solicitacoes = this.solicitacoes.filter(solicitacao => {
-        const dataSolicitacao = new Date(solicitacao.dataHora);
-        return dataSolicitacao >= this.dataInicioFiltro! && dataSolicitacao <= this.dataFimFiltro!;
-      }); 
+        this.mostrarFiltroPeriodo = true;
+        this.dataInicioFiltro = null;
+        this.dataFimFiltro = null;
     }
-  }
 
+    filtrarPeriodo(): void {
+        if (!this.dataInicioFiltro || !this.dataFimFiltro) {
+            alert('Selecione ambas as datas.');
+            return;
+        }
+        const inicio = new Date(this.dataInicioFiltro.getTime());
+        inicio.setHours(0, 0, 0, 0);
+        const fim = new Date(this.dataFimFiltro.getTime());
+        fim.setHours(23, 59, 59, 999);
+        this.solicitacoes = this.todasSolicitacoes.filter(solicitacao => {
+            const dataSolicitacao = new Date(solicitacao.dataHora);
+            return dataSolicitacao >= inicio && dataSolicitacao <= fim;
+        });
+        
+    }
 
   efetuarOrcamento(solicitacao: SolicitacaoFuncionario) {
     this.dialog.open(OrcamentoModule, {
@@ -171,5 +197,5 @@ displayedColumns: string[] = ['dataHora', 'cliente', 'equipamento', 'estado', 'a
       } 
 });
   }
-  
-  }
+
+}
