@@ -15,6 +15,7 @@ import { EfetuarManutencao } from './pages/efetuar-manutencao/efetuar-manutencao
 import { Cadastro } from './pages/cadastro/cadastro';
 import { Categorias } from './pages/crud-categorias/categorias';
 import { Solicitacoes } from './pages/solicitacoes/solicitacoes';
+import { Redirecionar } from './pages/redirecionar/redirecionar';
 
 export const routes: Routes = [
   { path: 'cadastro', component: Cadastro},
@@ -27,5 +28,4 @@ export const routes: Routes = [
   { path: 'manutencao', component: EfetuarManutencao },
   {path: 'categorias', component: Categorias},
   {path: 'solicitacoes', component: Solicitacoes},
-
 ];

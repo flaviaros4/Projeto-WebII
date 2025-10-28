@@ -14,7 +14,7 @@ export interface OrcamentoDialogData {
   estado: string;
   funcionario: Usuario; 
 }
-
+ 
 @Component({
   selector: 'app-orcamento-module',
   standalone: true,

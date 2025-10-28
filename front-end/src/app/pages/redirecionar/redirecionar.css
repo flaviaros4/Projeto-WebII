@@ -1,0 +1,76 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f6f8;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 700px;
+  margin: 40px auto;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #1976d2;
+}
+
+.solicitacao-info p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.redirecionar-form {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.redirecionar-form label {
+  font-weight: bold;
+}
+
+.redirecionar-form select {
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.redirecionar-form button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background-color: #1976d2;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.redirecionar-form button:hover {
+  background-color: #125aa0;
+}
+
+.historico {
+  margin-top: 30px;
+}
+
+.historico table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.historico th, .historico td {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.historico th {
+  background-color: #1976d2;
+  color: white;
+}
