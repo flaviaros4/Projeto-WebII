@@ -7,6 +7,7 @@ import com.maintech.backend.service.SolicitacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
 
 import java.util.List;
 
@@ -65,6 +66,16 @@ public class SolicitacaoController {
         try {
             Solicitacao solicitacao = solicitacaoService.rejeitarOrcamento(id, request.getMotivo());
             return ResponseEntity.ok(solicitacao);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}/detalhes")
+    public ResponseEntity<?> getSolicitacaoDetalhada(@PathVariable Long id) {
+        try {
+            Map<String, Object> detalhes = solicitacaoService.getSolicitacaoDetalhada(id);
+            return ResponseEntity.ok(detalhes);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
