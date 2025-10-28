@@ -1,5 +1,6 @@
 package com.maintech.backend.controller;
 
+import com.maintech.backend.dto.RespostaOrcamentoRequest;
 import com.maintech.backend.dto.SolicitacaoRequest;
 import com.maintech.backend.model.Solicitacao;
 import com.maintech.backend.service.SolicitacaoService;
@@ -41,6 +42,29 @@ public class SolicitacaoController {
         try {
             List<Solicitacao> solicitacoes = solicitacaoService.getSolicitacoesAbertas();
             return ResponseEntity.ok(solicitacoes);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Aprovar orçamento
+    @PostMapping("/{id}/aprovar")
+    public ResponseEntity<?> aprovarOrcamento(@PathVariable Long id) {
+        try {
+            Solicitacao solicitacao = solicitacaoService.aprovarOrcamento(id);
+            return ResponseEntity.ok(solicitacao);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
+    // Rejeitar orçamento
+    @PostMapping("/{id}/rejeitar")
+    public ResponseEntity<?> rejeitarOrcamento(@PathVariable Long id, 
+                                             @RequestBody RespostaOrcamentoRequest request) {
+        try {
+            Solicitacao solicitacao = solicitacaoService.rejeitarOrcamento(id, request.getMotivo());
+            return ResponseEntity.ok(solicitacao);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

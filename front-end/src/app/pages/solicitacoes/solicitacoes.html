@@ -1,10 +1,42 @@
 <div class="container">
   <div class="header">
     <h1>Solicitações</h1>
-    <button mat-raised-button color="primary" >
-    <mat-icon>filter_list</mat-icon>
-    </button>
-    
+  
+ <div class="filtros">
+<button mat-raised-button [matMenuTriggerFor]="filtroMenu" style="background-color: #1976d2;">
+  <mat-icon>filter_list</mat-icon> Filtrar por
+</button>
+
+
+<mat-menu #filtroMenu="matMenu" class="menu-filtro" >
+  <div class="filtro-data" >
+    <button mat-menu-item value="TODAS" (click)="carregarTodasSolicitacoes() ; mostrarFiltroPeriodo = false"> TODAS </button>
+    <button mat-menu-item value="HOJE" (click)="filtrarDataHoje() ; mostrarFiltroPeriodo = false"> HOJE </button>
+    <button mat-menu-item value="POR_PERIODO" (click)="filtrarPorIntervalo() ; mostrarFiltroPeriodo = true"> POR PERIODO</button>
+  </div>
+</mat-menu>
+
+ <div class="filtro-periodo" *ngIf="mostrarFiltroPeriodo">
+      <mat-form-field appearance="fill" style="padding: 10px;" >
+        <mat-label>Data Inicial</mat-label>
+        <input matInput [matDatepicker]="picker1" [(ngModel)]="dataInicioFiltro">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Data Final</mat-label>
+        <input matInput [matDatepicker]="picker2" [(ngModel)]="dataFimFiltro">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" (click)="filtrarPeriodo()"> 
+      Confirmar
+      </button>
+      
+    </div>
+</div>
   </div>
 
 

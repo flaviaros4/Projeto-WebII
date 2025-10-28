@@ -33,6 +33,34 @@ td {
   font-size: 1rem;
 }
 
+.mat-mdc-menu-item{
+  text-align: center;
+ 
+}
+
+.filtros{
+text-align: end;
+justify-items: end;
+}
+
+.filtro-periodo {
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 20px;
+}
+
+.filtro-periodo mat-form-field {
+
+    padding: 0 !important;
+
+    margin-right: 10px; 
+}
+
+
+
 button {
   background-color: #1976d2;
   color: white !important;
@@ -45,6 +73,22 @@ button {
 
 button:hover {
     background-color: #125a9c;
+}
+
+.mat-mdc-raised-button.mat-primary {
+
+    background-color: #1976d2 !important; 
+
+    color: white !important;
+
+    margin-bottom: 15px;
+
+}
+
+.mat-mdc-raised-button.mat-primary:hover {
+
+    background-color: #125a9c !important;
+    
 }
 
 

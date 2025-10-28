@@ -14,21 +14,24 @@ export interface OrcamentoDialogData {
   estado: string;
   funcionario: Usuario; 
 }
-
+ 
 @Component({
   selector: 'app-orcamento-module',
   standalone: true,
   imports: [FormsModule, CommonModule],
   template: `
     <div class="orcamento-modal-container">
-      <h1>Efetuar Orçamento</h1>
+      <h2>Efetuar Orçamento</h2>
       <div>
         <p><b>Cliente:</b> {{ data.cliente }}</p>
         <p><b>Equipamento:</b> {{ data.equipamento }}</p>
-        <p><b>Data/Hora Solicitação:</b> {{ data.dataHora }}</p>
-        <p><b>Funcionário:</b> {{ data.funcionario?.nome }}</p>
+        <p><b>Data/Hora Solicitação:</b> {{ data.dataHora | date:'dd/MM/yyyy HH:mm':'pt-BR' }}</p>
+        <p><b>Funcionário:</b> {{ data.funcionario.nome }}</p>
       </div>
+      <div class="valor-orçamento">
+      <p><b>R$:</b></p>
       <input type="number" [(ngModel)]="valorOrcamento" placeholder="Valor do orçamento" class="full-width" />
+      </div>
       <button mat-raised-button color="primary" (click)="registrarOrcamento()">Registrar</button>
     </div>
   `,
