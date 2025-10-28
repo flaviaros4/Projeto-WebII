@@ -1,10 +1,8 @@
-// src/app/pages/crud-funcionarios/listar-funcionarios.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-// Se quiser usar Angular Material buttons, descomente abaixo e adicione MatButtonModule ao imports
-// import { MatButtonModule } from '@angular/material/button';
+
 
 import { FuncionarioService } from './services/funcionario.service';
 import { ToastService } from '../../shared/toast/toast.service';
@@ -23,7 +21,7 @@ interface FuncionarioView {
   imports: [
     CommonModule,
     FormsModule,
-    // MatButtonModule  // <-- descomente aqui se for usar MatButtonModule
+   
   ],
   templateUrl: './listar-funcionarios.html',
   styleUrls: ['./listar-funcionarios.css']
@@ -43,7 +41,7 @@ export class ListarFuncionariosComponent {
   showConfirm = false;
   candidateToRemove: number | null = null;
 
-  // ajustar conforme seu serviço (usuário logado)
+
   currentUserId = 1;
 
   constructor(private service: FuncionarioService, private toast: ToastService) {

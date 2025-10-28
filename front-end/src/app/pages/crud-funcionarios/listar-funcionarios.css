@@ -1,4 +1,4 @@
-/* Estilo principal da página */
+
 .page-bg {
   min-height: calc(100vh - 80px);
   background: #1573c9;
@@ -33,7 +33,7 @@
   color: #2d2d2d;
 }
 
-/* Botão Novo */
+
 .btn-new {
   background: linear-gradient(180deg, #2186e5, #1976d2);
   color: #fff;
@@ -45,7 +45,7 @@
   cursor: pointer;
 }
 
-/* Corpo da tabela */
+
 .page-card-body {
   padding: 22px 32px 36px;
 }
@@ -76,7 +76,7 @@
   color: #222;
 }
 
-/* Ações */
+
 .btn-action {
   display: inline-block;
   margin-left: 8px;
@@ -90,14 +90,14 @@
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
 }
 
-/* Botão editar azul */
+
 .btn-edit {
   background: linear-gradient(180deg, #1e88e5, #1565c0);
   color: #fff;
   box-shadow: 0 8px 18px rgba(25, 118, 210, 0.18);
 }
 
-/* Botão remover vermelho */
+
 .btn-remove {
   background: linear-gradient(180deg, #e53935, #c62828);
   color: #fff;
