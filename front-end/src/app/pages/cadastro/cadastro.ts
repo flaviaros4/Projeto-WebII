@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { ViaCepService } from '../../shared/services/via-cep';
 import { CadastroService } from './services/cadastro-service';
-import { Usuario } from '../../shared/models/cliente.model';
+import { Cliente } from '../../shared/models/usuarios.model';
 import { CadastroSucessoDialog } from './modals/cadastro-sucesso/cadastro-sucesso';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxMaskDirective } from 'ngx-mask';
@@ -34,59 +34,73 @@ import { NgxMaskDirective } from 'ngx-mask';
   styleUrl: './cadastro.css'
 })
 export class Cadastro {
-  user: Usuario = {
-    cpf: '',
+  
+  cliente: Cliente = {
     nome: '',
     email: '',
-    cep: '',
-    logradouro: '',
-    numero: '',
-    bairro: '',
-    cidade: '',
-    uf: '',
-    telefone: ''
-  };
+    cpf: '',
+    perfil: 'CLIENTE',
+    endereco: {} as any
+  }; 
 
-  senhaGerada: string | null = null;
 
-  private viaCepService = inject(ViaCepService);
-  private cadastroService = inject(CadastroService);
-  private router = inject(Router);
-  private dialog = inject(MatDialog);
+  constructor(
+    private router: Router,
+    private dialog: MatDialog,
+    private cadastroService: CadastroService,
+    private viaCep: ViaCepService
+  ) {
+if (!this.cliente.endereco) {
+      this.cliente.endereco = {} as any;
+    }
+  }
 
-  buscarCep(cep: string) {
-    this.viaCepService.buscarCep(cep).subscribe(dados => {
-      if (dados.erro) {
-        alert('CEP não encontrado!');
-      } else {
-        this.user.logradouro = dados.logradouro;
-        this.user.bairro = dados.bairro;
-        this.user.cidade = dados.localidade;
-        this.user.uf = dados.uf;
+ 
+
+  buscarCep() {
+  const cep = (this.cliente.endereco?.cep || '').replace(/\D/g, '');
+  if (!cep || cep.length !== 8) {
+    alert('CEP inválido');
+    return;
+  }
+
+  this.viaCep.buscarCep(cep).subscribe({
+    next: (resp: any) => {
+      if (!resp || resp.erro) {
+        alert('CEP não encontrado');
+        return;
       }
-    });
+
+      this.cliente.endereco = {
+        cep: resp.cep,
+        logradouro: resp.logradouro,
+        numero: this.cliente.endereco?.numero || '',
+        complemento: resp.complemento || '',
+        bairro: resp.bairro,
+        cidade: resp.localidade,
+        estado: resp.estado
+      };
+    },
+    error: () => alert('Erro ao consultar CEP')
+  });
+}
+
+
+
+  cadastrar() {
+    this.cadastroService.cadastrar(this.cliente).subscribe({
+      next: (sucesso: boolean) => {
+        
+        if (sucesso) {
+          this.dialog.open(CadastroSucessoDialog).afterClosed().subscribe(() => {
+            this.router.navigate(['/login']);
+          });
+        } else {
+          alert('Erro no cadastro. Verifique os dados e tente novamente.');
+        }
+        
+
+      }});
   }
+}
 
-  private gerarSenha(): string {
-    return Math.floor(1000 + Math.random() * 9000).toString();
-  }
- cadastrar() {
-    this.senhaGerada = this.gerarSenha();
-    this.user.senha = this.senhaGerada;
-
-    console.log(`Senha enviada para o e-mail ${this.user.email}: ${this.senhaGerada}`);
-
-    const cadastroSucesso = this.cadastroService.registrar(this.user);
-
-    if(cadastroSucesso){
-    const dialogRef = this.dialog.open(CadastroSucessoDialog, {
-      data: { email: this.user.email }
-    });
-    dialogRef.afterClosed().subscribe(() => {
-      this.router.navigate(['/login']);
-    });
-  }else {
-  alert('E-mail já cadastrado. Por favor, utilize outro e-mail.');
-  } 
-  }
-};

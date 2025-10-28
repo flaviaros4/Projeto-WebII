@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Solicitacao } from '../../shared/models/solicitacao.model';
 import { OrcamentoModule } from '../efetuar-orcamento/modals/orcamento/orcamento-module';
-import { Usuario } from '../../shared/models/cliente.model';
+import { Usuario } from '../../shared/models/usuarios.model';
 import { MatDialog } from '@angular/material/dialog';
 import { EfetuarManutencao } from '../pagina-funcionario/modals/efetuar-manutencao/efetuar-manutencao';
 import { FinalizarSolicitacao } from './modals/finalizar-solicitacao/finalizar-solicitacao';

@@ -12,7 +12,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { RecuperarSenha } from './modals/recuperar-senha/recuperar-senha';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
-import { Usuario } from '../../shared/models/cliente.model';
+import { Usuario } from '../../shared/models/usuarios.model';
 
 @Component({
   selector: 'app-login',

@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Usuario } from '../../../../shared/models/cliente.model';
+import { Usuario } from '../../../../shared/models/usuarios.model';
 
 
 export interface OrcamentoDialogData {
