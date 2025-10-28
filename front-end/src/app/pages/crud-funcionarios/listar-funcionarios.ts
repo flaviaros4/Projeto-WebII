@@ -1,14 +1,13 @@
-
-
+// src/app/pages/crud-funcionarios/listar-funcionarios.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-
+// Se quiser usar Angular Material buttons, descomente abaixo e adicione MatButtonModule ao imports
+// import { MatButtonModule } from '@angular/material/button';
 
 import { FuncionarioService } from './services/funcionario.service';
 import { ToastService } from '../../shared/toast/toast.service';
-
 
 interface FuncionarioView {
   id: number;
@@ -21,13 +20,16 @@ interface FuncionarioView {
 @Component({
   selector: 'app-listar-funcionarios',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    // MatButtonModule  // <-- descomente aqui se for usar MatButtonModule
+  ],
   templateUrl: './listar-funcionarios.html',
   styleUrls: ['./listar-funcionarios.css']
 })
-export class ListarFuncionarios {
+export class ListarFuncionariosComponent {
   funcionarios: FuncionarioView[] = [];
-
 
   showModal = false;
   editingId: number | null = null;
@@ -38,11 +40,10 @@ export class ListarFuncionarios {
     senha: ''
   };
 
-
   showConfirm = false;
   candidateToRemove: number | null = null;
 
-
+  // ajustar conforme seu serviço (usuário logado)
   currentUserId = 1;
 
   constructor(private service: FuncionarioService, private toast: ToastService) {
@@ -50,7 +51,6 @@ export class ListarFuncionarios {
   }
 
   load() {
-   
     const list = this.service.list();
     this.funcionarios = list.map((f: any) => ({
       id: f.id,
@@ -71,13 +71,11 @@ export class ListarFuncionarios {
     return age;
   }
 
-
   novo() {
     this.editingId = null;
     this.form = { email: '', nome: '', dataNascimento: '', senha: '' };
     this.showModal = true;
   }
-
 
   editar(id: number) {
     const f = this.service.getById(id);
@@ -95,16 +93,13 @@ export class ListarFuncionarios {
     this.editingId = null;
   }
 
-
   save() {
     const raw = this.form;
-    // validações básicas
     if (!raw.email || !raw.nome || !raw.dataNascimento || !raw.senha) {
       this.toast.show('Preencha todos os campos', 'warning');
       return;
     }
 
-    
     const all = this.service.list();
     const emailExists = all.some((x: any) => x.email === raw.email && x.id !== this.editingId);
     if (emailExists) {
@@ -113,7 +108,6 @@ export class ListarFuncionarios {
     }
 
     if (this.editingId == null) {
- 
       const created = this.service.insert({ email: raw.email, nome: raw.nome, dataNascimento: raw.dataNascimento, senha: raw.senha });
       if (created) {
         this.toast.show('Funcionário criado', 'success');
@@ -123,7 +117,6 @@ export class ListarFuncionarios {
         this.toast.show('Falha ao criar funcionário', 'error');
       }
     } else {
- 
       const ok = this.service.update(this.editingId, { email: raw.email, nome: raw.nome, dataNascimento: raw.dataNascimento, senha: raw.senha });
       if (ok) {
         this.toast.show('Alterações salvas', 'success');
@@ -135,15 +128,12 @@ export class ListarFuncionarios {
     }
   }
 
-
   confirmRemove(id: number) {
-    // não pode remover a si mesmo
     if (id === this.currentUserId) {
       this.toast.show('Você não pode remover a si mesmo.', 'error');
       return;
     }
 
-  
     if (this.service.count() <= 1) {
       this.toast.show('Não é possível remover. Deve haver ao menos 1 funcionário.', 'warning');
       return;
@@ -152,7 +142,6 @@ export class ListarFuncionarios {
     this.candidateToRemove = id;
     this.showConfirm = true;
   }
-
 
   onConfirmClose(ok: boolean) {
     this.showConfirm = false;

@@ -3,8 +3,6 @@
   <div class="page-card container-fluid">
     <div class="page-card-header">
       <h1>Funcionários</h1>
-
-
       <button class="btn-new" (click)="novo()">+ Novo</button>
     </div>
 
@@ -16,7 +14,7 @@
               <th>Nome</th>
               <th>Email</th>
               <th class="text-center">Idade</th>
-              <th style="width:180px" class="text-center">Ações</th>
+              <th class="text-center" style="width:180px;">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -24,58 +22,18 @@
               <td>{{ f.nome }}</td>
               <td>{{ f.email }}</td>
               <td class="text-center">{{ f.idade }}</td>
-              <td class="actions-cell">
-
-
+              <td class="text-center">
                 <button class="btn-action btn-edit" (click)="editar(f.id)">Editar</button>
                 <button class="btn-action btn-remove" (click)="confirmRemove(f.id)">Remover</button>
               </td>
             </tr>
             <tr *ngIf="funcionarios.length === 0">
-              <td colspan="4" class="text-center empty">Nenhum funcionário cadastrado.</td>
+              <td colspan="4" class="text-center empty">
+                Nenhum funcionário cadastrado.
+              </td>
             </tr>
           </tbody>
         </table>
-      </div>
-    </div>
-  </div>
-
-
-
-  <div class="modal-backdrop" *ngIf="showModal">
-    <div class="modal-card">
-      <h2>{{ editingId ? 'Editar Funcionário' : 'Novo Funcionário' }}</h2>
-
-      <form (ngSubmit)="save()" #f="ngForm" class="modal-form">
-        <label>E-mail (único)</label>
-        <input name="email" [(ngModel)]="form.email" required type="email" />
-
-        <label>Nome</label>
-        <input name="nome" [(ngModel)]="form.nome" required minlength="3" />
-
-        <label>Data de Nascimento</label>
-        <input name="dataNascimento" [(ngModel)]="form.dataNascimento" required type="date" />
-
-        <label>Senha</label>
-        <input name="senha" [(ngModel)]="form.senha" required minlength="4" type="password" />
-
-        <div class="modal-actions">
-          <button type="button" class="btn-cancel" (click)="closeModal()">Cancelar</button>
-          <button type="submit" class="btn-save">{{ editingId ? 'Salvar' : 'Criar' }}</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-
-  
-  <div class="confirm-backdrop" *ngIf="showConfirm">
-    <div class="confirm-card">
-      <h3>Remover funcionário</h3>
-      <p>Confirma remoção deste funcionário?</p>
-      <div class="confirm-actions">
-        <button class="btn-cancel" (click)="onConfirmClose(false)">Cancelar</button>
-        <button class="btn-remove" (click)="onConfirmClose(true)">Confirmar</button>
       </div>
     </div>
   </div>
