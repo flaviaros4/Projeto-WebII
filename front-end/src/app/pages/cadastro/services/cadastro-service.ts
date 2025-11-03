@@ -1,22 +1,40 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Usuario } from '../../../shared/models/cliente.model';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { Cliente } from '../../../shared/models/usuarios.model';
 
 @Injectable({
   providedIn: 'root'
 })
 
+
 export class CadastroService {
-  registrar(usuario: Usuario): boolean {
-    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-    const usarioExistente = usuarios.find((u: Usuario) => u.email === usuario.email);
-    if (usarioExistente) {
-      return false;
-    }
-    usuarios.push(usuario);
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
-    return true;
+   constructor(private httpClient: HttpClient) {}
+
+  BASE_URL = 'http://localhost:8080/api/auth/cadastro';
+
+  private options = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    observe: 'response' as const
+  };
+
+  registrar(cliente: Cliente): Observable<boolean> {
+    const payload: any = {
+      nome: cliente.nome,
+      email: cliente.email,
+      cpf: cliente.cpf,
+      telefone: cliente.telefone,
+      endereco: cliente.endereco ?? null
+    };
+
+    return this.httpClient.post<null>(this.BASE_URL, payload, this.options).pipe(
+      map((resp: HttpResponse<null>) => resp.status === 201),
+      catchError(err => throwError(() => err))
+    );
   }
 
+  cadastrar(cliente: Cliente): Observable<boolean> {
+    return this.registrar(cliente);
+  }
 }

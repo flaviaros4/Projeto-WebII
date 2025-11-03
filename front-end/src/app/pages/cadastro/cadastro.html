@@ -9,12 +9,12 @@
           <div class="cadastro-fill">
             <mat-form-field class="flex-1" appearance="outline">
               <mat-label>CPF</mat-label>
-              <input matInput [(ngModel)]="user.cpf" name="cpf" type="text" mask="000.000.000-00" required>
+              <input matInput [(ngModel)]="cliente.cpf" name="cpf" type="text" mask="000.000.000-00" required>
               <mat-icon matSuffix>person</mat-icon>
             </mat-form-field>
             <mat-form-field class="flex-2" appearance="outline">
               <mat-label>Nome</mat-label>
-              <input matInput [(ngModel)]="user.nome" name="nome" type="text" required>
+              <input matInput [(ngModel)]="cliente.nome" name="nome" type="text" required>
               <mat-icon matSuffix>person</mat-icon>
             </mat-form-field>
           </div>
@@ -23,41 +23,49 @@
           <div class="cadastro-fill">
             <mat-form-field class="flex-2" appearance="outline">
             <mat-label>E-mail</mat-label>
-            <input matInput [(ngModel)]="user.email" name="email" type="email" required>
+            <input matInput [(ngModel)]="cliente.email" name="email" type="email" required>
             <mat-icon matSuffix>email</mat-icon>
           </mat-form-field>
+          <mat-form-field class="flex-1" appearance="outline">
+            <mat-label>Telefone</mat-label>
+            <input matInput [(ngModel)]="cliente.telefone" name="telefone" type="text" mask="(00) 00000-0000" required>
+            <mat-icon matSuffix>phone</mat-icon>
+          </mat-form-field>
+          </div>
 
-            <mat-form-field class="flex-2" appearance="outline">
+          <div class="cadastro-fill">
+            <mat-form-field appearance="outline">
               <mat-label>CEP</mat-label>
-              <input matInput [(ngModel)]="user.cep" name="cep" type="text" mask="00000-000" required>
+              <input matInput [ngModel]="cliente.endereco?.cep" name="cep" type="text" mask="00000-000" required>
               <mat-icon matSuffix>my_location</mat-icon>
             </mat-form-field>
-              <button mat-flat-button type="button" class="buscar-cep" (click)="buscarCep(user.cep)">
+              <button mat-flat-button type="button" class="buscar-cep" (click)="buscarCep()">
               Buscar CEP
-            </button>
+             </button>
           </div>
+         
           <div class="cadastro-fill">
             <mat-form-field class="flex-2" appearance="outline">
               <mat-label>Endereço</mat-label>
-              <input matInput type="text" [(ngModel)]="user.logradouro" name="logradouro" [readonly]="true">
+              <input matInput type="text" [ngModel]="cliente.endereco?.logradouro" name="logradouro" [readonly]="true">
             </mat-form-field>
             <mat-form-field class="flex-1" appearance="outline">
               <mat-label>Número</mat-label>
-              <input matInput [(ngModel)]="user.numero" name="numero" type="number" required>
+              <input matInput [ngModel]="cliente.endereco?.numero" name="numero" type="number" required>
             </mat-form-field>
           </div>
           <div class="cadastro-fill">
             <mat-form-field class="flex-1" appearance="outline">
               <mat-label>Bairro</mat-label>
-              <input matInput type="text" [(ngModel)]="user.bairro" name="bairro" [readonly]="true">
+              <input matInput type="text" [ngModel]="cliente.endereco?.bairro" name="bairro" [readonly]="true">
             </mat-form-field>
             <mat-form-field class="flex-1" appearance="outline">
               <mat-label>Cidade</mat-label>
-              <input matInput type="text" [(ngModel)]="user.cidade" name="cidade" [readonly]="true">
+              <input matInput type="text" [ngModel]="cliente.endereco?.cidade" name="cidade" [readonly]="true">
             </mat-form-field>
             <mat-form-field class="flex-05" appearance="outline">
               <mat-label>UF</mat-label>
-              <input matInput type="text" [(ngModel)]="user.uf" name="uf" [readonly]="true">
+              <input matInput type="text" [ngModel]="cliente.endereco?.estado" name="uf" [readonly]="true">
             </mat-form-field>
           </div>
           <button mat-flat-button class="cadastro-button" [disabled]="!cadastroForm.valid">

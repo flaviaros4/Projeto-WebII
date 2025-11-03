@@ -4,7 +4,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { OrcamentoModule } from '../efetuar-orcamento/modals/orcamento/orcamento-module';
-import { Usuario } from '../../shared/models/cliente.model';
+import { Usuario } from '../../shared/models/usuarios.model';
 
 interface SolicitacaoFuncionario {
   id: number;

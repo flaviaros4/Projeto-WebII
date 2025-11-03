@@ -1,0 +1,32 @@
+<div class="container">
+<mat-card class="receita-periodo">
+    <mat-card-title>Receita por Período</mat-card-title>
+    <mat-card-content>
+        <p>Visualize a receita total por dia em um determinado período.</p>
+        
+      <mat-form-field appearance="fill" style="padding: 10px;" >
+        <mat-label>Data Inicial</mat-label>
+        <input matInput [matDatepicker]="picker1">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Data Final</mat-label>
+        <input matInput [matDatepicker]="picker2">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field> 
+      <button >Gerar PDF</button>
+    </mat-card-content>
+   
+</mat-card>
+<mat-card class="receita-categoria">
+    <mat-card-title>Receita por Categoria</mat-card-title>
+    <mat-card-content>
+        <p>Consulte a receita total por categoria.</p>
+        <button>Gerar PDF</button>
+    </mat-card-content>
+    
+</mat-card>
+</div>

@@ -3,12 +3,17 @@ package com.maintech.backend.service;
 import com.maintech.backend.dto.SolicitacaoRequest;
 import com.maintech.backend.model.*;
 import com.maintech.backend.repository.CategoriaEquipamentoRepository;
+import com.maintech.backend.repository.HistoricoSolicitacaoRepository;
 import com.maintech.backend.repository.SolicitacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class SolicitacaoService {
@@ -22,6 +27,10 @@ public class SolicitacaoService {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private HistoricoSolicitacaoRepository historicoRepository;
+
+    // RF004 - Criar solicitação de manutenção
     public Solicitacao criarSolicitacao(SolicitacaoRequest request) {
         CategoriaEquipamento categoria = categoriaRepository.findById(request.getCategoriaId())
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
@@ -40,9 +49,15 @@ public class SolicitacaoService {
         solicitacao.setCliente(cliente);
         solicitacao.setEstado(EstadoSolicitacao.ABERTA);
 
-        return solicitacaoRepository.save(solicitacao);
+        Solicitacao salva = solicitacaoRepository.save(solicitacao);
+        
+        // Adicionar histórico
+        adicionarHistorico(salva, null, EstadoSolicitacao.ABERTA, "Solicitação criada");
+        
+        return salva;
     }
 
+    // RF003 - Listar solicitações do cliente
     public List<Solicitacao> getSolicitacoesCliente() {
         Usuario usuario = usuarioService.getUsuarioAtual();
         if (!(usuario instanceof Cliente)) {
@@ -53,10 +68,12 @@ public class SolicitacaoService {
         return solicitacaoRepository.findByClienteOrderByDataHoraAberturaDesc(cliente);
     }
 
+    // RF011 - Listar solicitações abertas
     public List<Solicitacao> getSolicitacoesAbertas() {
         return solicitacaoRepository.findByEstado(EstadoSolicitacao.ABERTA);
     }
 
+    // RF012 - Efetuar orçamento
     public Solicitacao efetuarOrcamento(Long solicitacaoId, BigDecimal valor) {
         Solicitacao solicitacao = solicitacaoRepository.findById(solicitacaoId)
                 .orElseThrow(() -> new RuntimeException("Solicitação não encontrada"));
@@ -67,14 +84,22 @@ public class SolicitacaoService {
         }
 
         Funcionario funcionario = (Funcionario) usuario;
+        EstadoSolicitacao estadoAnterior = solicitacao.getEstado();
 
         solicitacao.setValorOrcamento(valor);
         solicitacao.setEstado(EstadoSolicitacao.ORÇADA);
         solicitacao.setFuncionarioOrcamento(funcionario);
 
-        return solicitacaoRepository.save(solicitacao);
+        Solicitacao salva = solicitacaoRepository.save(solicitacao);
+        
+        // Adicionar histórico
+        adicionarHistorico(salva, estadoAnterior, EstadoSolicitacao.ORÇADA, 
+                          "Orçamento de R$ " + valor + " realizado por " + funcionario.getNome());
+        
+        return salva;
     }
 
+    // RF006 - Aprovar serviço
     public Solicitacao aprovarOrcamento(Long solicitacaoId) {
         Solicitacao solicitacao = solicitacaoRepository.findById(solicitacaoId)
                 .orElseThrow(() -> new RuntimeException("Solicitação não encontrada"));
@@ -88,10 +113,19 @@ public class SolicitacaoService {
             throw new RuntimeException("Só é possível aprovar solicitações com orçamento pendente");
         }
 
+        EstadoSolicitacao estadoAnterior = solicitacao.getEstado();
         solicitacao.setEstado(EstadoSolicitacao.APROVADA);
-        return solicitacaoRepository.save(solicitacao);
+        
+        Solicitacao salva = solicitacaoRepository.save(solicitacao);
+        
+        // Adicionar histórico
+        adicionarHistorico(salva, estadoAnterior, EstadoSolicitacao.APROVADA, 
+                          "Orçamento aprovado pelo cliente");
+        
+        return salva;
     }
 
+    // RF007 - Rejeitar serviço
     public Solicitacao rejeitarOrcamento(Long solicitacaoId, String motivo) {
         Solicitacao solicitacao = solicitacaoRepository.findById(solicitacaoId)
                 .orElseThrow(() -> new RuntimeException("Solicitação não encontrada"));
@@ -105,7 +139,117 @@ public class SolicitacaoService {
             throw new RuntimeException("Só é possível rejeitar solicitações com orçamento pendente");
         }
 
+        EstadoSolicitacao estadoAnterior = solicitacao.getEstado();
         solicitacao.setEstado(EstadoSolicitacao.REJEITADA);
+        
+        Solicitacao salva = solicitacaoRepository.save(solicitacao);
+        
+        // Adicionar histórico
+        adicionarHistorico(salva, estadoAnterior, EstadoSolicitacao.REJEITADA, 
+                          "Orçamento rejeitado. Motivo: " + motivo);
+        
+        return salva;
+    }
+
+    // RF009 - Resgatar serviço rejeitado
+    public Solicitacao resgatarServico(Long solicitacaoId) {
+        Solicitacao solicitacao = solicitacaoRepository.findById(solicitacaoId)
+                .orElseThrow(() -> new RuntimeException("Solicitação não encontrada"));
+
+        // Verificar se é o cliente dono da solicitação
+        Usuario usuario = usuarioService.getUsuarioAtual();
+        if (!(usuario instanceof Cliente) || !solicitacao.getCliente().getId().equals(usuario.getId())) {
+            throw new RuntimeException("Apenas o cliente dono da solicitação pode resgatar o serviço");
+        }
+
+        // Verificar se está no estado REJEITADA
+        if (solicitacao.getEstado() != EstadoSolicitacao.REJEITADA) {
+            throw new RuntimeException("Só é possível resgatar serviços rejeitados");
+        }
+
+        EstadoSolicitacao estadoAnterior = solicitacao.getEstado();
+        solicitacao.setEstado(EstadoSolicitacao.APROVADA);
+        
+        Solicitacao salva = solicitacaoRepository.save(solicitacao);
+        
+        // Adicionar histórico
+        adicionarHistorico(salva, estadoAnterior, EstadoSolicitacao.APROVADA, 
+                          "Serviço resgatado pelo cliente");
+        
+        return salva;
+    }
+
+    // RF010 - Pagar serviço
+    public Solicitacao pagarServico(Long solicitacaoId) {
+        Solicitacao solicitacao = solicitacaoRepository.findById(solicitacaoId)
+                .orElseThrow(() -> new RuntimeException("Solicitação não encontrada"));
+
+        // Verificar se é o cliente dono da solicitação
+        Usuario usuario = usuarioService.getUsuarioAtual();
+        if (!(usuario instanceof Cliente) || !solicitacao.getCliente().getId().equals(usuario.getId())) {
+            throw new RuntimeException("Apenas o cliente dono da solicitação pode pagar o serviço");
+        }
+
+        // Verificar se está no estado ARRUMADA
+        if (solicitacao.getEstado() != EstadoSolicitacao.ARRUMADA) {
+            throw new RuntimeException("Só é possível pagar serviços que foram arrumados");
+        }
+
+        EstadoSolicitacao estadoAnterior = solicitacao.getEstado();
+        solicitacao.setEstado(EstadoSolicitacao.PAGA);
+        
+        Solicitacao salva = solicitacaoRepository.save(solicitacao);
+        
+        // Adicionar histórico
+        adicionarHistorico(salva, estadoAnterior, EstadoSolicitacao.PAGA, 
+                          "Serviço pago pelo cliente");
+        
+        return salva;
+    }
+
+    // RF008 - Visualização completa da solicitação
+    public Map<String, Object> getSolicitacaoDetalhada(Long id) {
+        Solicitacao solicitacao = solicitacaoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Solicitação não encontrada"));
+
+        // Verificar permissão
+        Usuario usuario = usuarioService.getUsuarioAtual();
+        if (usuario instanceof Cliente && !solicitacao.getCliente().getId().equals(usuario.getId())) {
+            throw new RuntimeException("Você só pode visualizar suas próprias solicitações");
+        }
+
+        List<HistoricoSolicitacao> historico = historicoRepository.findBySolicitacaoOrderByDataHoraAsc(solicitacao);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("solicitacao", solicitacao);
+        response.put("historico", historico);
+
+        return response;
+    }
+
+    // Método para adicionar entrada no histórico
+    private void adicionarHistorico(Solicitacao solicitacao, EstadoSolicitacao estadoAnterior, 
+                                   EstadoSolicitacao estadoNovo, String observacao) {
+        HistoricoSolicitacao historico = new HistoricoSolicitacao();
+        historico.setSolicitacao(solicitacao);
+        historico.setDataHora(LocalDateTime.now());
+        historico.setEstadoAnterior(estadoAnterior);
+        historico.setEstadoNovo(estadoNovo);
+        historico.setUsuarioAlteracao(usuarioService.getUsuarioAtual());
+        historico.setObservacao(observacao);
+        historicoRepository.save(historico);
+    }
+
+    // Métodos auxiliares
+    public Optional<Solicitacao> findById(Long id) {
+        return solicitacaoRepository.findById(id);
+    }
+
+    public List<Solicitacao> findAll() {
+        return solicitacaoRepository.findAll();
+    }
+
+    public Solicitacao save(Solicitacao solicitacao) {
         return solicitacaoRepository.save(solicitacao);
     }
 }
