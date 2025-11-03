@@ -54,3 +54,38 @@ body {
 ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-checkmark-path {
     stroke: #ffffff !important;
 }
+
+.btn-success {
+     background: blue !important;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 26px;
+  font-size: 16px;
+  box-shadow: 0 6px 14px rgba(25, 118, 210, 0.18);
+  cursor: pointer;
+}
+
+.btn-info{
+ background: blue !important;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 26px;
+  font-size: 16px;
+  box-shadow: 0 6px 14px rgba(25, 118, 210, 0.18);
+  cursor: pointer;
+    
+}
+
+.btn-danger{
+    background: rgb(239, 2, 2) !important;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 26px;
+  font-size: 16px;
+  box-shadow: 0 6px 14px rgba(25, 118, 210, 0.18);
+  cursor: pointer;
+     
+}

@@ -35,7 +35,7 @@
 
 
 .btn-new {
-  background: linear-gradient(180deg, #2186e5, #1976d2);
+  background: blue !important;
   color: #fff;
   border: none;
   padding: 10px 20px;
