@@ -17,16 +17,14 @@ public class AuthController {
     @PostMapping("/cadastro")
     public ResponseEntity<?> cadastrarCliente(@RequestBody CadastroClienteRequest request) {
         try {
-            String senhaGerada = authService.cadastrarCliente(
-                request.getNome(),
-                request.getEmail(), 
-                request.getCpf(),
-                request.getTelefone(),
-                request.getEndereco()
+            authService.cadastrarCliente(
+                    request.getNome(),
+                    request.getEmail(),
+                    request.getCpf(),
+                    request.getTelefone(),
+                    request.getEndereco()
             );
-            
-            return ResponseEntity.ok().body("Cliente cadastrado com sucesso. Senha: " + senhaGerada);
-            
+            return ResponseEntity.ok().body("Cliente cadastrado com sucesso. Verifique seu e-mail para a senha.");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

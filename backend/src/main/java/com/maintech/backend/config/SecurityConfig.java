@@ -9,8 +9,11 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder; // Importação necessária
+
+import static org.springframework.security.crypto.password.Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.PBKDF2WithHmacSHA256;
+
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -24,22 +27,44 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/clientes/cadastro").permitAll()
-                .requestMatchers("/health").permitAll()
-                .anyRequest().authenticated()
-            )
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/clientes/cadastro").permitAll()
+                                .requestMatchers("/health").permitAll()
+
+
+                                .requestMatchers("/api/categorias/**").hasRole("FUNCIONARIO")
+                                .requestMatchers("/api/orcamentos/**").hasRole("FUNCIONARIO")
+
+                                // .requestMatchers("/api/funcionarios/**").hasRole("FUNCIONARIO")
+
+                                // (Exemplo para endpoints de Cliente)
+                                .requestMatchers("/api/solicitacoes/minhas").hasRole("CLIENTE")
+                                .requestMatchers("/api/solicitacoes/abertas").hasRole("FUNCIONARIO")
+
+                                // O resto exige apenas autenticação (ex: /solicitacoes/{id}/detalhes)
+                                .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+
+        String secretPepper = "";
+        int saltLength = 16;
+        int iterations = 310000;
+
+        return new Pbkdf2PasswordEncoder(
+                secretPepper,
+                saltLength,
+                iterations,
+                PBKDF2WithHmacSHA256
+        );
     }
 
     @Bean

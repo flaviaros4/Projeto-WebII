@@ -26,7 +26,10 @@ public class AuthService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    public String cadastrarCliente(String nome, String email, String cpf, String telefone, Endereco endereco) {
+    @Autowired
+    private EmailService emailService;
+
+    public void cadastrarCliente(String nome, String email, String cpf, String telefone, Endereco endereco) {
         if (usuarioRepository.findByEmail(email) != null) {
             throw new RuntimeException("Email já cadastrado");
         }
@@ -40,7 +43,7 @@ public class AuthService {
         Cliente cliente = new Cliente();
         cliente.setNome(nome);
         cliente.setEmail(email);
-        cliente.setSenha(passwordEncoder.encode(senha));
+        cliente.setSenha(passwordEncoder.encode(senha)); // Criptografa a senha gerada
         cliente.setPerfil(Perfil.CLIENTE);
         cliente.setStatus(true);
         cliente.setCpf(cpf);
@@ -49,24 +52,32 @@ public class AuthService {
 
         clienteRepository.save(cliente);
 
-        System.out.println("Senha gerada para " + email + ": " + senha);
-        return senha;
+        String assunto = "Bem-vindo à MainTech - Sua Senha de Acesso";
+        String corpoEmail = "Olá, " + nome + "!\n\n"
+                + "Seu cadastro em nosso sistema de manutenção foi realizado com sucesso.\n"
+                + "Seu login é o seu e-mail (" + email + ") e sua senha é:\n\n"
+                + "Senha: " + senha + "\n\n"
+                + "\n\n"
+                + "Atenciosamente,\n"
+                + "Equipe MainTech";
+
+        emailService.enviarEmail(cliente.getEmail(), assunto, corpoEmail);
     }
 
     public LoginResponse login(String email, String senha) {
         Usuario usuario = usuarioRepository.findByEmail(email);
-        
+
         if (usuario != null && passwordEncoder.matches(senha, usuario.getSenha()) && usuario.getStatus()) {
             String token = jwtUtil.generateToken(usuario.getEmail(), usuario.getPerfil().name(), usuario.getNome());
             return new LoginResponse(token, usuario.getPerfil().name(), usuario.getNome());
         }
-        
+
         throw new RuntimeException("Email ou senha inválidos");
     }
 
     private String gerarSenhaAleatoria() {
         Random random = new Random();
-        int senha = 1000 + random.nextInt(9000);
-        return String.valueOf(senha);
+        int senhaNum = 1000 + random.nextInt(9000);
+        return String.valueOf(senhaNum);
     }
 }

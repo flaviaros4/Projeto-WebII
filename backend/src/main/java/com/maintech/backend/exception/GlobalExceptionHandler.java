@@ -1,0 +1,40 @@
+package com.maintech.backend.exception;
+
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.Map;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(RecursoDuplicadoException.class)
+    public ResponseEntity<Map<String, String>> handleRecursoDuplicado(RecursoDuplicadoException ex) {
+        // Retorna um erro 400 (Bad Request) com a mensagem exata que você pediu
+        Map<String, String> erro = Map.of("erro", ex.getMessage());
+        return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, String>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        String mensagemErro = "Erro de integridade de dados.";
+
+        if (ex.getMostSpecificCause().getMessage().contains("viola a restrição de unicidade")) {
+
+            if (ex.getMostSpecificCause().getMessage().contains("ukkbc0pb71nnd05mh8aktuh366")) {
+                mensagemErro = "Não pode cadastrar: o nome desta categoria já existe.";
+            } else {
+                mensagemErro = "Erro: Este registro já existe.";
+            }
+            Map<String, String> erro = Map.of("erro", mensagemErro);
+            return new ResponseEntity<>(erro, HttpStatus.BAD_REQUEST); // 400 Bad Request
+        }
+
+        Map<String, String> erro = Map.of("erro", "Erro interno no servidor.");
+        return new ResponseEntity<>(erro, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
