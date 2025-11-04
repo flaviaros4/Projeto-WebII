@@ -30,10 +30,22 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/clientes/cadastro").permitAll()
-                        .requestMatchers("/health").permitAll()
-                        .anyRequest().authenticated()
+                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/clientes/cadastro").permitAll()
+                                .requestMatchers("/health").permitAll()
+
+
+                                .requestMatchers("/api/categorias/**").hasRole("FUNCIONARIO")
+                                .requestMatchers("/api/orcamentos/**").hasRole("FUNCIONARIO")
+
+                                // .requestMatchers("/api/funcionarios/**").hasRole("FUNCIONARIO")
+
+                                // (Exemplo para endpoints de Cliente)
+                                .requestMatchers("/api/solicitacoes/minhas").hasRole("CLIENTE")
+                                .requestMatchers("/api/solicitacoes/abertas").hasRole("FUNCIONARIO")
+
+                                // O resto exige apenas autenticação (ex: /solicitacoes/{id}/detalhes)
+                                .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -43,15 +55,15 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
 
-        String secretPepper = ""; // Pepper opcional, pode deixar vazio.
-        int saltLength = 16;      // Tamanho do Salt em bytes
-        int iterations = 310000;  // Padrão do Spring Security 6
+        String secretPepper = "";
+        int saltLength = 16;
+        int iterations = 310000;
 
         return new Pbkdf2PasswordEncoder(
                 secretPepper,
                 saltLength,
                 iterations,
-                PBKDF2WithHmacSHA256 // Força o uso do SHA-256
+                PBKDF2WithHmacSHA256
         );
     }
 

@@ -1,5 +1,6 @@
 package com.maintech.backend.security;
 
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -32,13 +34,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
-            email = jwtUtil.getEmailFromToken(jwt);
+            try {
+                email = jwtUtil.getEmailFromToken(jwt);
+            } catch (Exception e) {
+                logger.warn("Token JWT inválido ou expirado", e);
+            }
         }
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             if (jwtUtil.validateToken(jwt)) {
+
+                Claims claims = jwtUtil.getClaims(jwt);
+                String perfil = claims.get("perfil", String.class);
+
+                // 2. Cria a autoridade correta (ex: ROLE_FUNCIONARIO ou ROLE_CLIENTE)
+                List<SimpleGrantedAuthority> authorities = Collections.singletonList(
+                        new SimpleGrantedAuthority("ROLE_" + perfil)
+                );
+
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        email, null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+                        email, null, authorities);
+
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
