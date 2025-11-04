@@ -44,7 +44,9 @@ public class SecurityConfig {
                                 .requestMatchers("/api/solicitacoes/minhas").hasRole("CLIENTE")
                                 .requestMatchers("/api/solicitacoes/abertas").hasRole("FUNCIONARIO")
 
-                                // O resto exige apenas autenticação (ex: /solicitacoes/{id}/detalhes)
+                                .requestMatchers("/api/solicitacoes/{id}/efetuar-manutencao").hasRole("FUNCIONARIO")
+
+                                // (solicitacoes/{id}/detalhes)
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

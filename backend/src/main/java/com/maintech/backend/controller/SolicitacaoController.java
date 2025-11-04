@@ -1,5 +1,6 @@
 package com.maintech.backend.controller;
 
+import com.maintech.backend.dto.ManutencaoRequest;
 import com.maintech.backend.dto.RespostaOrcamentoRequest;
 import com.maintech.backend.dto.SolicitacaoRequest;
 import com.maintech.backend.model.Solicitacao;
@@ -67,6 +68,19 @@ public class SolicitacaoController {
             Solicitacao solicitacao = solicitacaoService.rejeitarOrcamento(id, request.getMotivo());
             return ResponseEntity.ok(solicitacao);
         } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id}/efetuar-manutencao")
+    public ResponseEntity<?> efetuarManutencao(@PathVariable Long id,
+                                               @RequestBody ManutencaoRequest request) {
+        try {
+            Solicitacao solicitacao = solicitacaoService.efetuarManutencao(id, request);
+            return ResponseEntity.ok(solicitacao);
+        } catch (Exception e) {
+            // O GlobalExceptionHandler irá tratar a RegraNegocioException (400)
+            // ou RuntimeException (404 Not Found)
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

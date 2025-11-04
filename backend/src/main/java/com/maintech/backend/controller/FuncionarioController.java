@@ -51,8 +51,6 @@ public class FuncionarioController {
             funcionarioService.desativarFuncionario(id);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
-            // Se a RegraNegocioException for lançada, o GlobalExceptionHandler vai pegar
-            // Se for "Funcionário não encontrado", retorna 404
             return ResponseEntity.notFound().build();
         }
     }
