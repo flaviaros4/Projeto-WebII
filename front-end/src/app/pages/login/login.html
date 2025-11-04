@@ -12,12 +12,12 @@
                     <mat-error *ngIf="!loginValido">E-mail ou senha inválidos.</mat-error>
                     <mat-form-field class="full-width-input" appearance="outline">
                         <mat-label>Email</mat-label>
-                        <input matInput [(ngModel)]="user.email" name="email" type="email" required>
+                        <input matInput [(ngModel)]="usuario.email" name="email" type="email" required>
                     </mat-form-field>
 
                     <mat-form-field class="full-width-input" appearance="outline">
                         <mat-label>Password</mat-label>
-                        <input matInput [(ngModel)]="user.senha" name="password" [type]="hidePassword ? 'password' : 'text'" required>
+                        <input matInput [(ngModel)]="usuario.senha" name="password" [type]="hidePassword ? 'password' : 'text'" required>
                         <mat-icon matSuffix (click)="hidePassword = !hidePassword">
                             {{hidePassword ? 'visibility_off' : 'visibility'}}
                         </mat-icon>

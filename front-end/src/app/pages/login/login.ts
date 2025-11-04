@@ -12,7 +12,8 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { RecuperarSenha } from './modals/recuperar-senha/recuperar-senha';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
-import { Usuario } from '../../shared/models/usuarios.model';
+import { Perfil, Usuario } from '../../shared/models/usuarios.model';
+import { LoginService } from './services/login-service';
 
 @Component({
   selector: 'app-login',
@@ -34,50 +35,34 @@ import { Usuario } from '../../shared/models/usuarios.model';
 })
 
 export class Login {
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog,
+    private loginService: LoginService
+  ) {}
 
   abrirRecuperarSenha() {
     this.dialog.open(RecuperarSenha);
   }
 
-  user = {
+  usuario: Usuario = {
     email: '',
-    senha: '' 
+    senha: '',
+    perfil: {} as Perfil,
+    nome: ''
   };
 
-  userAdmin = {
-    email: 'admin@gmail.com',
-    senha: 'admin321',
-    nome: 'Administrador' 
-  }
-
-  validarLoginAdmin(email:string, senha:string): boolean {
-    return email === this.userAdmin.email && senha === this.userAdmin.senha;
-  } 
 
   hidePassword = true;
   loginValido: boolean = true;
   router = inject(Router);
   
-  login() {
-    const usuariosCadastrados = JSON.parse(localStorage.getItem('usuarios') || '[]');
-    const usuarioEncontrado = usuariosCadastrados.find(
-      (u: Usuario) => u.email === this.user.email && u.senha === this.user.senha
-    );
-
-    if (usuarioEncontrado) {
-      this.loginValido = true;
-      localStorage.setItem('usuarioLogado', JSON.stringify(usuarioEncontrado));
-      this.router.navigate(['/cliente']);
-      alert('Login realizado com sucesso!');
-    } else if (this.validarLoginAdmin(this.user.email, this.user.senha)) {
-      this.loginValido = true;
-      localStorage.setItem('usuarioLogado', JSON.stringify(this.userAdmin)); 
-      this.router.navigate(['/funcionario']);
-      alert('Login realizado com sucesso!');
-    } else {
-      this.loginValido = false;
-      alert('E-mail ou senha inválidos.');
-    }
+  login(): void {
+   this.loginService.login(this.usuario).subscribe((usuarioLogado) => {
+      if (usuarioLogado) {
+        this.loginService.usuarioLogado = usuarioLogado;
+        this.router.navigate(['/']);
+      } else {
+        this.loginValido = false;
+      }
+    });
   }
 }

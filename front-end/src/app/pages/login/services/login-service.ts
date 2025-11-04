@@ -34,7 +34,7 @@ export class LoginService {
     delete localStorage[LS_CHAVE];
   }
 
-  login(login: Login): Observable<Usuario | null> {
+  login(login: Usuario): Observable<Usuario | null> {
     return this.httpClient.post<Usuario>(this.BASE_URL, JSON.stringify(login), this.httpOptions).pipe(
       map((resp: HttpResponse<Usuario>) => {
         if (resp.status == 200) {
