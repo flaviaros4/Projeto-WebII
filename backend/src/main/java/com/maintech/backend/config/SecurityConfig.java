@@ -38,7 +38,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/categorias/**").hasRole("FUNCIONARIO")
                                 .requestMatchers("/api/orcamentos/**").hasRole("FUNCIONARIO")
 
-                                // .requestMatchers("/api/funcionarios/**").hasRole("FUNCIONARIO")
+                                 .requestMatchers("/api/funcionarios/**").hasRole("FUNCIONARIO")
 
                                 // (Exemplo para endpoints de Cliente)
                                 .requestMatchers("/api/solicitacoes/minhas").hasRole("CLIENTE")

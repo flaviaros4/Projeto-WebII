@@ -4,8 +4,15 @@ import com.maintech.backend.model.Funcionario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List; // Importar
+
 @Repository
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
     Funcionario findByEmail(String email);
+
     boolean existsByEmail(String email);
+
+    List<Funcionario> findByStatusTrue();
+
+    long countByStatusTrue();
 }
