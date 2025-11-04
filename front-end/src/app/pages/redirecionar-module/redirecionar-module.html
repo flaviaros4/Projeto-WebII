@@ -1,0 +1,34 @@
+<div class="container">
+    <h1>Redirecionar Solicitação</h1>
+    <div class="solicitacao-info">
+      <p><strong>ID:</strong> 12345</p>
+      <p><strong>Descrição:</strong> Impressora não está funcionando</p>
+      <p><strong>Funcionário que abriu:</strong> João Silva</p>
+      <p><strong>Estado atual:</strong> ABERTA</p>
+    </div>
+    <div class="redirecionar-form">
+      <label for="funcionario">Redirecionar para:</label>
+      <select id="funcionario">
+        <option value="" disabled selected>Selecione um funcionário</option>
+        <option value="2">Maria Souza</option>
+        <option value="3">Carlos Pereira</option>
+        <option value="4">Ana Costa</option>
+      </select>
+      <button id="redirecionarBtn">Redirecionar</button>
+    </div>
+
+    <div class="historico">
+      <h2>Histórico de Redirecionamentos</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Data/Hora</th>
+            <th>Origem</th>
+            <th>Destino</th>
+          </tr>
+        </thead>
+        <tbody id="historicoBody">
+        </tbody>
+      </table>
+    </div>
+</div>
