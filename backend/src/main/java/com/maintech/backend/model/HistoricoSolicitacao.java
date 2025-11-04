@@ -19,7 +19,7 @@ public class HistoricoSolicitacao {
     private LocalDateTime dataHora;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private EstadoSolicitacao estadoAnterior;
 
     @Enumerated(EnumType.STRING)

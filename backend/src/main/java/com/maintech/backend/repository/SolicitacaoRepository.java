@@ -10,16 +10,15 @@ import java.util.List;
 
 @Repository
 public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> {
-    
+
     // Método para buscar solicitações de um cliente ordenadas por data (mais recente primeiro)
-    List<Solicitacao> findByClienteOrderByDataHoraAberturaDesc(Cliente cliente);
-    
+    List<Solicitacao> findByClienteOrderByDataHoraAberturaAsc(Cliente cliente);
     // Método para buscar solicitações por estado
     List<Solicitacao> findByEstado(EstadoSolicitacao estado);
-    
+
     // Método para buscar solicitações de um cliente específico
     List<Solicitacao> findByCliente(Cliente cliente);
-    
+
     // Método para verificar se existem solicitações em um determinado estado
     boolean existsByEstado(EstadoSolicitacao estado);
 }

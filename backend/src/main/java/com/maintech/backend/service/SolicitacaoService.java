@@ -58,6 +58,7 @@ public class SolicitacaoService {
     }
 
     // RF003 - Listar solicitações do cliente
+// RF003 - Listar solicitações do cliente
     public List<Solicitacao> getSolicitacoesCliente() {
         Usuario usuario = usuarioService.getUsuarioAtual();
         if (!(usuario instanceof Cliente)) {
@@ -65,7 +66,7 @@ public class SolicitacaoService {
         }
 
         Cliente cliente = (Cliente) usuario;
-        return solicitacaoRepository.findByClienteOrderByDataHoraAberturaDesc(cliente);
+        return solicitacaoRepository.findByClienteOrderByDataHoraAberturaAsc(cliente);
     }
 
     // RF011 - Listar solicitações abertas
