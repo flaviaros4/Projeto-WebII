@@ -10,13 +10,14 @@ import { Cliente } from '../../../shared/models/usuarios.model';
 
 
 export class CadastroService {
-   constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {}
 
   BASE_URL = 'http://localhost:8080/api/auth/cadastro';
 
   private options = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    observe: 'response' as const
+    observe: 'response' as const,
+    responseType: 'text' as const
   };
 
   registrar(cliente: Cliente): Observable<boolean> {
@@ -28,13 +29,9 @@ export class CadastroService {
       endereco: cliente.endereco ?? null
     };
 
-    return this.httpClient.post<null>(this.BASE_URL, payload, this.options).pipe(
-      map((resp: HttpResponse<null>) => resp.status === 201),
+    return (this.httpClient.post(this.BASE_URL, payload, this.options) as Observable<HttpResponse<string>>).pipe(
+      map((resp: HttpResponse<string>) => resp.status >= 200 && resp.status < 300),
       catchError(err => throwError(() => err))
     );
-  }
-
-  cadastrar(cliente: Cliente): Observable<boolean> {
-    return this.registrar(cliente);
   }
 }

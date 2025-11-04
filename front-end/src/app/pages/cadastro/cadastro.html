@@ -33,41 +33,42 @@
           </mat-form-field>
           </div>
 
-          <div class="cadastro-fill">
-            <mat-form-field appearance="outline">
-              <mat-label>CEP</mat-label>
-              <input matInput [ngModel]="cliente.endereco?.cep" name="cep" type="text" mask="00000-000" required>
-              <mat-icon matSuffix>my_location</mat-icon>
-            </mat-form-field>
-              <button mat-flat-button type="button" class="buscar-cep" (click)="buscarCep()">
-              Buscar CEP
-             </button>
-          </div>
-         
-          <div class="cadastro-fill">
-            <mat-form-field class="flex-2" appearance="outline">
-              <mat-label>Endereço</mat-label>
-              <input matInput type="text" [ngModel]="cliente.endereco?.logradouro" name="logradouro" [readonly]="true">
-            </mat-form-field>
-            <mat-form-field class="flex-1" appearance="outline">
-              <mat-label>Número</mat-label>
-              <input matInput [ngModel]="cliente.endereco?.numero" name="numero" type="number" required>
-            </mat-form-field>
-          </div>
-          <div class="cadastro-fill">
-            <mat-form-field class="flex-1" appearance="outline">
-              <mat-label>Bairro</mat-label>
-              <input matInput type="text" [ngModel]="cliente.endereco?.bairro" name="bairro" [readonly]="true">
-            </mat-form-field>
-            <mat-form-field class="flex-1" appearance="outline">
-              <mat-label>Cidade</mat-label>
-              <input matInput type="text" [ngModel]="cliente.endereco?.cidade" name="cidade" [readonly]="true">
-            </mat-form-field>
-            <mat-form-field class="flex-05" appearance="outline">
-              <mat-label>UF</mat-label>
-              <input matInput type="text" [ngModel]="cliente.endereco?.estado" name="uf" [readonly]="true">
-            </mat-form-field>
-          </div>
+         <div class="cadastro-fill">
+  <mat-form-field appearance="outline">
+    <mat-label>CEP</mat-label>
+    <input matInput [(ngModel)]="cliente.endereco.cep" name="cep" type="text" mask="00000-000" required>
+    <mat-icon matSuffix>my_location</mat-icon>
+  </mat-form-field>
+  <button mat-flat-button type="button" class="buscar-cep" (click)="buscarCep()">
+    Buscar CEP
+  </button>
+</div>
+
+<div class="cadastro-fill">
+  <mat-form-field class="flex-2" appearance="outline">
+    <mat-label>Endereço</mat-label>
+    <input matInput type="text" [(ngModel)]="cliente.endereco.logradouro" name="logradouro" readonly>
+  </mat-form-field>
+  <mat-form-field class="flex-1" appearance="outline">
+    <mat-label>Número</mat-label>
+    <input matInput [(ngModel)]="cliente.endereco.numero" name="numero" type="text" required>
+  </mat-form-field>
+</div>
+
+<div class="cadastro-fill">
+  <mat-form-field class="flex-1" appearance="outline">
+    <mat-label>Bairro</mat-label>
+    <input matInput type="text" [(ngModel)]="cliente.endereco.bairro" name="bairro" readonly>
+  </mat-form-field>
+  <mat-form-field class="flex-1" appearance="outline">
+    <mat-label>Cidade</mat-label>
+    <input matInput type="text" [(ngModel)]="cliente.endereco.cidade" name="cidade" readonly>
+  </mat-form-field>
+  <mat-form-field class="flex-05" appearance="outline">
+    <mat-label>UF</mat-label>
+    <input matInput type="text" [(ngModel)]="cliente.endereco.estado" name="uf" readonly>
+  </mat-form-field>
+</div>
           <button mat-flat-button class="cadastro-button" [disabled]="!cadastroForm.valid">
             Cadastrar
           </button>

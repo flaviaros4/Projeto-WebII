@@ -11,10 +11,11 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { ViaCepService } from '../../shared/services/via-cep';
 import { CadastroService } from './services/cadastro-service';
-import { Cliente } from '../../shared/models/usuarios.model';
+import { Cliente, Endereco } from '../../shared/models/usuarios.model';
 import { CadastroSucessoDialog } from './modals/cadastro-sucesso/cadastro-sucesso';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxMaskDirective } from 'ngx-mask';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-cadastro',
@@ -34,13 +35,15 @@ import { NgxMaskDirective } from 'ngx-mask';
   styleUrl: './cadastro.css'
 })
 export class Cadastro {
-  
+   submit = false;
+
   cliente: Cliente = {
     nome: '',
     email: '',
     cpf: '',
+    telefone: '',
     perfil: 'CLIENTE',
-    endereco: {} as any
+    endereco: {} as Endereco,
   }; 
 
 
@@ -50,57 +53,51 @@ export class Cadastro {
     private cadastroService: CadastroService,
     private viaCep: ViaCepService
   ) {
-if (!this.cliente.endereco) {
-      this.cliente.endereco = {} as any;
-    }
   }
 
  
 
-  buscarCep() {
-  const cep = (this.cliente.endereco?.cep || '').replace(/\D/g, '');
-  if (!cep || cep.length !== 8) {
-    alert('CEP inválido');
-    return;
+ buscarCep() {
+    const cep = this.cliente.endereco.cep || '';
+    if (!cep) {
+      return;
+    }
+    this.viaCep.buscarCep(cep).subscribe((data) => {
+      if (data && !data.erro) {
+        this.cliente.endereco = {
+          cep: data.cep,
+          logradouro: data.logradouro,
+          numero: this.cliente.endereco?.numero || '',
+          bairro: data.bairro,
+          cidade: data.localidade,
+          estado: data.uf
+        };
+      } else {
+        alert('CEP não encontrado');
+      }
+    });
   }
 
-  this.viaCep.buscarCep(cep).subscribe({
-    next: (resp: any) => {
-      if (!resp || resp.erro) {
-        alert('CEP não encontrado');
-        return;
-      }
-
-      this.cliente.endereco = {
-        cep: resp.cep,
-        logradouro: resp.logradouro,
-        numero: this.cliente.endereco?.numero || '',
-        complemento: resp.complemento || '',
-        bairro: resp.bairro,
-        cidade: resp.localidade,
-        estado: resp.estado
-      };
-    },
-    error: () => alert('Erro ao consultar CEP')
-  });
-}
-
-
-
   cadastrar() {
-    this.cadastroService.cadastrar(this.cliente).subscribe({
-      next: (sucesso: boolean) => {
-        
-        if (sucesso) {
-          this.dialog.open(CadastroSucessoDialog).afterClosed().subscribe(() => {
-            this.router.navigate(['/login']);
-          });
-        } else {
-          alert('Erro no cadastro. Verifique os dados e tente novamente.');
-        }
-        
+    if (this.submit) return;
+    this.submit = true;
 
-      }});
+    this.cadastroService.registrar(this.cliente)
+      .pipe(finalize(() => (this.submit = false)))
+      .subscribe({
+       next: () => {
+          this.dialog
+            .open(CadastroSucessoDialog, {
+              data: { email: this.cliente.email },
+              disableClose: true
+            })
+            .afterClosed()
+            .subscribe(() => this.router.navigate(['/login']));
+        },
+        error: (err) => {
+          alert('Erro ao cadastrar: ' + (err?.error || err?.message || 'Falha desconhecida'));
+        }
+      });
   }
 }
 
