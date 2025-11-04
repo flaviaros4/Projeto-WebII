@@ -59,11 +59,11 @@ public class SolicitacaoController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    
+
     // Rejeitar orçamento
     @PostMapping("/{id}/rejeitar")
-    public ResponseEntity<?> rejeitarOrcamento(@PathVariable Long id, 
-                                             @RequestBody RespostaOrcamentoRequest request) {
+    public ResponseEntity<?> rejeitarOrcamento(@PathVariable Long id,
+                                               @RequestBody RespostaOrcamentoRequest request) {
         try {
             Solicitacao solicitacao = solicitacaoService.rejeitarOrcamento(id, request.getMotivo());
             return ResponseEntity.ok(solicitacao);
@@ -79,8 +79,17 @@ public class SolicitacaoController {
             Solicitacao solicitacao = solicitacaoService.efetuarManutencao(id, request);
             return ResponseEntity.ok(solicitacao);
         } catch (Exception e) {
-            // O GlobalExceptionHandler irá tratar a RegraNegocioException (400)
-            // ou RuntimeException (404 Not Found)
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
+    @PostMapping("/{id}/resgatar")
+    public ResponseEntity<?> resgatarServico(@PathVariable Long id) {
+        try {
+            Solicitacao solicitacao = solicitacaoService.resgatarServico(id);
+            return ResponseEntity.ok(solicitacao);
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
