@@ -38,6 +38,21 @@ public class Solicitacao {
     @JoinColumn(name = "funcionario_orcamento_id")
     private Funcionario funcionarioOrcamento;
 
+    // --- INÍCIO DOS NOVOS CAMPOS (RF014) ---
+
+    @Column(length = 2000) // 2000 caracteres para a descrição
+    private String descricaoManutencao;
+
+    @Column(length = 2000)
+    private String orientacoesCliente;
+
+    private LocalDateTime dataHoraManutencao;
+
+    @ManyToOne
+    @JoinColumn(name = "funcionario_manutencao_id")
+    private Funcionario funcionarioManutencao;
+
+
     public Solicitacao() {
         this.dataHoraAbertura = LocalDateTime.now();
         this.estado = EstadoSolicitacao.ABERTA;
@@ -62,4 +77,14 @@ public class Solicitacao {
     public void setCliente(Cliente cliente) { this.cliente = cliente; }
     public Funcionario getFuncionarioOrcamento() { return funcionarioOrcamento; }
     public void setFuncionarioOrcamento(Funcionario funcionarioOrcamento) { this.funcionarioOrcamento = funcionarioOrcamento; }
+
+    // --- GETTERS E SETTERS DOS NOVOS CAMPOS ---
+    public String getDescricaoManutencao() { return descricaoManutencao; }
+    public void setDescricaoManutencao(String descricaoManutencao) { this.descricaoManutencao = descricaoManutencao; }
+    public String getOrientacoesCliente() { return orientacoesCliente; }
+    public void setOrientacoesCliente(String orientacoesCliente) { this.orientacoesCliente = orientacoesCliente; }
+    public LocalDateTime getDataHoraManutencao() { return dataHoraManutencao; }
+    public void setDataHoraManutencao(LocalDateTime dataHoraManutencao) { this.dataHoraManutencao = dataHoraManutencao; }
+    public Funcionario getFuncionarioManutencao() { return funcionarioManutencao; }
+    public void setFuncionarioManutencao(Funcionario funcionarioManutencao) { this.funcionarioManutencao = funcionarioManutencao; }
 }

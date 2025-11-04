@@ -8,6 +8,10 @@ import com.maintech.backend.repository.SolicitacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.maintech.backend.dto.ManutencaoRequest;
+import com.maintech.backend.exception.RegraNegocioException;
+import com.maintech.backend.model.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -126,7 +130,41 @@ public class SolicitacaoService {
         return salva;
     }
 
-    // RF007 - Rejeitar serviço
+    public Solicitacao efetuarManutencao(Long solicitacaoId, ManutencaoRequest request) {
+        // 1. Valida se é um funcionário
+        Usuario usuario = usuarioService.getUsuarioAtual();
+        if (!(usuario instanceof Funcionario)) {
+            throw new RegraNegocioException("Apenas funcionários podem efetuar manutenção.");
+        }
+        Funcionario funcionario = (Funcionario) usuario;
+
+        // 2. Busca a solicitação
+        Solicitacao solicitacao = solicitacaoRepository.findById(solicitacaoId)
+                .orElseThrow(() -> new RuntimeException("Solicitação não encontrada"));
+
+        // 3. Valida o estado (conforme RF013, só pode APROVADA ou REDIRECIONADA)
+        if (solicitacao.getEstado() != EstadoSolicitacao.APROVADA && solicitacao.getEstado() != EstadoSolicitacao.REDIRECIONADA) {
+            throw new RegraNegocioException("Só é possível efetuar manutenção de solicitações com estado APROVADA ou REDIRECIONADA.");
+        }
+
+        EstadoSolicitacao estadoAnterior = solicitacao.getEstado();
+
+        // 4. Salva os novos dados na solicitação
+        solicitacao.setDescricaoManutencao(request.getDescricaoManutencao());
+        solicitacao.setOrientacoesCliente(request.getOrientacoesCliente());
+        solicitacao.setDataHoraManutencao(LocalDateTime.now());
+        solicitacao.setFuncionarioManutencao(funcionario); // Associa o funcionário que fez
+        solicitacao.setEstado(EstadoSolicitacao.ARRUMADA); // Muda o estado
+
+        Solicitacao salva = solicitacaoRepository.save(solicitacao);
+
+        // 5. Adiciona ao histórico
+        String observacao = "Manutenção realizada por " + funcionario.getNome() + ".";
+        adicionarHistorico(salva, estadoAnterior, EstadoSolicitacao.ARRUMADA, observacao);
+
+        return salva;
+    }
+
     public Solicitacao rejeitarOrcamento(Long solicitacaoId, String motivo) {
         Solicitacao solicitacao = solicitacaoRepository.findById(solicitacaoId)
                 .orElseThrow(() -> new RuntimeException("Solicitação não encontrada"));

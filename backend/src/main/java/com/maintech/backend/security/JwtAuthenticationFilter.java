@@ -47,7 +47,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Claims claims = jwtUtil.getClaims(jwt);
                 String perfil = claims.get("perfil", String.class);
 
-                // 2. Cria a autoridade correta (ex: ROLE_FUNCIONARIO ou ROLE_CLIENTE)
                 List<SimpleGrantedAuthority> authorities = Collections.singletonList(
                         new SimpleGrantedAuthority("ROLE_" + perfil)
                 );

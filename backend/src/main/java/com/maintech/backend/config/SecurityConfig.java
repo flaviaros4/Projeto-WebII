@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder; // Importação necessária
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 
 import static org.springframework.security.crypto.password.Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.PBKDF2WithHmacSHA256;
 
@@ -28,24 +28,27 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(
+                                                                                     SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/clientes/cadastro").permitAll()
-                                .requestMatchers("/health").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/clientes/cadastro").permitAll()
+                        .requestMatchers("/health").permitAll()
 
+                        // --- Endpoints de Funcionário ---
+                        .requestMatchers("/api/categorias/**").hasRole("FUNCIONARIO")
+                        .requestMatchers("/api/orcamentos/**").hasRole("FUNCIONARIO")
+                        .requestMatchers("/api/funcionarios/**").hasRole("FUNCIONARIO")
+                        .requestMatchers("/api/solicitacoes/abertas").hasRole("FUNCIONARIO")
+                        .requestMatchers("/api/solicitacoes/{id}/efetuar-manutencao").hasRole("FUNCIONARIO")
 
-                                .requestMatchers("/api/categorias/**").hasRole("FUNCIONARIO")
-                                .requestMatchers("/api/orcamentos/**").hasRole("FUNCIONARIO")
+                        // --- Endpoints de Cliente ---
+                        .requestMatchers("/api/solicitacoes/minhas").hasRole("CLIENTE")
+                        .requestMatchers("/api/solicitacoes/{id}/aprovar").hasRole("CLIENTE")
+                        .requestMatchers("/api/solicitacoes/{id}/rejeitar").hasRole("CLIENTE")
+                        .requestMatchers("/api/solicitacoes/{id}/resgatar").hasRole("CLIENTE")
 
-                                // .requestMatchers("/api/funcionarios/**").hasRole("FUNCIONARIO")
-
-                                // (Exemplo para endpoints de Cliente)
-                                .requestMatchers("/api/solicitacoes/minhas").hasRole("CLIENTE")
-                                .requestMatchers("/api/solicitacoes/abertas").hasRole("FUNCIONARIO")
-
-                                // O resto exige apenas autenticação (ex: /solicitacoes/{id}/detalhes)
-                                .anyRequest().authenticated()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -54,7 +57,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         String secretPepper = "";
         int saltLength = 16;
         int iterations = 310000;

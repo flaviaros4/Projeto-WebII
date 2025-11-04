@@ -1,5 +1,6 @@
 package com.maintech.backend.controller;
 
+import com.maintech.backend.dto.ManutencaoRequest;
 import com.maintech.backend.dto.RespostaOrcamentoRequest;
 import com.maintech.backend.dto.SolicitacaoRequest;
 import com.maintech.backend.model.Solicitacao;
@@ -58,13 +59,35 @@ public class SolicitacaoController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    
+
     // Rejeitar orçamento
     @PostMapping("/{id}/rejeitar")
-    public ResponseEntity<?> rejeitarOrcamento(@PathVariable Long id, 
-                                             @RequestBody RespostaOrcamentoRequest request) {
+    public ResponseEntity<?> rejeitarOrcamento(@PathVariable Long id,
+                                               @RequestBody RespostaOrcamentoRequest request) {
         try {
             Solicitacao solicitacao = solicitacaoService.rejeitarOrcamento(id, request.getMotivo());
+            return ResponseEntity.ok(solicitacao);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id}/efetuar-manutencao")
+    public ResponseEntity<?> efetuarManutencao(@PathVariable Long id,
+                                               @RequestBody ManutencaoRequest request) {
+        try {
+            Solicitacao solicitacao = solicitacaoService.efetuarManutencao(id, request);
+            return ResponseEntity.ok(solicitacao);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
+    @PostMapping("/{id}/resgatar")
+    public ResponseEntity<?> resgatarServico(@PathVariable Long id) {
+        try {
+            Solicitacao solicitacao = solicitacaoService.resgatarServico(id);
             return ResponseEntity.ok(solicitacao);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
