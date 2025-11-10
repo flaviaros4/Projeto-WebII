@@ -4,6 +4,7 @@ import com.maintech.backend.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -40,9 +41,14 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/clientes/cadastro").permitAll()
                         .requestMatchers("/health").permitAll()
-
-                        // --- Endpoints de Funcionário ---
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                         
+                        // --- Endpoints de Categoria --- 
+                        .requestMatchers(HttpMethod.GET, "/api/categorias", "/api/categorias/**").hasAnyRole("CLIENTE","FUNCIONARIO")
                         .requestMatchers("/api/categorias/**").hasRole("FUNCIONARIO")
+
+                       
+                        // --- Endpoints de Funcionário ---
                         .requestMatchers("/api/orcamentos/**").hasRole("FUNCIONARIO")
                         .requestMatchers("/api/funcionarios/**").hasRole("FUNCIONARIO")
                         .requestMatchers("/api/solicitacoes/abertas").hasRole("FUNCIONARIO")
