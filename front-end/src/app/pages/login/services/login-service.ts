@@ -4,50 +4,64 @@ import { Observable } from 'rxjs/internal/Observable';
 import { Login } from '../login';
 import { Usuario } from '../../../shared/models/usuarios.model';
 import { map } from 'rxjs/internal/operators/map';
-import { catchError, of, throwError } from 'rxjs';
+import { catchError, of, tap, throwError } from 'rxjs';
 
-const LS_CHAVE: string = 'usuarioLogado';
+interface LoginPayload {
+  email: string;
+  senha: string;
+}
+
+interface LoginResponse {
+  token: string;
+  perfil: 'CLIENTE' | 'FUNCIONARIO';
+  nome: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class LoginService {
    constructor(private httpClient: HttpClient) {}
 
   BASE_URL = 'http://localhost:8080/api/auth/login';
 
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    observe: 'response' as "response"
-  };
+  private tokenInternal: string | null = null;
+  private usuarioInternal: Usuario | null = null;
 
-  public get usuarioLogado(): Usuario | null {
-    let usu = localStorage[LS_CHAVE];
-    return (usu ? JSON.parse(localStorage[LS_CHAVE]) : null);
+  get usuarioLogado(): Usuario | null {
+    return this.usuarioInternal;
   }
 
-  public set usuarioLogado(usuario: Usuario | null) {
-    localStorage[LS_CHAVE] = JSON.stringify(usuario);
+  get token(): string | null {
+    return this.tokenInternal;
   }
 
-  logout() {
-    delete localStorage[LS_CHAVE];
-  }
+  login(payload: LoginPayload): Observable<Usuario> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-  login(login: Usuario): Observable<Usuario | null> {
-    return this.httpClient.post<Usuario>(this.BASE_URL, JSON.stringify(login), this.httpOptions).pipe(
-      map((resp: HttpResponse<Usuario>) => {
-        if (resp.status == 200) {
-          return resp.body;
-        }
-        return null;
-      }),
-      catchError((err) => {
-        if (err.status == 401) {
-          return of(null);
-        }
-        return throwError(() => err);
+    return this.httpClient.post<LoginResponse>(this.BASE_URL, payload, { headers }).pipe(
+      tap(res => { this.tokenInternal = res.token; }),
+      map(res => {
+        const usuario: Usuario = {
+          email: payload.email,
+          nome: res.nome,
+          perfil: res.perfil,
+          status: true
+        };
+        this.usuarioInternal = usuario;
+        return usuario;
       })
     );
   }
+
+  logout(): void {
+    this.tokenInternal = null;
+    this.usuarioInternal = null;
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.tokenInternal;
+  }
+  
 }

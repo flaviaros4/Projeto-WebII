@@ -9,7 +9,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router, RouterLink } from '@angular/router';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { RecuperarSenha } from './modals/recuperar-senha/recuperar-senha';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { Perfil, Usuario } from '../../shared/models/usuarios.model';
@@ -35,13 +34,7 @@ import { LoginService } from './services/login-service';
 })
 
 export class Login {
-  constructor(private dialog: MatDialog,
-    private loginService: LoginService
-  ) {}
-
-  abrirRecuperarSenha() {
-    this.dialog.open(RecuperarSenha);
-  }
+    constructor(private dialog: MatDialog, private loginService: LoginService) {}
 
   usuario: Usuario = {
     email: '',
@@ -50,17 +43,22 @@ export class Login {
     nome: ''
   };
 
-
   hidePassword = true;
-  loginValido: boolean = true;
+  loginValido = true;
   router = inject(Router);
-  
+
   login(): void {
-   this.loginService.login(this.usuario).subscribe((usuarioLogado) => {
-      if (usuarioLogado) {
-        this.loginService.usuarioLogado = usuarioLogado;
-        this.router.navigate(['/']);
-      } else {
+    const payload = { email: this.usuario.email, senha: this.usuario.senha! };
+
+    this.loginService.login(payload).subscribe({
+      next: (usuarioLogado) => {
+        if (usuarioLogado.perfil === 'FUNCIONARIO') {
+          this.router.navigate(['/funcionario']);
+        } else {
+          this.router.navigate(['/cliente']);
+        }
+      },
+      error: () => {
         this.loginValido = false;
       }
     });
