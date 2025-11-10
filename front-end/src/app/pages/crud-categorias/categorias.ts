@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CategoriasService } from './services/categorias.service';
 import { CategoriaModel } from './categorias.model';
+import { Categoria } from '../../shared/models/categoria.model';
 
 @Component({
   selector: 'app-crud-categorias',
@@ -12,7 +13,7 @@ import { CategoriaModel } from './categorias.model';
   styleUrls: ['./categorias.css']
 })
 export class Categorias {
-  categorias: CategoriaModel[] = [];
+  categorias: Categoria[] = [];
 
 
   showModal = false;
@@ -28,7 +29,10 @@ export class Categorias {
   }
 
   load() {
-    this.categorias = this.service.listar();
+   this.service.listar().subscribe({
+      next: (cats) => (this.categorias = cats || []),
+      error: () => (this.categorias = [])
+    });
   }
 
   novo() {

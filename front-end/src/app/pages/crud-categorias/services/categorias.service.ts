@@ -1,20 +1,29 @@
 import { Injectable } from '@angular/core';
 import { CategoriaModel } from '../categorias.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/internal/Observable';
+import { Categoria } from '../../../shared/models/categoria.model';
 
 const STORAGE_KEY = 'app_categorias_v1';
 
 @Injectable({ providedIn: 'root' })
 export class CategoriasService {
-  private list: CategoriaModel[] = [];
+private readonly BASE_URL = 'http://localhost:8080/api/categorias';
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.loadFromStorage();
   }
+
+  listar(): Observable<Categoria[]> {
+    return this.http.get<Categoria[]>(this.BASE_URL);
+  }
+
+  private list: Categoria[] = [];
 
   private loadFromStorage() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) this.list = JSON.parse(raw) as CategoriaModel[];
+      if (raw) this.list = JSON.parse(raw) as Categoria[];
       else {
 
         this.list = [
@@ -33,10 +42,7 @@ export class CategoriasService {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(this.list));
   }
 
-  listar(): CategoriaModel[] {
-    // devolve cópia
-    return this.list.map(c => ({ ...c }));
-  }
+
 
   obterPorId(id: number): CategoriaModel | undefined {
     return this.list.find(c => c.id === id);

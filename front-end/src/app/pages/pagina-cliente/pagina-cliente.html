@@ -1,7 +1,7 @@
 <div class="container geral">
   <div class="header">
     <h1>Minhas Solicitações</h1>
-    <button mat-raised-button color="primary" (click)="novaSolicitacao()">
+    <button mat-raised-button color="primary" (click)="cadastrarSolicitacao()">
       <mat-icon>add</mat-icon> Nova solicitação
     </button>
   </div>
@@ -40,14 +40,14 @@
           </ng-container>
 
 
-          <ng-container *ngSwitchCase="'REJEITADO'">
+          <ng-container *ngSwitchCase="'REJEITADA'">
             <button mat-button color="warn" title="Resgatar Serviço" (click)="resgatarServico(element)">
               Resgatar
             </button>
           </ng-container>
 
 
-          <ng-container *ngSwitchCase="'ARRUMADO'">
+          <ng-container *ngSwitchCase="'ARRUMADA'">
              <button mat-button color="primary" title="Pagar Serviço" 
             (click)="abrirModalPagamento(element)" class="pagar-btn">
             Pagar
@@ -69,9 +69,7 @@
     <button mat-icon-button color="primary" (click)="visualizarSolicitacao(element)" title="Visualizar">
       <mat-icon>visibility</mat-icon>
     </button>
-    <button mat-icon-button color="warn" (click)="removerSolicitacao(element)" title="Remover">
-      <mat-icon>delete</mat-icon>
-    </button>
+  
   </td>
 </ng-container>
 

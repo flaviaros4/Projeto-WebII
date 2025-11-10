@@ -17,12 +17,16 @@ import { Categorias } from './pages/crud-categorias/categorias';
 import { Solicitacoes } from './pages/solicitacoes/solicitacoes';
 import { Redirecionar } from './pages/redirecionar/redirecionar';
 import { Relatorios } from './pages/relatorios/relatorios';
+import { authGuard } from './auth/auth-guard';
 
 export const routes: Routes = [
   { path: 'cadastro', component: Cadastro},
   { path: 'login', component: Login },
   { path: 'orcamento', component: EfetuarOrcamento },
-  { path: 'cliente', component: PaginaCliente },
+  { path: 'cliente', component: PaginaCliente,
+    canActivate: [authGuard],
+    data: { perfil: ['CLIENTE'] }
+  },
   { path: 'funcionario', component: PaginaFuncionario },
   { path: 'funcionarios', component: ListarFuncionariosComponent },
   { path: 'pagar', component: Pagar },

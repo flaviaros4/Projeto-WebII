@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
-import { ClienteService } from './services/pagina-cliente';
+import { ClienteService } from './services/cliente-service';
 import { SolicitacaoManutencao } from './modals/solicitacao-de-manutencao/solicitacao-de-manutencao';
 import { Solicitacao } from '../../shared/models/solicitacao.model';
 import { VisualizarSolicitacao } from './modals/visualizar-solicitacao/visualizar-solicitacao';
@@ -29,41 +29,37 @@ export class PaginaCliente {
   constructor(private clienteService: ClienteService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.carregarSolicitacoes();
+    this.listarSolicitacoes();
   }
 
-  carregarSolicitacoes() {
-    const solicitacoes = this.clienteService.listarSolicitacoes();
-    solicitacoes.sort((a, b) => new Date(a.dataHora).getTime() - new Date(b.dataHora).getTime());
-    this.dataSource.data = solicitacoes;
+  listarSolicitacoes(): void {
+    this.clienteService.listarSolicitacoes().subscribe({
+      next: solicitacoes => {
+        const lista = (solicitacoes ?? []).slice().sort(
+          (a, b) => new Date(a.dataHora).getTime() - new Date(b.dataHora).getTime()
+        );
+        this.dataSource.data = lista;
+      },
+      error: () => alert('Falha ao carregar solicitações')
+    });
   }
 
-  novaSolicitacao() {
+  cadastrarSolicitacao() {
     const dialogRef = this.dialog.open(SolicitacaoManutencao, {
       width: '800px',
       height: '500px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        const nova: Solicitacao = {
-          id: 0,
-          dataHora: new Date().toISOString(),
-          descricao: result.descricao,
-          categoria: result.categoria,
-          descricaoDefeito: result.descricaoDefeito || '',
-          estado: 'ABERTA'
-        };
-        this.clienteService.cadastrarSolicitacao(nova);
-        this.carregarSolicitacoes();
-      }
-    });
+      if (result?.categoriaId) {
+      this.clienteService.cadastrarSolicitacao(result).subscribe({
+        next: () => this.listarSolicitacoes(),
+        error: () => alert('Erro ao cadastrar solicitação')
+      });
+    }
+  });
   }
 
-  removerSolicitacao(solicitacao: Solicitacao) {
-    this.clienteService.removerSolicitacao(solicitacao.id);
-    this.carregarSolicitacoes();
-  }
 
   mostrarOrcamento(solicitacao: Solicitacao) {
     const dialogRef = this.dialog.open(MostrarOrcamento, {
@@ -72,16 +68,15 @@ export class PaginaCliente {
     });
      dialogRef.afterClosed().subscribe(result => {
     if (result && solicitacao.id) {
-      if (result.status === 'APROVADO') {
+      if (result.status === 'APROVADA') {
         alert(`Serviço Aprovado no Valor R$ ${solicitacao.precoOrcamento?.toFixed(2)}`);
-        solicitacao.estado = 'APROVADO';
-      } else if (result.status === 'REJEITADO') {
-        solicitacao.estado = 'REJEITADO';
+        solicitacao.estado = 'APROVADA';
+      } else if (result.status === 'REJEITADA') {
+        solicitacao.estado = 'REJEITADA';
         solicitacao.motivoRejeicao = result.motivo;
         alert('Serviço Rejeitado');
       }
-      this.clienteService.atualizarSolicitacao(solicitacao);
-      this.carregarSolicitacoes(); 
+      this.listarSolicitacoes();
     }
   });
   }
@@ -89,7 +84,7 @@ export class PaginaCliente {
  
 
   resgatarServico(solicitacao: Solicitacao) {
-  solicitacao.estado = 'APROVADO';
+  solicitacao.estado = 'APROVADA';
 
   if (!solicitacao.historico) solicitacao.historico = [];
   solicitacao.historico.push({
@@ -97,9 +92,8 @@ export class PaginaCliente {
     estado: 'Solicitação resgatada de REJEITADA para APROVADO'
   });
 
-  this.clienteService.atualizarSolicitacao(solicitacao);
   alert('Serviço resgatado com sucesso! Agora ele está APROVADO.');
-  this.carregarSolicitacoes();
+  this.listarSolicitacoes();
 }
 
   abrirModalPagamento(solicitacao: Solicitacao) {
@@ -119,7 +113,7 @@ export class PaginaCliente {
 
   pagarSolicitacao(solicitacao: Solicitacao, dataHoraPagamento: string) {
  
-    solicitacao.estado = 'PAGO'; 
+    solicitacao.estado = 'PAGA'; 
     
    
     solicitacao.dataPagamento = dataHoraPagamento; 
@@ -131,9 +125,9 @@ export class PaginaCliente {
         estado: 'PAGA'
     });
 
-    this.clienteService.atualizarSolicitacao(solicitacao);
+
     alert('Pagamento confirmado com sucesso! A solicitação está PAGA.');
-    this.carregarSolicitacoes();
+    this.listarSolicitacoes();
 }
 
   visualizarSolicitacao(solicitacao: Solicitacao) {

@@ -17,7 +17,7 @@ export class App {
   constructor(private router: Router, private loginService: LoginService) {}
   protected readonly title = signal('manutencao-equipamentos');
 logout(): void {
-  this.loginService.logout(); // limpa token e usuário
-  this.router.navigate(['/login']); // redireciona para a página de login
+  this.loginService.logout(); 
+  this.router.navigate(['/login']);
 }
 }

@@ -6,6 +6,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
+import { Categoria } from '../../../../shared/models/categoria.model';
+import { CategoriasService } from '../../../crud-categorias/services/categorias.service';
 
 @Component({
   selector: 'app-solicitacao-manutencao',
@@ -23,15 +25,28 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrls: ['./Solicitacao-de-Manutencao.css']
 })
 export class SolicitacaoManutencao {
+  categorias: Categoria[] = [];
+
   solicitacao = {
     descricao: '',
     categoria: '',
-    descricaoDefeito: ''
+    descricaoDefeito: '',
+    categoriaId: null as number | null
   };
 
-  constructor(public dialogRef: MatDialogRef<SolicitacaoManutencao>) {}
+  constructor(public dialogRef: MatDialogRef<SolicitacaoManutencao>,
+    private categoriaService: CategoriasService
+  ) {}
+
+ngOnInit(): void {
+    this.categoriaService.listar().subscribe({
+      next: (cats) => (this.categorias = cats || []),
+      error: () => (this.categorias = [])
+    });
+  }
 
   cadastrarSolicitacao() {
+    if (!this.solicitacao.categoriaId) return;
     this.dialogRef.close(this.solicitacao);
   }
 

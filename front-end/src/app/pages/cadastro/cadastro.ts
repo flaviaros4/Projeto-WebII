@@ -34,6 +34,7 @@ import { finalize } from 'rxjs';
   templateUrl: './cadastro.html',
   styleUrl: './cadastro.css'
 })
+
 export class Cadastro {
    submit = false;
 
