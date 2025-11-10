@@ -66,19 +66,16 @@ export class PaginaCliente {
       width: '600px',
       data: solicitacao
     });
-     dialogRef.afterClosed().subscribe(result => {
-    if (result && solicitacao.id) {
-      if (result.status === 'APROVADA') {
-        alert(`Serviço Aprovado no Valor R$ ${solicitacao.precoOrcamento?.toFixed(2)}`);
-        solicitacao.estado = 'APROVADA';
-      } else if (result.status === 'REJEITADA') {
-        solicitacao.estado = 'REJEITADA';
-        solicitacao.motivoRejeicao = result.motivo;
-        alert('Serviço Rejeitado');
+      dialogRef.afterClosed().subscribe(result => {
+      if (result?.status) {
+        if (result.status === 'APROVADA') {
+          alert(`Serviço aprovado no valor R$ ${result.solicitacao?.precoOrcamento?.toFixed(2) ?? ''}`);
+        } else if (result.status === 'REJEITADA') {
+          alert('Serviço rejeitado');
+        }
+        this.listarSolicitacoes();
       }
-      this.listarSolicitacoes();
-    }
-  });
+    });
   }
 
  

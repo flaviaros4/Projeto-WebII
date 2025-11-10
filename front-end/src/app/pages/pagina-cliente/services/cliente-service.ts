@@ -47,5 +47,22 @@ constructor(private httpClient: HttpClient) {}
     );
   }
 
- 
+  mostrarOrcamento(solicitacaoId: number): Observable<Solicitacao> {
+    return this.httpClient.get<Solicitacao>(`${this.BASE_URL}/${solicitacaoId}/orcamento`).pipe(
+      catchError(err => throwError(() => err))
+    );
+  }
+
+  aprovarServico(solicitacaoId: number): Observable<Solicitacao> {
+    return this.httpClient.post<Solicitacao>(`${this.BASE_URL}/${solicitacaoId}/aprovar`, {}).pipe(
+      catchError(err => throwError(() => err))
+    );
+  }
+
+  rejeitarServico(solicitacaoId: number, motivo: string): Observable<Solicitacao> { 
+    return this.httpClient.post<Solicitacao>(`${this.BASE_URL}/${solicitacaoId}/rejeitar`, { motivo }).pipe(
+      catchError(err => throwError(() => err))
+    );
+  }
+
 }
