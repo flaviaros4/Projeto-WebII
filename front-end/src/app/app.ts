@@ -1,7 +1,8 @@
 import { Component, signal } from '@angular/core';
-import {RouterLink, RouterOutlet } from '@angular/router';
+import {Router, RouterLink, RouterOutlet } from '@angular/router';
 import { registerLocaleData } from '@angular/common';
 import localePT from '@angular/common/locales/pt';
+import { LoginService } from './pages/login/services/login-service';
 
 registerLocaleData(localePT);
 
@@ -12,6 +13,11 @@ registerLocaleData(localePT);
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
+export class App {  
+  constructor(private router: Router, private loginService: LoginService) {}
   protected readonly title = signal('manutencao-equipamentos');
+logout(): void {
+  this.loginService.logout(); // limpa token e usuário
+  this.router.navigate(['/login']); // redireciona para a página de login
+}
 }

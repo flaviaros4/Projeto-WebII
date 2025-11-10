@@ -42,3 +42,18 @@ ul{
   justify-content: center;
 }
 
+.exit{
+ padding-left: 20px;
+  button{
+ background-color: #1976d2;
+ font-size: 15px;
+ padding: 10px;
+  color: white;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+}
+  
+}
+
+
