@@ -1,12 +1,10 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/internal/Observable';
-import { Login } from '../login';
-import { Usuario } from '../../../shared/models/usuarios.model';
-import { map } from 'rxjs/internal/operators/map';
-import { catchError, of, tap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Usuario, Perfil } from '../../../shared/models/usuarios.model'; 
 
-interface LoginPayload {
+interface LoginPayload { 
   email: string;
   senha: string;
 }
@@ -17,51 +15,73 @@ interface LoginResponse {
   nome: string;
 }
 
+const AUTH_KEY = 'usuarioLogado';
+const TOKEN_KEY = 'authToken';
+
 @Injectable({
   providedIn: 'root'
 })
-
 export class LoginService {
-   constructor(private httpClient: HttpClient) {}
+  
+  BASE_URL = 'http://localhost:8080/api/auth/login'; 
 
-  BASE_URL = 'http://localhost:8080/api/auth/login';
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.checkInitialState());
+  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  private tokenInternal: string | null = null;
-  private usuarioInternal: Usuario | null = null;
+  constructor(private httpClient: HttpClient) {}
 
-  get usuarioLogado(): Usuario | null {
-    return this.usuarioInternal;
+  private checkInitialState(): boolean {
+    return !!localStorage.getItem(TOKEN_KEY) && !!localStorage.getItem(AUTH_KEY);
   }
+
 
   get token(): string | null {
-    return this.tokenInternal;
+    return localStorage.getItem(TOKEN_KEY);
   }
+  
+  get usuarioLogado(): Usuario | null {
+    const usuarioJson = localStorage.getItem(AUTH_KEY);
+    if (usuarioJson) {
+      try {
+        return JSON.parse(usuarioJson) as Usuario;
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  }
+
+  getUserProfile(): Perfil | null {
+    return this.usuarioLogado?.perfil || null;
+  }
+
+  
 
   login(payload: LoginPayload): Observable<Usuario> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
     return this.httpClient.post<LoginResponse>(this.BASE_URL, payload, { headers }).pipe(
-      tap(res => { this.tokenInternal = res.token; }),
-      map(res => {
+      tap(res => {
+        
+        localStorage.setItem(TOKEN_KEY, res.token);
+        
         const usuario: Usuario = {
           email: payload.email,
           nome: res.nome,
           perfil: res.perfil,
-          status: true
+          status: true 
         };
-        this.usuarioInternal = usuario;
-        return usuario;
+        localStorage.setItem(AUTH_KEY, JSON.stringify(usuario));
+        this.isAuthenticatedSubject.next(true); 
+      }),
+      map(() => {
+        return this.usuarioLogado!;
       })
     );
   }
 
   logout(): void {
-    this.tokenInternal = null;
-    this.usuarioInternal = null;
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(AUTH_KEY);
+    this.isAuthenticatedSubject.next(false);
   }
-
-  isAuthenticated(): boolean {
-    return !!this.tokenInternal;
-  }
-  
 }

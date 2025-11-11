@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { OrcamentoModule } from '../efetuar-orcamento/modals/orcamento/orcamento-module';
+import { ModalEfetuarOrcamento } from '../efetuar-orcamento/modal-efetuar-orcamento/modal-efetuar-orcamento';
 import { Usuario } from '../../shared/models/usuarios.model';
 
 interface SolicitacaoFuncionario {
@@ -47,7 +47,7 @@ export class PaginaFuncionario implements OnInit {
   }
 
   efetuarOrcamento(solicitacao: SolicitacaoFuncionario) {
-    this.dialog.open(OrcamentoModule, {
+    this.dialog.open(ModalEfetuarOrcamento, {
       data: {
         ...solicitacao,
         funcionario: this.funcionarioLogado

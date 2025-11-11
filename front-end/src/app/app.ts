@@ -1,23 +1,47 @@
-import { Component, signal } from '@angular/core';
-import {Router, RouterLink, RouterOutlet } from '@angular/router';
-import { registerLocaleData } from '@angular/common';
+import { Component, signal, OnInit, inject } from '@angular/core';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { registerLocaleData, CommonModule } from '@angular/common'; 
 import localePT from '@angular/common/locales/pt';
 import { LoginService } from './pages/login/services/login-service';
+import { Observable } from 'rxjs';
+import { Perfil } from './shared/models/usuarios.model';
 
 registerLocaleData(localePT);
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, RouterLink, CommonModule], 
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {  
-  constructor(private router: Router, private loginService: LoginService) {}
+export class App implements OnInit { 
+  private router = inject(Router);
+  private loginService = inject(LoginService);
+  
   protected readonly title = signal('manutencao-equipamentos');
-logout(): void {
-  this.loginService.logout(); 
-  this.router.navigate(['/login']);
-}
+  
+  
+  isAuthenticated$!: Observable<boolean>; 
+  
+
+  userProfile: Perfil | null = null;
+
+  ngOnInit(): void {
+    this.isAuthenticated$ = this.loginService.isAuthenticated$;
+    
+    
+    this.isAuthenticated$.subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        this.userProfile = this.loginService.getUserProfile();
+      } else {
+        this.userProfile = null;
+      }
+    });
+  }
+
+  logout(): void {
+    this.loginService.logout(); 
+    this.router.navigate(['/login']);
+  }
 }
