@@ -65,4 +65,10 @@ constructor(private httpClient: HttpClient) {}
     );
   }
 
+  resgatarServico(solicitacaoId: number): Observable<Solicitacao> {
+    return this.httpClient.post<Solicitacao>(`${this.BASE_URL}/${solicitacaoId}/resgatar`, {}).pipe(
+      catchError(err => throwError(() => err))
+    );
+  }
+
 }

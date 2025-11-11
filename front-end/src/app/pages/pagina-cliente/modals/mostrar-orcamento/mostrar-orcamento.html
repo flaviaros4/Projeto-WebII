@@ -4,7 +4,7 @@
 <p><b>Descrição:</b> {{data.descricao}}</p>
 <p><b>Categoria:</b> {{data.categoria}}</p>
 <p><b>Descrição do defeito:</b> {{data.descricaoDefeito}}</p>
-<p><b>Preço Orçado:</b> {{data.precoOrcamento}}</p>
+<p><b>Preço Orçado:</b> {{data.precoOrcamento | currency: 'BRL'}}</p>
 </div>
 
 <button mat-button (click)="aprovarServico()">Aprovar</button>

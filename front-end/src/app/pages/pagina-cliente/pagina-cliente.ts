@@ -69,7 +69,7 @@ export class PaginaCliente {
       dialogRef.afterClosed().subscribe(result => {
       if (result?.status) {
         if (result.status === 'APROVADA') {
-          alert(`Serviço aprovado no valor R$ ${result.solicitacao?.precoOrcamento?.toFixed(2) ?? ''}`);
+          alert(`Serviço aprovado no valor R$ ${solicitacao.precoOrcamento?.toFixed(2)}`);
         } else if (result.status === 'REJEITADA') {
           alert('Serviço rejeitado');
         }
@@ -81,17 +81,15 @@ export class PaginaCliente {
  
 
   resgatarServico(solicitacao: Solicitacao) {
-  solicitacao.estado = 'APROVADA';
-
-  if (!solicitacao.historico) solicitacao.historico = [];
-  solicitacao.historico.push({
-    dataHora: new Date().toISOString(),
-    estado: 'Solicitação resgatada de REJEITADA para APROVADO'
-  });
-
-  alert('Serviço resgatado com sucesso! Agora ele está APROVADO.');
-  this.listarSolicitacoes();
-}
+    this.clienteService.resgatarServico(solicitacao.id).subscribe({
+        next: (updatedSolicitacao) => {
+            alert('Serviço resgatado com sucesso! A solicitação mudou para o estado APROVADA.');
+            this.listarSolicitacoes();
+        }
+        ,
+        error: () => alert('Erro ao resgatar o serviço')
+    });
+  }
 
   abrirModalPagamento(solicitacao: Solicitacao) {
     const dialogRef = this.dialog.open(PagarServico, {

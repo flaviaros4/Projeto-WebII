@@ -9,7 +9,7 @@ import { ClienteService } from '../../services/cliente-service';
 
 @Component({
   selector: 'app-mostrar-orcamento',
-  imports: [MatButton],
+  imports: [MatButton, MatDialogModule, CommonModule, MatButtonModule],
   templateUrl: './mostrar-orcamento.html',
   styleUrl: './mostrar-orcamento.css'
 })
@@ -52,12 +52,14 @@ export class MostrarOrcamento {
 
   rejeitarServico() {
     if (!this.data?.id) return;
-    const ref = this.dialog.open(RejeitarServico, { width: '450px' });
-    ref.afterClosed().subscribe(result => {
-      if (!result?.motivo) return;
-      this.clienteService.rejeitarServico(this.data.id!, result.motivo).subscribe({
+    const ref = this.dialog.open(RejeitarServico, { width: '420px' });
+    ref.afterClosed().subscribe((motivo?: string) => {
+      const motivoTrim = (motivo ?? '').trim();
+      if (!motivoTrim) return;
+
+      this.clienteService.rejeitarServico(this.data.id!, motivoTrim).subscribe({
         next: (s) => this.dialogRef.close({ status: 'REJEITADA', solicitacao: s }),
-        error: () => (this.erro = 'Erro ao rejeitar serviço')
+        error: () => this.erro = 'Erro ao rejeitar serviço'
       });
     });
   }
