@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Usuario } from '../../../../shared/models/usuarios.model';
+import { Usuario } from '../../../shared/models/usuarios.model';
 
 
 export interface OrcamentoDialogData {
@@ -35,14 +35,14 @@ export interface OrcamentoDialogData {
       <button mat-raised-button color="primary" (click)="registrarOrcamento()">Registrar</button>
     </div>
   `,
-  styleUrls: ['./orcamento.css']
+  styleUrls: ['./modal-efetuar-orcamento.css']
 })
 
-export class OrcamentoModule {
+export class ModalEfetuarOrcamento {
   valorOrcamento: number = 0;
 
   constructor(
-    public dialogRef: MatDialogRef<OrcamentoModule>,
+    public dialogRef: MatDialogRef<ModalEfetuarOrcamento>,
     @Inject(MAT_DIALOG_DATA) public data: OrcamentoDialogData
   ) {}
 
