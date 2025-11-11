@@ -40,6 +40,17 @@ export class App implements OnInit {
     });
   }
 
+  home() {
+    const user = this.loginService.usuarioLogado;
+    if (!user) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    this.router.navigate([user.perfil === 'FUNCIONARIO' ? '/funcionario' : '/cliente']);
+  }
+
+ 
+
   logout(): void {
     this.loginService.logout(); 
     this.router.navigate(['/login']);

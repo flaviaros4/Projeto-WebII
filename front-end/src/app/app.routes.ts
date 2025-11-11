@@ -1,4 +1,4 @@
-// src/app/app.routes.ts
+
 import { Routes } from '@angular/router';
 
 import { CadastroFuncionarioComponent } from './pages/crud-funcionarios/cadastro-funcionario.component';
@@ -20,6 +20,7 @@ import { Relatorios } from './pages/relatorios/relatorios';
 import { authGuard } from './auth/auth-guard';
 
 export const routes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'cadastro', component: Cadastro},
   { path: 'login', component: Login },
   { path: 'orcamento', component: EfetuarOrcamento },

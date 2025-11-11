@@ -1,14 +1,13 @@
 <nav class="barra">
-  <div class="logo"> <a class="nav-link" routerLink="/login"><b>Main</b><b style="color: #1976d2">Tech</b> </a></div>
+  <div class="logo">
+     <a class="nav-link" (click)="home()" style="cursor:pointer"><b>Main</b><b style="color: #1976d2">Tech</b> </a></div>
     <ul class="">
-        
       <li class="link-site" *ngIf="!(isAuthenticated$ | async)">
         <a class="nav-link " routerLink="/cadastro">Cadastro</a>
       </li>
       <li class="link-site" *ngIf="!(isAuthenticated$ | async)">
         <a class="nav-link" routerLink="/login">Login</a>
       </li>
-
       <li class="link-site">
         <a class="nav-link" routerLink="/cliente">Página Cliente</a> 
       </li>
