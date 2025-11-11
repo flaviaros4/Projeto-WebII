@@ -7,6 +7,8 @@ import { provideNgxMask } from 'ngx-mask';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
 import { authInterceptor } from './shared/services/auth-interceptor';
 
+
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
