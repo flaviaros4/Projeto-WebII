@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/orcamentos")
+@RequestMapping("/api/solicitacoes/{id}/efetuar-orcamento")
 public class OrcamentoController {
 
     @Autowired

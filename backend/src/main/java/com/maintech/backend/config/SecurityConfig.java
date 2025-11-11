@@ -49,10 +49,11 @@ public class SecurityConfig {
 
                        
                         // --- Endpoints de Funcionário ---
-                        .requestMatchers("/api/orcamentos/**").hasRole("FUNCIONARIO")
+                        .requestMatchers("/api/solicitacoes/{id}/efetuar-orcamento").hasRole("FUNCIONARIO")
                         .requestMatchers("/api/funcionarios/**").hasRole("FUNCIONARIO")
                         .requestMatchers("/api/solicitacoes/abertas").hasRole("FUNCIONARIO")
                         .requestMatchers("/api/solicitacoes/{id}/efetuar-manutencao").hasRole("FUNCIONARIO")
+                        .requestMatchers("/api/solicitacoes/{id}/detalhes").hasRole("FUNCIONARIO")
 
                         // --- Endpoints de Cliente ---
                         .requestMatchers("/api/solicitacoes/minhas").hasRole("CLIENTE")
