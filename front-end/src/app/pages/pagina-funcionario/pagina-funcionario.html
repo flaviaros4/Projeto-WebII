@@ -6,24 +6,24 @@
   </div>
   
 
-  <table mat-table [dataSource]="solicitacoes" class="mat-elevation-z3 tabela">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z3 tabela">
 
     <ng-container matColumnDef="dataHora">
       <th mat-header-cell *matHeaderCellDef> Data/Hora </th>
-      <td mat-cell *matCellDef="let s"> {{ s.dataHora }} </td>
+      <td mat-cell *matCellDef="let element"> {{element.dataHora | date : 'short' : '' : 'pt-BR'}}
     </ng-container>
 
 
     <ng-container matColumnDef="cliente">
       <th mat-header-cell *matHeaderCellDef> Cliente </th>
-      <td mat-cell *matCellDef="let s"> {{ s.cliente }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.cliente }} </td>
     </ng-container>
 
 
-    <ng-container matColumnDef="equipamento">
-      <th mat-header-cell *matHeaderCellDef> Equipamento </th>
-      <td mat-cell *matCellDef="let s">
-        {{ s.equipamento | slice:0:30 }}{{ s.equipamento.length > 30 ? '...' : '' }}
+    <ng-container matColumnDef="descricao">
+      <th mat-header-cell *matHeaderCellDef> Descrição </th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.descricao| slice:0:30 }}{{ element.descricao.length > 30 ? '...' : '' }}
       </td>
     </ng-container>
 

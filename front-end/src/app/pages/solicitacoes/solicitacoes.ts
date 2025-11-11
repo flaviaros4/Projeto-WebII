@@ -3,10 +3,10 @@ import { CommonModule, registerLocaleData } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Solicitacao } from '../../shared/models/solicitacao.model';
-import { ModalEfetuarOrcamento } from '../efetuar-orcamento/modal-efetuar-orcamento/modal-efetuar-orcamento';
+import { EfetuarOrcamento } from '../pagina-funcionario/modals/efetuar-orcamento/efetuar-orcamento';
 import { Usuario } from '../../shared/models/usuarios.model';
 import { MatDialog } from '@angular/material/dialog';
-import { EfetuarManutencao } from '../pagina-funcionario/modals/efetuar-manutencao/efetuar-manutencao';
+import { EfetuarManutencao } from './modals/efetuar-manutencao/efetuar-manutencao';
 import { FinalizarSolicitacao } from './modals/finalizar-solicitacao/finalizar-solicitacao';
 import { SolicitacaoManutencao } from '../pagina-cliente/modals/solicitacao-de-manutencao/solicitacao-de-manutencao';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -169,7 +169,7 @@ displayedColumns: string[] = ['dataHora', 'cliente', 'equipamento', 'estado', 'a
     }
 
   efetuarOrcamento(solicitacao: SolicitacaoFuncionario) {
-    this.dialog.open(ModalEfetuarOrcamento, {
+    this.dialog.open(EfetuarOrcamento, {
       data: {
         ...solicitacao,
         funcionario: this.funcionarioLogado

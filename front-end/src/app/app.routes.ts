@@ -5,7 +5,7 @@ import { CadastroFuncionarioComponent } from './pages/crud-funcionarios/cadastro
 import { Login } from './pages/login/login';
 
 import { SolicitacaoManutencao } from './pages/pagina-cliente/modals/solicitacao-de-manutencao/solicitacao-de-manutencao';
-import { EfetuarOrcamento } from './pages/efetuar-orcamento/efetuar-orcamento';
+import { EfetuarOrcamento } from './pages/pagina-funcionario/modals/efetuar-orcamento/efetuar-orcamento';
 
 import { PaginaCliente } from './pages/pagina-cliente/pagina-cliente';
 import { PaginaFuncionario } from './pages/pagina-funcionario/pagina-funcionario';
@@ -27,7 +27,10 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { perfil: ['CLIENTE'] }
   },
-  { path: 'funcionario', component: PaginaFuncionario },
+  { path: 'funcionario', component: PaginaFuncionario,
+    canActivate: [authGuard],
+    data: { perfil: ['FUNCIONARIO'] }
+  },
   { path: 'funcionarios', component: ListarFuncionariosComponent },
   { path: 'pagar', component: Pagar },
   { path: 'manutencao', component: EfetuarManutencao },
