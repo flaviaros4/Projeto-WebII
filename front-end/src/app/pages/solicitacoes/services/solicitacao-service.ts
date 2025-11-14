@@ -53,8 +53,8 @@ export class SolicitacaoService {
     );
   }
 
-  efetuarManutencao(solicitacaoId: number, descricao: any, orientacao: any): Observable<Solicitacao> {
-    const body = { descricao, orientacao };
+  efetuarManutencao(solicitacaoId: number, descricaoManutencao: any, orientacoesCliente: any): Observable<Solicitacao> {
+    const body = { descricaoManutencao, orientacoesCliente };
     return this.httpClient.post<Solicitacao>(`${this.BASE_URL}/${solicitacaoId}/efetuar-manutencao`, body, this.options).pipe(
       map((resp) => resp.body as Solicitacao)
     );

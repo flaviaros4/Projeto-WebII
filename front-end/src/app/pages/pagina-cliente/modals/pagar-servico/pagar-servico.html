@@ -5,8 +5,9 @@
     <div class="detalhes detalhes-solicitacao">
       <p><strong>Equipamento:</strong> {{ data.solicitacao.descricao }}</p>
       <p><strong>Defeito:</strong> {{ data.solicitacao.descricaoDefeito }}</p>
-      <p><strong>Valor Total do Serviço:</strong></p>
-      <span class="valor">{{ data.solicitacao.precoOrcamento | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
+      <p><strong>Valor Total do Serviço:</strong>{{ data.solicitacao.precoOrcamento | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</p>
+     <p><b>Descrição da manutenção:</b> {{ data.solicitacao.descricaoManutencao || '-' }}</p>
+    <p><b>Orientações ao cliente:</b> {{ data.solicitacao.orientacoesCliente || '-' }}</p>
     </div>  
   </mat-dialog-content>
   

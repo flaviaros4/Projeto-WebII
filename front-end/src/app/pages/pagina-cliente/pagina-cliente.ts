@@ -91,39 +91,33 @@ export class PaginaCliente {
     });
   }
 
-  abrirModalPagamento(solicitacao: Solicitacao) {
+   abrirModalPagamento(solicitacao: Solicitacao) {
     const dialogRef = this.dialog.open(PagarServico, {
-        width: '450px',
-        data: { solicitacao } 
+      width: '450px',
+      data: { solicitacao }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-        if (result && result.status === 'PAGO') {
-           
-            this.pagarSolicitacao(solicitacao, result.dataHoraPagamento);
-        }
+      if (!result) return;
+
+      // aceita tanto boolean quanto objeto { status, dataHoraPagamento }
+      if (result === true) {
+        this.pagarServico(solicitacao);
+      } else if (result?.status === 'PAGA') {
+        this.pagarServico(solicitacao, result.dataHoraPagamento);
+      }
     });
-}
+  }
 
-
-  pagarSolicitacao(solicitacao: Solicitacao, dataHoraPagamento: string) {
- 
-    solicitacao.estado = 'PAGA'; 
-    
-   
-    solicitacao.dataPagamento = dataHoraPagamento; 
-    
-    
-    if (!solicitacao.historico) solicitacao.historico = [];
-    solicitacao.historico.push({
-        dataHora: dataHoraPagamento,
-        estado: 'PAGA'
+  pagarServico(solicitacao: Solicitacao, dataHoraPagamento?: string) {
+    this.clienteService.pagarServico(solicitacao.id, dataHoraPagamento).subscribe({
+      next: () => {
+        alert('Serviço pago com sucesso! A solicitação mudou para o estado PAGA.');
+        this.listarSolicitacoes();
+      },
+      error: () => alert('Erro ao processar o pagamento do serviço')
     });
-
-
-    alert('Pagamento confirmado com sucesso! A solicitação está PAGA.');
-    this.listarSolicitacoes();
-}
+  }
 
   visualizarSolicitacao(solicitacao: Solicitacao) {
     this.dialog.open(VisualizarSolicitacao, {

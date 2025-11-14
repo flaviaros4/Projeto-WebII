@@ -29,7 +29,10 @@ constructor(private httpClient: HttpClient) {}
         estado: i.estado as Solicitacao['estado'],
         precoOrcamento: i.valorOrcamento ?? undefined,
         motivoRejeicao: i.motivoRejeicao ?? undefined,
-        historico: i.historico ?? []
+        historico: i.historico ?? [],
+        dataHoraOrcamento: i.dataHoraOrcamento ?? undefined,
+        descricaoManutencao: i.descricaoManutencao ?? undefined,
+        orientacoesCliente: i.orientacoesCliente ?? undefined
       } as Solicitacao)))
     );
   }
@@ -67,6 +70,13 @@ constructor(private httpClient: HttpClient) {}
 
   resgatarServico(solicitacaoId: number): Observable<Solicitacao> {
     return this.httpClient.post<Solicitacao>(`${this.BASE_URL}/${solicitacaoId}/resgatar`, {}).pipe(
+      catchError(err => throwError(() => err))
+    );
+  }
+
+   pagarServico(solicitacaoId: number, dataHoraPagamento?: string): Observable<Solicitacao> {
+    const body = dataHoraPagamento ? { dataHoraPagamento } : {};
+    return this.httpClient.post<Solicitacao>(`${this.BASE_URL}/${solicitacaoId}/pagar`, body).pipe(
       catchError(err => throwError(() => err))
     );
   }

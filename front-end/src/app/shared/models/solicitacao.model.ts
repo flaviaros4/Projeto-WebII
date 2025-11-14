@@ -20,8 +20,12 @@ export interface Solicitacao {
   descricaoDefeito: string;
   dataHora: string;           
   estado: EstadoSolicitacao;
-  precoOrcamento?: number;     
+  precoOrcamento?: number;
+  dataHoraOrcamento?: string;    
   motivoRejeicao?: string;
   historico?: Historico[];
-  dataPagamento?: string;
+  dataHoraPagamento?: string;
+  descricaoManutencao?: string;
+  orientacoesCliente?: string;
+ 
 }

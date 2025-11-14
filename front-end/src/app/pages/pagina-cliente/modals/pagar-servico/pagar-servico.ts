@@ -25,15 +25,11 @@ export class PagarServico {
   ) {}
 
   confirmarPagamento(): void {
-    
-    const dataHoraPagamento = new Date().toISOString();
-    
-    
-    this.dialogRef.close({ 
-      id: this.data.solicitacao.id,
-      dataHoraPagamento: dataHoraPagamento,
-      status: 'PAGO' 
-    });
+    const payload = {
+      status: 'PAGA',
+      dataHoraPagamento: new Date().toISOString()
+    };
+    this.dialogRef.close(payload);
   }
 
   fechar(): void {
