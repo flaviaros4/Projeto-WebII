@@ -58,6 +58,7 @@ public class SecurityConfig {
 
                         // --- Endpoints de Cliente ---
                         .requestMatchers("/api/solicitacoes/minhas").hasRole("CLIENTE")
+                        .requestMatchers("/api/solicitacoes/{id}/pagar").hasRole("CLIENTE")
                         .requestMatchers("/api/solicitacoes/{id}/aprovar").hasRole("CLIENTE")
                         .requestMatchers("/api/solicitacoes/{id}/rejeitar").hasRole("CLIENTE")
                         .requestMatchers("/api/solicitacoes/{id}/resgatar").hasRole("CLIENTE")

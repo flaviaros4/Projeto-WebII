@@ -82,6 +82,16 @@ public class SolicitacaoController {
         }
     }
 
+    @PostMapping("/{id}/pagar")
+    public ResponseEntity<?> pagarServico(@PathVariable Long id) {
+        try {
+            Solicitacao solicitacao = solicitacaoService.pagarServico(id);
+            return ResponseEntity.ok(solicitacao);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/{id}/efetuar-manutencao")
     public ResponseEntity<?> efetuarManutencao(@PathVariable Long id,
                                                @RequestBody ManutencaoRequest request) {
