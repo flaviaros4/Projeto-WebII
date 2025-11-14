@@ -29,6 +29,16 @@ public class SolicitacaoController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<?> getSolicitacoes() {
+        try {
+            List<Solicitacao> solicitacoes = solicitacaoService.getSolicitacoes();
+            return ResponseEntity.ok(solicitacoes);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/minhas")
     public ResponseEntity<?> getMinhasSolicitacoes() {
         try {

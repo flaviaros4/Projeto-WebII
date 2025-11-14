@@ -61,7 +61,7 @@ public class SolicitacaoService {
         return salva;
     }
 
-    // RF003 - Listar solicitações do cliente
+ 
 // RF003 - Listar solicitações do cliente
     public List<Solicitacao> getSolicitacoesCliente() {
         Usuario usuario = usuarioService.getUsuarioAtual();
@@ -102,6 +102,11 @@ public class SolicitacaoService {
                           "Orçamento de R$ " + valor + " realizado por " + funcionario.getNome());
         
         return salva;
+    }
+
+    //RF013 - Visualizar todas as solicitações
+    public List<Solicitacao> getSolicitacoes(){
+        return solicitacaoRepository.findAll();
     }
 
     // RF006 - Aprovar serviço

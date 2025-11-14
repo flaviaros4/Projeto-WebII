@@ -51,6 +51,7 @@ public class SecurityConfig {
                         // --- Endpoints de Funcionário ---
                         .requestMatchers("/api/solicitacoes/{id}/efetuar-orcamento").hasRole("FUNCIONARIO")
                         .requestMatchers("/api/funcionarios/**").hasRole("FUNCIONARIO")
+                        .requestMatchers(HttpMethod.GET, "/api/solicitacoes").hasRole("FUNCIONARIO")
                         .requestMatchers("/api/solicitacoes/abertas").hasRole("FUNCIONARIO")
                         .requestMatchers("/api/solicitacoes/{id}/efetuar-manutencao").hasRole("FUNCIONARIO")
                         .requestMatchers("/api/solicitacoes/{id}/detalhes").hasRole("FUNCIONARIO")
