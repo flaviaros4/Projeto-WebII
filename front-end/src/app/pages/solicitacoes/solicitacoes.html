@@ -10,7 +10,7 @@
 
 <mat-menu #filtroMenu="matMenu" class="menu-filtro" >
   <div class="filtro-data" >
-    <button mat-menu-item value="TODAS" (click)="carregarTodasSolicitacoes() ; mostrarFiltroPeriodo = false"> TODAS </button>
+    <button mat-menu-item value="TODAS" (click)="listarSolicitacoes() ; mostrarFiltroPeriodo = false"> TODAS </button>
     <button mat-menu-item value="HOJE" (click)="filtrarDataHoje() ; mostrarFiltroPeriodo = false"> HOJE </button>
     <button mat-menu-item value="POR_PERIODO" (click)="filtrarPorIntervalo() ; mostrarFiltroPeriodo = true"> POR PERIODO</button>
   </div>
@@ -41,7 +41,7 @@
 
 
    
-   <table mat-table [dataSource]="solicitacoes" class="mat-elevation-z3 tabela">
+   <table mat-table [dataSource]="dataSource" class="mat-elevation-z3 tabela">
 
     <ng-container matColumnDef="dataHora">
       <th mat-header-cell *matHeaderCellDef> Data/Hora </th>
@@ -55,10 +55,10 @@
     </ng-container>
 
 
-    <ng-container matColumnDef="equipamento">
-      <th mat-header-cell *matHeaderCellDef> Equipamento </th>
+  <ng-container matColumnDef="descricao">
+      <th mat-header-cell *matHeaderCellDef> Descrição </th>
       <td mat-cell *matCellDef="let s">
-        {{ s.equipamento | slice:0:30 }}{{ s.equipamento.length > 30 ? '...' : '' }}
+        {{ s.descricao | slice:0:30 }}{{ s.descricao.length > 30 ? '...' : '' }}
       </td>
     </ng-container>
 

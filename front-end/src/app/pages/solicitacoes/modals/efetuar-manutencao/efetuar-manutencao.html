@@ -2,14 +2,13 @@
   <h2 mat-dialog-title>Efetuar Manutenção</h2>
   <mat-dialog-content class="conteudo-modal">
     <div class="detalhes detalhes-solicitacao">
-      <p><strong>Cliente:</strong> {{ data.cliente?.nome || data.cliente }}</p>
-      
-      <p><strong>Equipamento:</strong> {{ data.equipamento?.nome || data.equipamento }}</p>
-      
+      <p><strong>Cliente:</strong> {{ cliente }}</p>
+      <p><strong>Descrição:</strong> {{ solicitacao?.descricaoDefeito }}</p>
+      <p><strong> Categoria:</strong> {{ solicitacao?.categoria }}</p>
+      <p><strong> Equipamento:</strong> {{ solicitacao?.descricao }}</p>
       <p><strong>Data/Hora Solicitação:</strong> 
-        {{ data.dataHora | date:'dd/MM/yyyy HH:mm':'pt-BR' }}
+        {{ solicitacao?.dataHora | date:'dd/MM/yyyy HH:mm':'pt-BR' }}
       </p>
-      <p><strong>Funcionário:</strong> {{ data.funcionario?.nome }}</p>
     </div>
 
     <mat-form-field appearance="outline" class="full-width">

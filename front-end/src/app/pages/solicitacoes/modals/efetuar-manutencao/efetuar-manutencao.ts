@@ -5,6 +5,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { Solicitacao } from '../../../../shared/models/solicitacao.model';
+import { SolicitacaoService } from '../../services/solicitacao-service';
 
 @Component({
   selector: 'app-efetuar-manutencao',
@@ -17,19 +19,38 @@ export class EfetuarManutencao {
   descricaoManutencao: string = '';
   orientacoesCliente: string = '';
 
+  solicitacao?: Solicitacao;
+  cliente?: string;
+
   constructor(
     public dialogRef: MatDialogRef<EfetuarManutencao>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: {id: number},
+    private solicitacaoService: SolicitacaoService,
   ) {}
 
+  ngOnInit(): void {
+  this.detalhesSolicitacao(this.data.id);
+  }
+
+   detalhesSolicitacao(id: number): void {
+    this.solicitacaoService.detalhesSolicitacao(id).subscribe({
+      next: ({ solicitacao, cliente }) => {
+        this.solicitacao = solicitacao;
+        this.cliente = cliente?.nome ?? '';
+      }, 
+      error: () => alert('Falha ao carregar detalhes da solicitação') 
+    });
+
+  }
+  
   efetuarManutencao() {
-    const registro = {
-      ...this.data,
-      descricaoManutencao: this.descricaoManutencao,
-      orientacoesCliente: this.orientacoesCliente,
-      funcionarioManutencao: this.data.funcionario,
-    };
-    this.dialogRef.close(registro);
+    this.solicitacaoService.efetuarManutencao(this.data.id, this.descricaoManutencao, this.orientacoesCliente).subscribe({
+      next: (solicitacao) => {
+        alert('Manutenção efetuada com sucesso.');
+        this.dialogRef.close(solicitacao);
+      },
+      error: () => alert('Falha ao efetuar manutenção.')
+    });
   }
 
   fechar() {

@@ -19,6 +19,7 @@ import { FormControl } from '@angular/forms';
 import localePt from '@angular/common/locales/pt';
 import { MatMenu, MatMenuTrigger, MatMenuItem } from '@angular/material/menu';
 import { MatSelect } from "@angular/material/select";
+import { SolicitacaoService } from './services/solicitacao-service';
 
 const MY_DATE_FORMATS = {
   parse: {
@@ -56,49 +57,40 @@ interface SolicitacaoFuncionario {
   styleUrl: './solicitacoes.css'
 })
 export class Solicitacoes {
+  displayedColumns: string[] = ['dataHora', 'cliente', 'descricao', 'estado', 'acoes'];
+  dataSource = new MatTableDataSource<Solicitacao>([]); 
+  
   mostrarFiltroPeriodo: boolean = false;
   dataInicioFiltro:  Date | null = null;
   dataFimFiltro: Date | null = null;
-
-
-  todasSolicitacoes: SolicitacaoFuncionario[] = [];
-
-displayedColumns: string[] = ['dataHora', 'cliente', 'equipamento', 'estado', 'acoes'];
-  solicitacoes: SolicitacaoFuncionario[] = [];
+  
   funcionarioLogado: Usuario | null = null;
 
       range = new FormGroup({
       start: new FormControl<Date | null>(null),
       end: new FormControl<Date | null>(null),
     });
-  
-  
-  constructor(private dialog: MatDialog) {}
+
+
+  constructor(private dialog: MatDialog, 
+            private solicitacaoService: SolicitacaoService) {}
 
   ngOnInit(): void {
-    // Dados fictícios (para testes)
-    const dadosIniciais = [
-      { id: 1, dataHora: '2025-08-31 14:20', cliente: 'Flávia Rosa', equipamento: 'Notebook Apple', estado: 'ABERTA' },
-      { id: 2, dataHora: '2025-08-30 09:10', cliente: 'Leticia Sanches', equipamento: 'Impressora HP', estado: 'ORÇADA' },
-      { id: 3, dataHora: '2025-08-29 11:00', cliente: 'Leon Trindade', equipamento: 'Celular Samsung A31', estado: 'REJEITADA' },
-      { id: 4, dataHora: '2025-08-28 11:00', cliente: 'Leonardo Alberto', equipamento: 'Celular Iphone 15', estado: 'APROVADA' },
-      { id: 5, dataHora: '2025-08-20 11:00', cliente: 'Arthur Dias', equipamento: 'Notebook Dell', estado: 'REDIRECIONADA' },
-      { id: 6, dataHora: '2025-08-18 11:00', cliente: 'João Paulo', equipamento: 'Tablet Samsung', estado: 'ARRUMADA' },
-      { id: 7, dataHora: '2025-08-15 11:00', cliente: 'Maria Santos', equipamento: 'Smartwatch Apple', estado: 'PAGA' },
-      { id: 8, dataHora: '2025-08-10 11:00', cliente: 'José Silva', equipamento: 'Desktop HP', estado: 'FINALIZADA' },
-    ];
-
-
-    this.todasSolicitacoes = dadosIniciais; 
-
-    this.solicitacoes = dadosIniciais;
-
-   
-    const usuarioLogadoString = localStorage.getItem('usuarioLogado');
-    if (usuarioLogadoString) {
-      this.funcionarioLogado = JSON.parse(usuarioLogadoString);
-    }
+  this.listarSolicitacoes();
   }
+
+  listarSolicitacoes(): void {
+    this.solicitacaoService.listarSolicitacoes().subscribe({
+      next: solicitacoes => {
+        const lista = (solicitacoes ?? []).slice().sort(
+          (a, b) => new Date(a.dataHora).getTime() - new Date(b.dataHora).getTime()
+        );
+        this.dataSource.data = lista;
+      },
+      error: () => alert('Falha ao carregar solicitações')
+    });
+  }
+  
 
   defineCorEstado(estado: string): string {
     switch (estado) {
@@ -123,22 +115,13 @@ displayedColumns: string[] = ['dataHora', 'cliente', 'equipamento', 'estado', 'a
     }
   }
   
-   carregarTodasSolicitacoes() {
-    this.ngOnInit();
-
-    this.solicitacoes = this.todasSolicitacoes;
-
-    this.dataInicioFiltro = null;
-
-    this.dataFimFiltro = null;
-  }
-
+  
   filtrarDataHoje() {
     const hoje = new Date();
 
     hoje.setHours(0, 0, 0, 0);
 
-    this.solicitacoes = this.solicitacoes.filter(solicitacao => {
+    this.dataSource.data = this.dataSource.data.filter(solicitacao => {
       const dataSolicitacao = new Date(solicitacao.dataHora);
       return dataSolicitacao.toDateString() === hoje.toDateString();
     });
@@ -161,34 +144,40 @@ displayedColumns: string[] = ['dataHora', 'cliente', 'equipamento', 'estado', 'a
         inicio.setHours(0, 0, 0, 0);
         const fim = new Date(this.dataFimFiltro.getTime());
         fim.setHours(23, 59, 59, 999);
-        this.solicitacoes = this.todasSolicitacoes.filter(solicitacao => {
+        this.dataSource.data = this.dataSource.data.filter(solicitacao => {
             const dataSolicitacao = new Date(solicitacao.dataHora);
             return dataSolicitacao >= inicio && dataSolicitacao <= fim;
         });
         
     }
 
-  efetuarOrcamento(solicitacao: SolicitacaoFuncionario) {
-    this.dialog.open(EfetuarOrcamento, {
-      data: {
-        ...solicitacao,
-        funcionario: this.funcionarioLogado
-      }
+  efetuarOrcamento(solicitacao: Solicitacao) {
+  const dialogRef = this.dialog.open(EfetuarOrcamento, {
+    data: { id: solicitacao.id }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      this.listarSolicitacoes();
+    }
+  });
+}
+
+  efetuarManutencao(solicitacao: Solicitacao) {
+    if (!solicitacao?.id) return;
+    const dialogRef = this.dialog.open(EfetuarManutencao, {
+      width: '800px',
+      data: { id: solicitacao.id }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) this.listarSolicitacoes();
     });
   }
-
-  efetuarManutencao(solicitacao: SolicitacaoFuncionario) {
-    this.dialog.open(EfetuarManutencao, {
-      data: {
-        ...solicitacao,
-        funcionario: this.funcionarioLogado
-      }
-    });
-  }
-
+  
   finalizarSolicitacao(solicitacao: SolicitacaoFuncionario) {
     const dialogRef = this.dialog.open(FinalizarSolicitacao, {
-      width: '400px',
+
       data: { solicitacao } 
     });
     dialogRef.afterClosed().subscribe(result => {
