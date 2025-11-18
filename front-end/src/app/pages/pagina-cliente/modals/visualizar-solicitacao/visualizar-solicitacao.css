@@ -16,7 +16,7 @@ button{
  background-color: #1976d2 !important;
   color: white !important;
   border-radius: 20px;
-  width: 100%;
+  width: 100px;
   padding: 12px;
   font-weight: bold;
 }
@@ -28,4 +28,10 @@ mat-card-title{
 
 .historico-card{
   background-color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.historico-lista{
+  text-align: left;
+  margin-top: 5px;
 }
