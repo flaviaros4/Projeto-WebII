@@ -3,6 +3,8 @@ package com.maintech.backend.model;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+
 
 @Entity
 @Table(name = "solicitacoes")
@@ -38,6 +40,7 @@ public class Solicitacao {
     @JoinColumn(name = "funcionario_orcamento_id")
     private Funcionario funcionarioOrcamento;
 
+
     // --- INÍCIO DOS NOVOS CAMPOS (RF014) ---
 
     @Column(length = 2000) // 2000 caracteres para a descrição
@@ -57,6 +60,12 @@ public class Solicitacao {
         this.dataHoraAbertura = LocalDateTime.now();
         this.estado = EstadoSolicitacao.ABERTA;
     }
+
+    //RF008
+
+    @OneToMany(mappedBy = "solicitacao", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OrderBy("dataHora ASC")
+    private List<HistoricoSolicitacao> historico;
 
     // Getters e Setters
     public Long getId() { return id; }
@@ -87,4 +96,8 @@ public class Solicitacao {
     public void setDataHoraManutencao(LocalDateTime dataHoraManutencao) { this.dataHoraManutencao = dataHoraManutencao; }
     public Funcionario getFuncionarioManutencao() { return funcionarioManutencao; }
     public void setFuncionarioManutencao(Funcionario funcionarioManutencao) { this.funcionarioManutencao = funcionarioManutencao; }
+
+    //RF008
+    public List<HistoricoSolicitacao> getHistorico() { return historico; }
+    public void setHistorico(List<HistoricoSolicitacao> historico) { this.historico = historico; }
 }

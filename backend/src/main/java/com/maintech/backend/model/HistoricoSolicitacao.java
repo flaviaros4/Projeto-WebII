@@ -3,6 +3,8 @@ package com.maintech.backend.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "historicos_solicitacao")
 public class HistoricoSolicitacao {
@@ -13,6 +15,7 @@ public class HistoricoSolicitacao {
 
     @ManyToOne
     @JoinColumn(name = "solicitacao_id", nullable = false)
+    @JsonIgnoreProperties({"historico"})
     private Solicitacao solicitacao;
 
     @Column(nullable = false)

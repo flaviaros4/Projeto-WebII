@@ -8,6 +8,20 @@
 <p><b>Data/Hora:</b> {{solicitacao.dataHora | date : 'short' : '' : 'pt-BR'}}</p>
 </div>
 
+ <mat-card class="historico-card">
+    <mat-card-title>Histórico da Solicitação</mat-card-title>
+    <mat-card-content>
+      <ul class="historico-lista">
+        <li *ngFor="let item of solicitacao.historico">
+          {{ item.dataHora | date : 'short' : '' : 'pt-BR'}} - {{ item.observacao }} 
+          <span *ngIf="item.usuarioAlteracaoNome"> (Responsável: {{ item.usuarioAlteracaoNome }})</span>
+        </li>
+        <li *ngIf="solicitacao.historico?.length === 0">
+          Nenhum passo registrado ainda.
+        </li>
+      </ul>
+    </mat-card-content>
+  </mat-card>
 
 <button mat-button (click)="fechar()">Fechar</button>
 

@@ -11,6 +11,8 @@ export type EstadoSolicitacao =
 export interface Historico {
   dataHora: string;
   estado: string;
+  observacao: string;
+  usuarioAlteracaoNome?: string;
 }
 
 export interface Solicitacao {

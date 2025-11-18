@@ -21,8 +21,8 @@ import { CategoriasService } from '../../../crud-categorias/services/categorias.
     MatDialogModule,
     MatSelectModule
   ],
-  templateUrl: './Solicitacao-de-Manutencao.html',
-  styleUrls: ['./Solicitacao-de-Manutencao.css']
+  templateUrl: './solicitacao-de-manutencao.html',
+  styleUrls: ['./solicitacao-de-manutencao.css']
 })
 export class SolicitacaoManutencao {
   categorias: Categoria[] = [];
