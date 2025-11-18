@@ -103,11 +103,20 @@ public class SolicitacaoController {
         }
     }
 
-
     @PostMapping("/{id}/resgatar")
     public ResponseEntity<?> resgatarServico(@PathVariable Long id) {
         try {
             Solicitacao solicitacao = solicitacaoService.resgatarServico(id);
+            return ResponseEntity.ok(solicitacao);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id}/finalizar")
+    public ResponseEntity<?> finalizarSolicitacao(@PathVariable Long id) {
+        try {
+            Solicitacao solicitacao = solicitacaoService.finalizarSolicitacao(id);
             return ResponseEntity.ok(solicitacao);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
