@@ -36,13 +36,13 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(
-                                                                                     SessionCreationPolicy.STATELESS))
+                        SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/clientes/cadastro").permitAll()
                         .requestMatchers("/health").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                         
+
                         // --- Endpoints de Categoria --- 
                         .requestMatchers(HttpMethod.GET, "/api/categorias", "/api/categorias/**").hasAnyRole("CLIENTE","FUNCIONARIO")
                         .requestMatchers("/api/categorias/**").hasRole("FUNCIONARIO")
@@ -55,6 +55,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/solicitacoes/abertas").hasRole("FUNCIONARIO")
                         .requestMatchers("/api/solicitacoes/{id}/efetuar-manutencao").hasRole("FUNCIONARIO")
                         .requestMatchers("/api/solicitacoes/{id}/detalhes").hasRole("FUNCIONARIO")
+                        .requestMatchers("/api/solicitacoes/{id}/finalizar").hasRole("FUNCIONARIO")
 
                         // --- Endpoints de Cliente ---
                         .requestMatchers("/api/solicitacoes/minhas").hasRole("CLIENTE")

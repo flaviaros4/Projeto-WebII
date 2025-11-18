@@ -40,10 +40,8 @@ public class Solicitacao {
     @JoinColumn(name = "funcionario_orcamento_id")
     private Funcionario funcionarioOrcamento;
 
-
-    // --- INÍCIO DOS NOVOS CAMPOS (RF014) ---
-
-    @Column(length = 2000) // 2000 caracteres para a descrição
+    // --- Campos RF014 (Manutenção) ---
+    @Column(length = 2000)
     private String descricaoManutencao;
 
     @Column(length = 2000)
@@ -55,17 +53,26 @@ public class Solicitacao {
     @JoinColumn(name = "funcionario_manutencao_id")
     private Funcionario funcionarioManutencao;
 
+    // --- Campos RF010 (Pagamento - Adicionado para garantir consistência) ---
+    private LocalDateTime dataPagamento;
+
+    // --- INÍCIO DOS NOVOS CAMPOS RF016 (Finalização) ---
+    private LocalDateTime dataHoraFinalizacao;
+
+    @ManyToOne
+    @JoinColumn(name = "funcionario_finalizacao_id")
+    private Funcionario funcionarioFinalizacao;
+    // --- FIM DOS NOVOS CAMPOS ---
+
+    @OneToMany(mappedBy = "solicitacao", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OrderBy("dataHora ASC")
+    private List<HistoricoSolicitacao> historico;
+
 
     public Solicitacao() {
         this.dataHoraAbertura = LocalDateTime.now();
         this.estado = EstadoSolicitacao.ABERTA;
     }
-
-    //RF008
-
-    @OneToMany(mappedBy = "solicitacao", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @OrderBy("dataHora ASC")
-    private List<HistoricoSolicitacao> historico;
 
     // Getters e Setters
     public Long getId() { return id; }
@@ -87,7 +94,6 @@ public class Solicitacao {
     public Funcionario getFuncionarioOrcamento() { return funcionarioOrcamento; }
     public void setFuncionarioOrcamento(Funcionario funcionarioOrcamento) { this.funcionarioOrcamento = funcionarioOrcamento; }
 
-    // --- GETTERS E SETTERS DOS NOVOS CAMPOS ---
     public String getDescricaoManutencao() { return descricaoManutencao; }
     public void setDescricaoManutencao(String descricaoManutencao) { this.descricaoManutencao = descricaoManutencao; }
     public String getOrientacoesCliente() { return orientacoesCliente; }
@@ -97,7 +103,15 @@ public class Solicitacao {
     public Funcionario getFuncionarioManutencao() { return funcionarioManutencao; }
     public void setFuncionarioManutencao(Funcionario funcionarioManutencao) { this.funcionarioManutencao = funcionarioManutencao; }
 
-    //RF008
+    public LocalDateTime getDataPagamento() { return dataPagamento; }
+    public void setDataPagamento(LocalDateTime dataPagamento) { this.dataPagamento = dataPagamento; }
+
+    // Getters e Setters RF016
+    public LocalDateTime getDataHoraFinalizacao() { return dataHoraFinalizacao; }
+    public void setDataHoraFinalizacao(LocalDateTime dataHoraFinalizacao) { this.dataHoraFinalizacao = dataHoraFinalizacao; }
+    public Funcionario getFuncionarioFinalizacao() { return funcionarioFinalizacao; }
+    public void setFuncionarioFinalizacao(Funcionario funcionarioFinalizacao) { this.funcionarioFinalizacao = funcionarioFinalizacao; }
+
     public List<HistoricoSolicitacao> getHistorico() { return historico; }
     public void setHistorico(List<HistoricoSolicitacao> historico) { this.historico = historico; }
 }
