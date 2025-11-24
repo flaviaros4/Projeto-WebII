@@ -18,21 +18,18 @@ export class SolicitacaoService {
   };
 
    listarSolicitacoes(): Observable<Solicitacao[]> {
-    return this.httpClient.get<any[]>(`${this.BASE_URL}`).pipe(
-      map(list => (list || []).map(i => ({
-        id: i.id,
-        descricao: i.descricaoEquipamento ?? '',
-        categoria: i.categoria?.nome ?? '',
-        descricaoDefeito: i.descricaoDefeito ?? '',
-        dataHora: i.dataHoraAbertura ?? '',
-        estado: i.estado as Solicitacao['estado'],
-        precoOrcamento: i.valorOrcamento ?? undefined,
-        motivoRejeicao: i.motivoRejeicao ?? undefined,
-        historico: i.historico ?? [],
-        cliente: i.cliente?.nome ?? ''
-      } as Solicitacao)))
-    );
-  }
+  return this.httpClient.get<any[]>(`${this.BASE_URL}`).pipe(
+    map(list => (list || []).map(i => ({
+      id: i.id,
+      descricao: i.descricaoEquipamento ?? '',
+      categoria: i.categoria?.nome ?? '',
+      descricaoDefeito: i.descricaoDefeito ?? '',
+      dataHora: i.dataHoraAbertura ?? '',
+      estado: i.estado,
+      funcionarioDestinoId: i.funcionarioManutencao?.id ?? i['funcionario_manutencao_id'] ?? null
+    })))
+  );
+}
 
     detalhesSolicitacao(id: number): Observable<{ solicitacao: Solicitacao; cliente: any; funcionario: any }> {
     return this.httpClient.get<any>(`${this.BASE_URL}/${id}/detalhes`).pipe(
@@ -59,4 +56,23 @@ export class SolicitacaoService {
       map((resp) => resp.body as Solicitacao)
     );
   }
+
+
+   redirecionarSolicitacao(solicitacaoId: number, novoFuncionarioId: number, motivo?: string): Observable<Solicitacao> {
+  const body = { novoFuncionarioId, motivo };
+  return this.httpClient.post<Solicitacao>(`${this.BASE_URL}/${solicitacaoId}/redirecionar`, body, this.options).pipe(
+    map(resp => resp.body as Solicitacao)
+  );
+}
+
+ listarFuncionarios(): Observable<any[]> {
+  return this.httpClient.get<any[]>(`http://localhost:8080/api/funcionarios`).pipe(
+    map(list => (list || []).map((f: any) => ({
+      id: f.id,
+      usuarioId: f.usuario?.id ?? f.usuarioId,
+      nome: f.nome ?? f.fullName ?? f.login
+    })))
+  );
+}
+
 }

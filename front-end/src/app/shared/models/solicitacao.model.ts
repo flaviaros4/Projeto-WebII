@@ -29,5 +29,5 @@ export interface Solicitacao {
   dataHoraPagamento?: string;
   descricaoManutencao?: string;
   orientacoesCliente?: string;
- 
+  funcionarioDestinoId?: number | null;
 }

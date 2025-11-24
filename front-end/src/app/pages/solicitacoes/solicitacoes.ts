@@ -20,6 +20,7 @@ import localePt from '@angular/common/locales/pt';
 import { MatMenu, MatMenuTrigger, MatMenuItem } from '@angular/material/menu';
 import { MatSelect } from "@angular/material/select";
 import { SolicitacaoService } from './services/solicitacao-service';
+import { LoginService } from '../login/services/login-service';
 
 const MY_DATE_FORMATS = {
   parse: {
@@ -64,7 +65,8 @@ export class Solicitacoes {
   dataInicioFiltro:  Date | null = null;
   dataFimFiltro: Date | null = null;
   
-  funcionarioLogado: Usuario | null = null;
+  usuarioLogado: Usuario | null = null;
+  myFuncionarioId: number | null = null;
 
       range = new FormGroup({
       start: new FormControl<Date | null>(null),
@@ -73,25 +75,53 @@ export class Solicitacoes {
 
 
   constructor(private dialog: MatDialog, 
-            private solicitacaoService: SolicitacaoService) {}
+            private solicitacaoService: SolicitacaoService,
+            private loginService: LoginService) {}
 
   ngOnInit(): void {
-  this.listarSolicitacoes();
+    this.usuarioLogado = this.loginService.usuarioLogado;
+    this.carregarMeuFuncionario();
+  }
+
+  private carregarMeuFuncionario() {
+    this.solicitacaoService.listarFuncionarios().subscribe({
+      next: fs => {
+        const uid = this.usuarioLogado?.id;
+        const me = (fs || []).find(f => (f.usuarioId ?? f.usuario?.id) === uid);
+        this.myFuncionarioId = me?.id ?? null;
+        this.listarSolicitacoes();
+      },
+      error: () => {
+        this.myFuncionarioId = null; // sem id -> ainda mostra não REDIRECIONADAS
+        this.listarSolicitacoes();
+      }
+    });
   }
 
   listarSolicitacoes(): void {
     this.solicitacaoService.listarSolicitacoes().subscribe({
       next: solicitacoes => {
-        const lista = (solicitacoes ?? []).slice().sort(
+        const lista = (solicitacoes || []).sort(
           (a, b) => new Date(a.dataHora).getTime() - new Date(b.dataHora).getTime()
         );
-        this.dataSource.data = lista;
+
+        const filtrada = lista.filter(s => {
+          if (s.estado !== 'REDIRECIONADA') return true;
+          // se não temos destino ou meu id -> oculta (regra de segurança)
+          if (s.funcionarioDestinoId == null || this.myFuncionarioId == null) return false;
+          return s.funcionarioDestinoId === this.myFuncionarioId;
+        });
+
+        this.dataSource.data = filtrada;
+
+        console.debug('DEBUG myFuncionarioId=', this.myFuncionarioId);
+        console.debug('DEBUG solicitacoes mapeadas=', lista.map(x => ({
+          id: x.id, estado: x.estado, destino: x.funcionarioDestinoId
+        })));
       },
       error: () => alert('Falha ao carregar solicitações')
     });
   }
-  
-
   defineCorEstado(estado: string): string {
     switch (estado) {
       case 'ABERTA':

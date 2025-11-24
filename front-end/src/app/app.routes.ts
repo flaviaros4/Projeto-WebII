@@ -10,7 +10,6 @@ import { EfetuarOrcamento } from './pages/pagina-funcionario/modals/efetuar-orca
 import { PaginaCliente } from './pages/pagina-cliente/pagina-cliente';
 import { PaginaFuncionario } from './pages/pagina-funcionario/pagina-funcionario';
 import { ListarFuncionariosComponent } from './pages/crud-funcionarios/listar-funcionarios.component';
-import { Pagar } from './pages/pagar/pagar';
 import { EfetuarManutencao } from './pages/efetuar-manutencao/efetuar-manutencao';
 import { Cadastro } from './pages/cadastro/cadastro';
 import { Categorias } from './pages/crud-categorias/categorias';
@@ -33,9 +32,11 @@ export const routes: Routes = [
     data: { perfil: ['FUNCIONARIO'] }
   },
   { path: 'funcionarios', component: ListarFuncionariosComponent },
-  { path: 'pagar', component: Pagar },
   { path: 'manutencao', component: EfetuarManutencao },
   {path: 'categorias', component: Categorias},
-  {path: 'solicitacoes', component: Solicitacoes},
+  {path: 'solicitacoes', component: Solicitacoes,
+    canActivate: [authGuard],
+    data: { perfil: ['FUNCIONARIO'] }
+  },
   {path: 'relatorios', component: Relatorios},
 ];

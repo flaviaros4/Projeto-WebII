@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MatDialog } from "@angular/material/dialog";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Solicitacao } from '../../../../shared/models/solicitacao.model';
 import { SolicitacaoService } from '../../services/solicitacao-service';
+import { Redirecionar } from '../redirecionar/redirecionar';
 
 @Component({
   selector: 'app-efetuar-manutencao',
@@ -26,6 +27,7 @@ export class EfetuarManutencao {
     public dialogRef: MatDialogRef<EfetuarManutencao>,
     @Inject(MAT_DIALOG_DATA) public data: {id: number},
     private solicitacaoService: SolicitacaoService,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -55,5 +57,12 @@ export class EfetuarManutencao {
 
   fechar() {
     this.dialogRef.close();
+  }
+
+ redirecionar() {
+    const ref = this.dialog.open(Redirecionar, { data: { id: this.data.id } });
+    ref.afterClosed().subscribe(result => {
+      if (result) this.dialogRef.close(result);
+    });
   }
 }
