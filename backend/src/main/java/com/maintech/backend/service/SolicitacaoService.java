@@ -97,24 +97,16 @@ public class SolicitacaoService {
    public List<Solicitacao> getSolicitacoes() {
     Usuario usuario = usuarioService.getUsuarioAtual();
 
-    // Cliente vê todas dele (já existia lógica separada se desejar)
     if (usuario instanceof Cliente) {
         return solicitacaoRepository.findByClienteOrderByDataHoraAberturaAsc((Cliente) usuario);
     }
 
-    // Funcionário: filtra REDIRECIONADA
     if (usuario instanceof Funcionario func) {
-        // usar query otimizada
+
         return solicitacaoRepository.findVisiveisParaFuncionario(func);
-        // (ou alternativa sem query:)
-        // return solicitacaoRepository.findAll().stream()
-        //        .filter(s -> s.getEstado() != EstadoSolicitacao.REDIRECIONADA
-        //                || (s.getFuncionarioManutencao() != null
-        //                    && s.getFuncionarioManutencao().getId().equals(func.getId())))
-        //        .toList();
+    
     }
 
-    // fallback (não deveria acontecer)
     return solicitacaoRepository.findAll();
 }
 
