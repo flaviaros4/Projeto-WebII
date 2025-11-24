@@ -92,36 +92,24 @@ export class Solicitacoes {
         this.listarSolicitacoes();
       },
       error: () => {
-        this.myFuncionarioId = null; // sem id -> ainda mostra não REDIRECIONADAS
+        this.myFuncionarioId = null;
         this.listarSolicitacoes();
       }
     });
   }
 
-  listarSolicitacoes(): void {
-    this.solicitacaoService.listarSolicitacoes().subscribe({
-      next: solicitacoes => {
-        const lista = (solicitacoes || []).sort(
-          (a, b) => new Date(a.dataHora).getTime() - new Date(b.dataHora).getTime()
-        );
+ listarSolicitacoes(): void {
+  this.solicitacaoService.listarSolicitacoes().subscribe({
+    next: solicitacoes => {
+      const lista = (solicitacoes || []).sort(
+        (a, b) => new Date(a.dataHora).getTime() - new Date(b.dataHora).getTime()
+      );
+      this.dataSource.data = lista;
+    },
+    error: () => alert('Falha ao carregar solicitações')
+  });
+}
 
-        const filtrada = lista.filter(s => {
-          if (s.estado !== 'REDIRECIONADA') return true;
-          // se não temos destino ou meu id -> oculta (regra de segurança)
-          if (s.funcionarioDestinoId == null || this.myFuncionarioId == null) return false;
-          return s.funcionarioDestinoId === this.myFuncionarioId;
-        });
-
-        this.dataSource.data = filtrada;
-
-        console.debug('DEBUG myFuncionarioId=', this.myFuncionarioId);
-        console.debug('DEBUG solicitacoes mapeadas=', lista.map(x => ({
-          id: x.id, estado: x.estado, destino: x.funcionarioDestinoId
-        })));
-      },
-      error: () => alert('Falha ao carregar solicitações')
-    });
-  }
   defineCorEstado(estado: string): string {
     switch (estado) {
       case 'ABERTA':
