@@ -59,7 +59,8 @@
               "buildTarget": "manutencao-equipamentos:build:production"
             },
             "development": {
-              "buildTarget": "manutencao-equipamentos:build:development"
+              "buildTarget": "manutencao-equipamentos:build:development",
+              "proxyConfig": "proxy.conf.json" 
             }
           },
           "defaultConfiguration": "development"
