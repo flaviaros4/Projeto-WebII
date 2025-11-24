@@ -19,9 +19,9 @@ import { authGuard } from './auth/auth-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'cadastro', component: Cadastro},
+  { path: 'cadastro', component: Cadastro
+  },
   { path: 'login', component: Login },
-  { path: 'orcamento', component: EfetuarOrcamento },
   { path: 'cliente', component: PaginaCliente,
     canActivate: [authGuard],
     data: { perfil: ['CLIENTE'] }
@@ -30,12 +30,20 @@ export const routes: Routes = [
     canActivate: [authGuard],
     data: { perfil: ['FUNCIONARIO'] }
   },
-  { path: 'funcionarios', component: ListarFuncionariosComponent },
-  { path: 'manutencao', component: EfetuarManutencao },
-  {path: 'categorias', component: Categorias},
+  { path: 'funcionarios', component: ListarFuncionariosComponent,
+    canActivate: [authGuard],
+    data: { perfil: ['FUNCIONARIO'] }
+   },
+  {path: 'categorias', component: Categorias,
+    canActivate: [authGuard],
+    data: { perfil: ['FUNCIONARIO'] }
+  },
   {path: 'solicitacoes', component: Solicitacoes,
     canActivate: [authGuard],
     data: { perfil: ['FUNCIONARIO'] }
   },
-  {path: 'relatorios', component: Relatorios},
+  {path: 'relatorios', component: Relatorios,
+    canActivate: [authGuard],
+    data: { perfil: ['FUNCIONARIO'] }
+  },
 ];

@@ -49,6 +49,10 @@ export class App implements OnInit {
     this.router.navigate([user.perfil === 'FUNCIONARIO' ? '/funcionario' : '/cliente']);
   }
 
+  temPermissao(perfilNecessario: Perfil): boolean {
+    const user = this.loginService.usuarioLogado;
+    return user ? user.perfil === perfilNecessario : false;
+  }
  
 
   logout(): void {
