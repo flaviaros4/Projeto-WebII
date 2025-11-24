@@ -97,16 +97,12 @@ public class SolicitacaoService {
    public List<Solicitacao> getSolicitacoes() {
     Usuario usuario = usuarioService.getUsuarioAtual();
 
-    if (usuario instanceof Cliente) {
-        return solicitacaoRepository.findByClienteOrderByDataHoraAberturaAsc((Cliente) usuario);
+    if (usuario instanceof Cliente cliente) {
+        return solicitacaoRepository.findByClienteOrderByDataHoraAberturaAsc(cliente);
     }
-
     if (usuario instanceof Funcionario func) {
-
-        return solicitacaoRepository.findVisiveisParaFuncionario(func);
-    
+        return solicitacaoRepository.findVisiveisParaFuncionario(func.getId());
     }
-
     return solicitacaoRepository.findAll();
 }
 

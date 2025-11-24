@@ -26,7 +26,7 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
 
     List<Solicitacao> findByEstadoAndFuncionarioManutencao(EstadoSolicitacao estado, Funcionario funcionario);
     @Query("select s from Solicitacao s where " +
-       "(s.estado <> com.maintech.backend.model.EstadoSolicitacao.REDIRECIONADA) or " +
-       "(s.estado = com.maintech.backend.model.EstadoSolicitacao.REDIRECIONADA and s.funcionarioManutencao = :func)")
-    List<Solicitacao> findVisiveisParaFuncionario(Funcionario func);
+       "s.estado <> com.maintech.backend.model.EstadoSolicitacao.REDIRECIONADA or " +
+       "(s.estado = com.maintech.backend.model.EstadoSolicitacao.REDIRECIONADA and s.funcionarioManutencao.id = :funcId)")
+    List<Solicitacao> findVisiveisParaFuncionario(@org.springframework.data.repository.query.Param("funcId") Long funcId);
 }
