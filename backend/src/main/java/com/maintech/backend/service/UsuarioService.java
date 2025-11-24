@@ -16,4 +16,6 @@ public class UsuarioService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return usuarioRepository.findByEmail(email);
     }
+
+    
 }

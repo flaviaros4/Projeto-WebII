@@ -56,6 +56,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/solicitacoes/{id}/efetuar-manutencao").hasRole("FUNCIONARIO")
                         .requestMatchers("/api/solicitacoes/{id}/detalhes").hasRole("FUNCIONARIO")
                         .requestMatchers("/api/solicitacoes/{id}/finalizar").hasRole("FUNCIONARIO")
+                       .requestMatchers("/api/solicitacoes/*/redirecionar").hasRole("FUNCIONARIO")
 
                         // --- Endpoints de Cliente ---
                         .requestMatchers("/api/solicitacoes/minhas").hasRole("CLIENTE")

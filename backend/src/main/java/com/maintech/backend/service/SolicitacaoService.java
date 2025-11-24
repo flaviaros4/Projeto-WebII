@@ -5,6 +5,7 @@ import com.maintech.backend.dto.SolicitacaoRequest;
 import com.maintech.backend.exception.RegraNegocioException;
 import com.maintech.backend.model.*;
 import com.maintech.backend.repository.CategoriaEquipamentoRepository;
+import com.maintech.backend.repository.FuncionarioRepository;
 import com.maintech.backend.repository.HistoricoSolicitacaoRepository;
 import com.maintech.backend.repository.SolicitacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,10 @@ public class SolicitacaoService {
 
     @Autowired
     private SolicitacaoRepository solicitacaoRepository;
-
+    
+    @Autowired
+    private FuncionarioRepository funcionarioRepository;
+    
     @Autowired
     private CategoriaEquipamentoRepository categoriaRepository;
 
@@ -90,9 +94,29 @@ public class SolicitacaoService {
         return salva;
     }
 
-    public List<Solicitacao> getSolicitacoes(){
-        return solicitacaoRepository.findAll();
+   public List<Solicitacao> getSolicitacoes() {
+    Usuario usuario = usuarioService.getUsuarioAtual();
+
+    // Cliente vê todas dele (já existia lógica separada se desejar)
+    if (usuario instanceof Cliente) {
+        return solicitacaoRepository.findByClienteOrderByDataHoraAberturaAsc((Cliente) usuario);
     }
+
+    // Funcionário: filtra REDIRECIONADA
+    if (usuario instanceof Funcionario func) {
+        // usar query otimizada
+        return solicitacaoRepository.findVisiveisParaFuncionario(func);
+        // (ou alternativa sem query:)
+        // return solicitacaoRepository.findAll().stream()
+        //        .filter(s -> s.getEstado() != EstadoSolicitacao.REDIRECIONADA
+        //                || (s.getFuncionarioManutencao() != null
+        //                    && s.getFuncionarioManutencao().getId().equals(func.getId())))
+        //        .toList();
+    }
+
+    // fallback (não deveria acontecer)
+    return solicitacaoRepository.findAll();
+}
 
     public Solicitacao aprovarOrcamento(Long solicitacaoId) {
         Solicitacao solicitacao = solicitacaoRepository.findById(solicitacaoId)
@@ -140,6 +164,43 @@ public class SolicitacaoService {
         Solicitacao salva = solicitacaoRepository.save(solicitacao);
         String observacao = "Manutenção realizada por " + funcionario.getNome() + ".";
         adicionarHistorico(salva, estadoAnterior, EstadoSolicitacao.ARRUMADA, observacao);
+
+        return salva;
+    }
+
+   
+    public Solicitacao redirecionarSolicitacao(Long solicitacaoId, Long novoFuncionarioId, String motivo) {
+        var usuarioAtual = usuarioService.getUsuarioAtual();
+        if (!(usuarioAtual instanceof Funcionario origem)) {
+            throw new RegraNegocioException("Apenas funcionários podem redirecionar solicitações.");
+        }
+
+        var solicitacao = solicitacaoRepository.findById(solicitacaoId)
+                .orElseThrow(() -> new RegraNegocioException("Solicitação id=" + solicitacaoId + " não encontrada"));
+
+        // Ajuste de estados permitidos se necessário
+        if (solicitacao.getEstado() != EstadoSolicitacao.APROVADA
+                && solicitacao.getEstado() != EstadoSolicitacao.REDIRECIONADA
+                && solicitacao.getEstado() != EstadoSolicitacao.ARRUMADA) {
+            throw new RegraNegocioException("Estado atual não permite redirecionamento.");
+        }
+
+        var destino = funcionarioRepository.findById(novoFuncionarioId)
+                .orElseThrow(() -> new RegraNegocioException("Funcionário destino id=" + novoFuncionarioId + " não encontrado"));
+
+        if (origem.getId().equals(destino.getId())) {
+            throw new RegraNegocioException("Não é permitido redirecionar para si mesmo.");
+        }
+
+        var estadoAnterior = solicitacao.getEstado();
+
+        solicitacao.setFuncionarioManutencao(destino);
+        solicitacao.setEstado(EstadoSolicitacao.REDIRECIONADA);
+        var salva = solicitacaoRepository.save(solicitacao);
+
+        var obs = "Redirecionada de " + origem.getNome() + " para " + destino.getNome()
+                + (motivo != null && !motivo.isBlank() ? ". Motivo: " + motivo : "");
+        adicionarHistorico(salva, estadoAnterior, EstadoSolicitacao.REDIRECIONADA, obs);
 
         return salva;
     }

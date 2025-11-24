@@ -132,4 +132,17 @@ public class SolicitacaoController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+   @PostMapping("/{id}/redirecionar")
+   public ResponseEntity<?> redirecionar(@PathVariable Long id, @RequestBody ManutencaoRequest req) {
+    if (req.getNovoFuncionarioId() == null) {
+        return ResponseEntity.badRequest().body("novoFuncionarioId obrigatório");
+    }
+    try {
+        var s = solicitacaoService.redirecionarSolicitacao(id, req.getNovoFuncionarioId(), req.getMotivo());
+        return ResponseEntity.ok(s);
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+}
 }
