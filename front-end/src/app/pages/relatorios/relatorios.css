@@ -29,7 +29,7 @@ mat-card-title {
 }
 
 button {
-  background-color: #1976d2;
+  background-color: #1976d2 !important;
   width: 30%;
   color: white !important;
   border-radius: 20px;
