@@ -14,7 +14,6 @@ import { EfetuarManutencao } from './pages/efetuar-manutencao/efetuar-manutencao
 import { Cadastro } from './pages/cadastro/cadastro';
 import { Categorias } from './pages/crud-categorias/categorias';
 import { Solicitacoes } from './pages/solicitacoes/solicitacoes';
-import { Redirecionar } from './pages/redirecionar/redirecionar';
 import { Relatorios } from './pages/relatorios/relatorios';
 import { authGuard } from './auth/auth-guard';
 

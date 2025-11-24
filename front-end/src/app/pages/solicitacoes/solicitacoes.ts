@@ -205,16 +205,14 @@ export class Solicitacoes {
     });
   }
   
-  finalizarSolicitacao(solicitacao: SolicitacaoFuncionario) {
-    const dialogRef = this.dialog.open(FinalizarSolicitacao, {
+  finalizarSolicitacao(solicitacao: Solicitacao) {
+  this.solicitacaoService.finalizarSolicitacao(solicitacao.id!).subscribe({
+    next: () => {
+      alert('Solicitação finalizada com sucesso.');     
+      this.listarSolicitacoes();
+    }
+  , error: () => alert('Falha ao finalizar solicitação.')
+  }); 
 
-      data: { solicitacao } 
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        solicitacao.estado = 'FINALIZADA';
-      } 
-});
-  }
-
+}
 }

@@ -75,4 +75,10 @@ export class SolicitacaoService {
   );
 }
 
+finalizarSolicitacao(solicitacaoId: number): Observable<Solicitacao> {
+  return this.httpClient.post<Solicitacao>(`${this.BASE_URL}/${solicitacaoId}/finalizar`, {}, this.options).pipe(
+    map(resp => resp.body as Solicitacao)
+  );
+
+}
 }
