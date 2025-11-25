@@ -10,7 +10,6 @@ import { EfetuarOrcamento } from './pages/pagina-funcionario/modals/efetuar-orca
 import { PaginaCliente } from './pages/pagina-cliente/pagina-cliente';
 import { PaginaFuncionario } from './pages/pagina-funcionario/pagina-funcionario';
 import { ListarFuncionariosComponent } from './pages/crud-funcionarios/listar-funcionarios.component';
-import { EfetuarManutencao } from './pages/efetuar-manutencao/efetuar-manutencao';
 import { Cadastro } from './pages/cadastro/cadastro';
 import { Categorias } from './pages/crud-categorias/categorias';
 import { Solicitacoes } from './pages/solicitacoes/solicitacoes';
