@@ -26,7 +26,8 @@ export class SolicitacaoService {
       descricaoDefeito: i.descricaoDefeito ?? '',
       dataHora: i.dataHoraAbertura ?? '',
       estado: i.estado,
-      funcionarioDestinoId: i.funcionarioManutencao?.id ?? i['funcionario_manutencao_id'] ?? null
+      cliente: i.cliente?.nome ?? '',
+       funcionarioDestinoId: i.funcionarioManutencao?.id ?? i['funcionario_manutencao_id'] ?? null
     })))
   );
 }
